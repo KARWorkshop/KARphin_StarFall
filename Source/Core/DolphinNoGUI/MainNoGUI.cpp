@@ -37,6 +37,9 @@
 #include "VideoCommon/VideoBackendBase.h"
 
 #include "KAR/LauncherBridge.hpp"
+#include <KAR/Netplay/NetplayManager.hpp>
+
+KAR::Networking::Core::NetPlayServer KARServer;
 
 static std::unique_ptr<Platform> s_platform;
 
