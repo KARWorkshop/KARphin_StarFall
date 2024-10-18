@@ -231,7 +231,9 @@ int main(int argc, char* argv[])
     launcherBridgeConfigFilePath = static_cast<const char*>(options.get("initLauncherBridge"));
     KAR::Launcher::LauncherBridgeConfig config;
 
-    std::cout << "Failed to establish connection with Launcher (port used: " + config.launcherPort + ")" << std::endl;
+    //std::cout << "Failed to establish connection with Launcher (port used: " + config.launcherPort + ")" << std::endl;
+
+    //loads a netplay session
   }
 
   //initalizes replays
