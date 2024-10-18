@@ -36,6 +36,8 @@
 
 #include "VideoCommon/VideoBackendBase.h"
 
+#include "KAR/LauncherBridge.hpp"
+
 static std::unique_ptr<Platform> s_platform;
 
 static void signal_handler(int)
@@ -220,6 +222,21 @@ int main(int argc, char* argv[])
   optparse::Values& options = CommandLineParse::ParseArguments(parser.get(), argc, argv);
   std::vector<std::string> args = parser->args();
 
+  //initalizes a bridge with the launcher
+  bool noBoot = false;
+  std::optional<std::string> launcherBridgeConfigFilePath;
+  if (options.is_set("initLauncherBridge"))
+  {
+    noBoot = true;
+    launcherBridgeConfigFilePath = static_cast<const char*>(options.get("initLauncherBridge"));
+    KAR::Launcher::LauncherBridgeConfig config;
+
+    std::cout << "Failed to establish connection with Launcher (port used: " + config.launcherPort + ")" << std::endl;
+  }
+
+  //initalizes replays
+
+  //if netplay mode is enabled
   std::optional<std::string> save_state_path;
   if (options.is_set("save_state"))
   {
@@ -228,38 +245,42 @@ int main(int argc, char* argv[])
 
   std::unique_ptr<BootParameters> boot;
   bool game_specified = false;
-  if (options.is_set("exec"))
+  if (!noBoot)
   {
-    const std::list<std::string> paths_list = options.all("exec");
-    const std::vector<std::string> paths{std::make_move_iterator(std::begin(paths_list)),
-                                         std::make_move_iterator(std::end(paths_list))};
-    boot = BootParameters::GenerateFromFile(
-        paths, BootSessionData(save_state_path, DeleteSavestateAfterBoot::No));
-    game_specified = true;
-  }
-  else if (options.is_set("nand_title"))
-  {
-    const std::string hex_string = static_cast<const char*>(options.get("nand_title"));
-    if (hex_string.length() != 16)
+    
+    if (options.is_set("exec"))
     {
-      fprintf(stderr, "Invalid title ID\n");
-      parser->print_help();
-      return 1;
+      const std::list<std::string> paths_list = options.all("exec");
+      const std::vector<std::string> paths{std::make_move_iterator(std::begin(paths_list)),
+                                           std::make_move_iterator(std::end(paths_list))};
+      boot = BootParameters::GenerateFromFile(
+          paths, BootSessionData(save_state_path, DeleteSavestateAfterBoot::No));
+      game_specified = true;
     }
-    const u64 title_id = std::stoull(hex_string, nullptr, 16);
-    boot = std::make_unique<BootParameters>(BootParameters::NANDTitle{title_id});
-  }
-  else if (args.size())
-  {
-    boot = BootParameters::GenerateFromFile(
-        args.front(), BootSessionData(save_state_path, DeleteSavestateAfterBoot::No));
-    args.erase(args.begin());
-    game_specified = true;
-  }
-  else
-  {
-    parser->print_help();
-    return 0;
+    else if (options.is_set("nand_title"))
+    {
+      const std::string hex_string = static_cast<const char*>(options.get("nand_title"));
+      if (hex_string.length() != 16)
+      {
+        fprintf(stderr, "Invalid title ID\n");
+        parser->print_help();
+        return 1;
+      }
+      const u64 title_id = std::stoull(hex_string, nullptr, 16);
+      boot = std::make_unique<BootParameters>(BootParameters::NANDTitle{title_id});
+    }
+    else if (args.size())
+    {
+      boot = BootParameters::GenerateFromFile(
+          args.front(), BootSessionData(save_state_path, DeleteSavestateAfterBoot::No));
+      args.erase(args.begin());
+      game_specified = true;
+    }
+    else
+    {
+      parser->print_help();
+      return 0;
+    }
   }
 
   std::string user_directory;
@@ -310,7 +331,7 @@ int main(int argc, char* argv[])
 
   DolphinAnalytics::Instance().ReportDolphinStart("nogui");
 
-  if (!BootManager::BootCore(Core::System::GetInstance(), std::move(boot), wsi))
+  if (!noBoot && !BootManager::BootCore(Core::System::GetInstance(), std::move(boot), wsi))
   {
     fprintf(stderr, "Could not boot the specified file\n");
     return 1;

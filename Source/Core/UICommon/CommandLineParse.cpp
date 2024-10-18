@@ -106,6 +106,20 @@ std::unique_ptr<optparse::OptionParser> CreateParser(ParserOptions options)
       .type("string")
       .help("Load the initial save state");
 
+  //initalizes a connection with the launcher
+  parser->add_option("-il", "--initLauncherBridge")
+      .action("store")
+      .metavar("<file>")
+      .type("string")
+      .help("Load a Launcher Bridge config file and attempt to establish a data bridge with the Launcher");
+
+  //initalizes a replay and plays it back
+  //parser->add_option("-r", "--playback")
+  //    .action("store")
+  //    .metavar("<file>")
+  //    .type("string")
+  //    .help("Load a Replay and play it back");
+
   if (options == ParserOptions::IncludeGUIOptions)
   {
     parser->add_option("-d", "--debugger")

@@ -50,6 +50,23 @@ enum class HSPDeviceType : int;
 
 namespace Config
 {
+  //KAR specific settings
+const std::string KAR_VERSION_STRING = "3.0.0";
+
+//is auto-fullscreen codes enabled
+//is the auto-fullscreen for single or multi person
+//what auto-fullscreen index is used
+
+//----MATCH SETTINGS----//
+
+//----STARS----//
+
+//is Swerve Star disabled
+
+//----STADIUMS----//
+
+//----EVENTS----//
+
 // Main.Core
 
 extern const Info<bool> MAIN_SKIP_IPL;
