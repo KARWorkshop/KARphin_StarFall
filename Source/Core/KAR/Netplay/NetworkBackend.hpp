@@ -2,6 +2,9 @@
 
 //defines a few network backend stuff
 
+#include <Common/CommonTypes.h>
+#include <string>
+
 namespace KAR::Networking::Util
 {
 	//defines a connection type

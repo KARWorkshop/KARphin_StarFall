@@ -2,8 +2,8 @@
 
 //handles netplay interactions
 
-#include <KAR/Netplay/Socket/KARClient.hpp>
-#include <KAR/Netplay/Socket/KARServer.hpp>
+//#include <KAR/Netplay/Socket/KARClient.hpp>
+//#include <KAR/Netplay/Socket/KARServer.hpp>
 
 #include <KAR/Netplay/NetworkBackend.hpp>
 

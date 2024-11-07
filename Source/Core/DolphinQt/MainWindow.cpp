@@ -329,6 +329,9 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
     StartGame(std::move(m_pending_boot));
     m_pending_boot.reset();
   }
+
+  //shows the controller window
+  ShowControllersWindow();
 }
 
 MainWindow::~MainWindow()

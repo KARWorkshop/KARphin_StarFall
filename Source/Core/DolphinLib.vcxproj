@@ -79,11 +79,7 @@
     <ClInclude Include="KAR\LauncherBridge.hpp" />
     <ClInclude Include="KAR\Netplay\NetplayManager.hpp" />
     <ClInclude Include="KAR\Netplay\NetworkBackend.hpp" />
-    <ClInclude Include="KAR\Netplay\Socket\KARClient.hpp" />
-    <ClInclude Include="KAR\Netplay\Socket\KARServer.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="KAR\Netplay\Socket\KARServer.cpp" />
+    <ClInclude Include="KAR\Netplay\KARNetMessageIDs.hpp" />
   </ItemGroup>
   <UsingTask TaskName="GetProductVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>

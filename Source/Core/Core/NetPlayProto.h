@@ -148,6 +148,7 @@ enum class MessageID : u8
   PadData = 0x60,
   PadMapping = 0x61,
   PadBuffer = 0x62,
+  PadBuffer_Min = 0x62,
   PadHostData = 0x63,
   GBAConfig = 0x64,
 
