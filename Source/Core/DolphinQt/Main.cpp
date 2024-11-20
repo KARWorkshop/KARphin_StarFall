@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
       ModalMessageBox analytics_prompt(&win);
 
       analytics_prompt.setIcon(QMessageBox::Question);
-      analytics_prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+      analytics_prompt.setStandardButtons(QMessageBox::Ok);
       analytics_prompt.setWindowTitle(QObject::tr("KARphin Change Log"));
       analytics_prompt.setText(
           QObject::tr(KAR_CHANGE_LOG_BLURB_TITLE_TEXT));
@@ -278,11 +278,7 @@ int main(int argc, char* argv[])
       SetQWidgetWindowDecorations(&analytics_prompt);
       analytics_prompt.exec();
 
-      
-
-      
-
-      //KAR::Versoning::WriteBuildData(true);
+      KAR::Core::WriteBuildVersionDataToFile(true);
     }
 
     if (!Settings::Instance().IsBatchModeEnabled())
