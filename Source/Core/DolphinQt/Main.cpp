@@ -43,6 +43,8 @@
 #include "UICommon/CommandLineParse.h"
 #include "UICommon/UICommon.h"
 
+#include "Core/KAR/Versioning.hpp"
+
 static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no,
                               Common::MsgType style)
 {
@@ -253,38 +255,35 @@ int main(int argc, char* argv[])
 
     MainWindow win{std::move(boot), static_cast<const char*>(options.get("movie"))};
 
+    //always set sending anaylitic data to false
 #if defined(USE_ANALYTICS) && USE_ANALYTICS
-    Config::SetBase(Config::MAIN_ANALYTICS_PERMISSION_ASKED, false); //always set sending anaylitic data to false
+    Config::SetBase(Config::MAIN_ANALYTICS_PERMISSION_ASKED, false);
+    Settings::Instance().SetAnalyticsEnabled(false);
+    DolphinAnalytics::Instance().ReloadConfig();
+#endif
 
-    if (!Config::Get(Config::MAIN_ANALYTICS_PERMISSION_ASKED))
+    //show the user the change log
+    if(!KAR::Core::LoadBuildVersionDataFromFile().hasSeenChangeLog)
     {
       ModalMessageBox analytics_prompt(&win);
 
       analytics_prompt.setIcon(QMessageBox::Question);
       analytics_prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-      analytics_prompt.setWindowTitle(QObject::tr("Allow Usage Statistics Reporting"));
+      analytics_prompt.setWindowTitle(QObject::tr("KARphin Change Log"));
       analytics_prompt.setText(
-          QObject::tr("Do you authorize Dolphin to report information to Dolphin's developers?"));
+          QObject::tr(KAR_CHANGE_LOG_BLURB_TITLE_TEXT));
       analytics_prompt.setInformativeText(
-          QObject::tr("If authorized, Dolphin can collect data on its performance, "
-                      "feature usage, and configuration, as well as data on your system's "
-                      "hardware and operating system.\n\n"
-                      "No private data is ever collected. This data helps us understand "
-                      "how people and emulated games use Dolphin and prioritize our "
-                      "efforts. It also helps us identify rare configurations that are "
-                      "causing bugs, performance and stability issues.\n"
-                      "This authorization can be revoked at any time through Dolphin's "
-                      "settings."));
+          QObject::tr(KAR_CHANGE_LOG_BLURB_INFO_TEXT));
 
       SetQWidgetWindowDecorations(&analytics_prompt);
-      const int answer = analytics_prompt.exec();
+      analytics_prompt.exec();
 
       
-      Settings::Instance().SetAnalyticsEnabled(answer == QMessageBox::Yes);
 
-      DolphinAnalytics::Instance().ReloadConfig();
+      
+
+      //KAR::Versoning::WriteBuildData(true);
     }
-#endif
 
     if (!Settings::Instance().IsBatchModeEnabled())
     {
