@@ -254,6 +254,8 @@ int main(int argc, char* argv[])
     MainWindow win{std::move(boot), static_cast<const char*>(options.get("movie"))};
 
 #if defined(USE_ANALYTICS) && USE_ANALYTICS
+    Config::SetBase(Config::MAIN_ANALYTICS_PERMISSION_ASKED, false); //always set sending anaylitic data to false
+
     if (!Config::Get(Config::MAIN_ANALYTICS_PERMISSION_ASKED))
     {
       ModalMessageBox analytics_prompt(&win);
@@ -277,7 +279,7 @@ int main(int argc, char* argv[])
       SetQWidgetWindowDecorations(&analytics_prompt);
       const int answer = analytics_prompt.exec();
 
-      Config::SetBase(Config::MAIN_ANALYTICS_PERMISSION_ASKED, true);
+      
       Settings::Instance().SetAnalyticsEnabled(answer == QMessageBox::Yes);
 
       DolphinAnalytics::Instance().ReloadConfig();
