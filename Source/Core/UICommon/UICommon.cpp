@@ -285,12 +285,19 @@ void CreateDirectories()
 
 void SetUserDirectory(std::string custom_path)
 {
+  //if custom path
   if (!custom_path.empty())
   {
     File::CreateFullPath(custom_path + DIR_SEP);
     File::SetUserPath(D_USER_IDX, std::move(custom_path));
     return;
   }
+
+  //permanent settings path
+  std::string permatSettings = "StarDust_Player_Settings";
+  File::CreateFullPath(permatSettings + DIR_SEP);
+  File::SetUserPath(D_USER_IDX, std::move(permatSettings));
+  return;
 
   std::string user_path;
 #ifdef _WIN32

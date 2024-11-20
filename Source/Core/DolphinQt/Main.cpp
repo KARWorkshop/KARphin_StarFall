@@ -150,9 +150,9 @@ int main(int argc, char* argv[])
 #endif
 #endif
 
-  QCoreApplication::setOrganizationName(QStringLiteral("Dolphin Emulator"));
-  QCoreApplication::setOrganizationDomain(QStringLiteral("dolphin-emu.org"));
-  QCoreApplication::setApplicationName(QStringLiteral("dolphin-emu"));
+  QCoreApplication::setOrganizationName(QStringLiteral("Jas"));
+  QCoreApplication::setOrganizationDomain(QStringLiteral("karworkshop.com"));
+  QCoreApplication::setApplicationName(QStringLiteral("KARphin"));
 
   // QApplication will parse arguments and remove any it recognizes as targeting Qt
   QApplication app(argc, argv);
