@@ -31,7 +31,25 @@ namespace KAR
 	"Q: Why don't you just modified the R10/Legacy build?\n" \
 	"\nA: People have a fondness for R10/Legacy and it's the common stable build. " \
 	"If I released a modified R10 build, it would cause more confusion, and KARphin has already caused enough. " \
-	"R10/Legacy will stay as it is, I won't be releasing custom R10 builds."
+	"R10/Legacy will stay as it is, I won't be releasing custom R10 builds.\n\n" \
+	"-----CHANGE LOG " \
+	KAR_VERSION_MAJOR \
+  "-" \
+  KAR_VERSION_MINOR \
+	"-" \
+	KAR_VERSION_HOT_FIX \
+	"-----\n" \
+	"* Dedicated ROM Patch buttons replaces Open, Play, Pause\n" \
+	"* Warp Relay Account data file format ported over\n" \
+	"* memory cards have been disabled for Hack Pack, Backside\n" \
+	"* memory cards have been enabled for KAR Ignition\n" \
+	"* fair input delay forced\n" \
+	"* sync codes is disabled\n" \
+	"* players can not join a lobby they don't have the game for\n" \
+	"* hide CT FS desync messages\n" \
+	"* User Settings is forced into local mode and folder is renamed to \"StarDust_Player_Settings\"\n" \
+	"* ROMs can only be loaded via the ROMs folder\n" \
+	"* Minor tweaks\n" \
 
 		//defines the build data
 		struct BuildData

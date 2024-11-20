@@ -118,6 +118,22 @@ static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no
 
 int main(int argc, char* argv[])
 {
+  //don't check if we're in a development build
+  //if (KAR_VERSION_BUILD != "Dev")
+  //{
+  //  // checks the version data and updates as needed
+  //  KAR::Core::BuildData v = KAR::Core::LoadBuildVersionDataFromFile();
+  //  if (/*v.build != KAR_VERSION_BUILD || */ v.majorVer != KAR_VERSION_MAJOR ||
+  //      v.minorVer != KAR_VERSION_MINOR || v.hotfix != KAR_VERSION_HOT_FIX)
+  //  {
+  //    //
+  //
+  //    return 0;
+  //  }
+  //  else
+  //    KAR::Core::WriteBuildVersionDataToFile(false);
+  //}
+
 #ifdef _WIN32
   const bool console_attached = AttachConsole(ATTACH_PARENT_PROCESS) != FALSE;
   HANDLE stdout_handle = ::GetStdHandle(STD_OUTPUT_HANDLE);
