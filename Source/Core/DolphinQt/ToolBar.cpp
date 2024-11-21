@@ -119,6 +119,12 @@ void ToolBar::MakeActions()
 
   addSeparator();
 
+  KAR_HostNetplay_action = addAction(tr("Host"), this, &ToolBar::PlayPressed);
+  KAR_ConnectNetplay_action = addAction(tr("Lobbies"), this, &ToolBar::PlayPressed);
+  KAR_Account_action = addAction(tr("Account"), this, &ToolBar::PlayPressed);
+
+  addSeparator();
+
   m_pause_play_action = addAction(tr("Play"), this, &ToolBar::PlayPressed);
 
   m_stop_action = addAction(tr("Stop"), this, &ToolBar::StopPressed);
@@ -134,7 +140,9 @@ void ToolBar::MakeActions()
   // Ensure every button has about the same width
   std::vector<QWidget*> items;
   for (const auto& action :
-       {m_open_action, m_pause_play_action, m_stop_action, m_stop_action, m_fullscreen_action,
+       {m_open_action, m_pause_play_action, m_stop_action, m_stop_action, KAR_HostNetplay_action,
+        KAR_ConnectNetplay_action, KAR_Account_action,
+      m_fullscreen_action,
         m_screenshot_action, m_config_action, m_graphics_action, m_controllers_action,
         m_step_action, m_step_over_action, m_step_out_action, m_skip_action, m_show_pc_action,
         m_set_pc_action})
@@ -194,4 +202,8 @@ void ToolBar::UpdateIcons()
   m_config_action->setIcon(Resources::GetThemeIcon("config"));
   m_controllers_action->setIcon(Resources::GetThemeIcon("classic"));
   m_graphics_action->setIcon(Resources::GetThemeIcon("graphics"));
+
+  KAR_HostNetplay_action->setIcon(Resources::GetThemeIcon("wifi"));
+  KAR_ConnectNetplay_action->setIcon(Resources::GetThemeIcon("sessisonBrowser@2x"));
+  KAR_Account_action->setIcon(Resources::GetThemeIcon("account"));
 }

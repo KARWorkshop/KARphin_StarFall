@@ -48,6 +48,10 @@ private:
   void UpdateIcons();
   void UpdatePausePlayButtonState(bool playing_state);
 
+  QAction* KAR_Account_action;
+  QAction* KAR_HostNetplay_action;
+  QAction* KAR_ConnectNetplay_action;
+
   QAction* m_open_action;
   QAction* m_refresh_action;
   QAction* m_pause_play_action;
