@@ -17,7 +17,8 @@ namespace KAR
 #define KAR_VERSION_MAJOR "1"
 #define KAR_VERSION_MINOR "0"
 #define KAR_VERSION_HOT_FIX "0"
-#define KAR_VERSION_BUILD "Stable"
+#define KAR_VERSION_BUILD "Star Dust"
+#define KAR_VERSION_STABILITY "Stable"
 
 		//the change log info
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
@@ -39,17 +40,22 @@ namespace KAR
 	"-" \
 	KAR_VERSION_HOT_FIX \
 	"-----\n" \
-	/*"* Dedicated ROM Patch buttons replaces Open, Play, Pause\n"*/ \
-	"* Warp Relay Account data file format ported over\n" \
-	"* memory cards have been disabled for Hack Pack, Backside\n" \
-	"* memory cards have been enabled for KAR Ignition\n" \
-	"* fair input delay forced\n" \
-	"* sync codes is disabled\n" \
-	"* players can not join a lobby they don't have the game for\n" \
-	"* hide CT FS desync messages\n" \
+	/*"* Dedicated ROM Patch buttons\n"*/ \
+	/*"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" */ \
+	/*"* memory cards have been disabled for non-NA or modded KAR ROMs\n"*/ \
+	/*"* fair input delay forced, sync codes and replays have been disabled\n"*/ \
+	/*"* players can not join a lobby they don't have the game for\n"*/ \
+	/*"* hide CT FS desync messages\n"*/ \
+	/*"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n"*/ \
+	/*"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" */ \
+	/*"* Match Settings files have been ported from KARphin Legacy Tourny Edition\n" */ \
+	/*"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n" */ \
 	"* User Settings is forced into local mode and folder is renamed to \"StarDust_Player_Settings\"\n" \
 	"* ROMs can only be loaded via the ROMs folder\n" \
 	"* Minor tweaks\n" \
+	"\n\nFor a full list of changes check out the " \
+	KAR_VERSION_BUILD \
+	" branch on the github: https://github.com/KARWorkshop/KARphin_StarFall"
 
 		//defines the build data
 		struct BuildData
