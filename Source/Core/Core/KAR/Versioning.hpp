@@ -46,7 +46,7 @@ namespace KAR
 	/*"* fair input delay forced, sync codes and replays have been disabled\n"*/ \
 	/*"* players can not join a lobby they don't have the game for\n"*/ \
 	/*"* hide CT FS desync messages\n"*/ \
-	/*"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n"*/ \
+	"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n" \
 	/*"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" */ \
 	/*"* Match Settings files have been ported from KARphin Legacy Tourny Edition\n" */ \
 	/*"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n" */ \

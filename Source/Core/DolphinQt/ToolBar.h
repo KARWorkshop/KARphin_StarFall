@@ -29,6 +29,10 @@ signals:
   void FullScreenPressed();
   void ScreenShotPressed();
 
+  void OnKARNetplayConnectPressed();
+  void OnKARNetplayLobbiesPressed();
+  void OnKARNetplayAccountPressed();
+
   void SettingsPressed();
   void ControllersPressed();
   void GraphicsPressed();

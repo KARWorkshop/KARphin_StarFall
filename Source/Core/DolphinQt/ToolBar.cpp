@@ -119,8 +119,8 @@ void ToolBar::MakeActions()
 
   addSeparator();
 
-  KAR_HostNetplay_action = addAction(tr("Host"), this, &ToolBar::PlayPressed);
-  KAR_ConnectNetplay_action = addAction(tr("Lobbies"), this, &ToolBar::PlayPressed);
+  KAR_HostNetplay_action = addAction(tr("Host"), this, &ToolBar::OnKARNetplayConnectPressed);
+  KAR_ConnectNetplay_action = addAction(tr("Lobbies"), this, &ToolBar::OnKARNetplayLobbiesPressed);
   KAR_Account_action = addAction(tr("Account"), this, &ToolBar::PlayPressed);
 
   addSeparator();
