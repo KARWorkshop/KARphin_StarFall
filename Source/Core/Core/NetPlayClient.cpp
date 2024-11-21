@@ -247,14 +247,8 @@ bool NetPlayClient::Connect()
 {
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
-  //constructs a connect packet
+  //constructs and sends a connect packet
   sf::Packet packet = KAR::Netplay::Packet::GeneratePacket_Connect(KAR::WarpRelay::LoadDefaultGuestAccount());
-
-  // send connect message
-  //sf::Packet packet;
-  //packet << Common::GetScmRevGitStr();
-  //packet << Common::GetNetplayDolphinVer();
-  //packet << m_player_name;
   Send(packet);
   enet_host_flush(m_client);
   sf::Packet rpac;
@@ -311,9 +305,7 @@ bool NetPlayClient::Connect()
 
     Player player;
     player.account = KAR::WarpRelay::LoadDefaultGuestAccount();
-    //player.account.displayName = m_player_name;
     player.pid = m_pid;
-    //player.revision = Common::GetNetplayDolphinVer();
 
     // add self to player list
     m_players[m_pid] = player;

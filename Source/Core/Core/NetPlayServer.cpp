@@ -454,24 +454,6 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   new_player.account.rank = packet.rank;
   new_player.account.region = packet.region;
 
-  /*std::string netplay_version;
-  received_packet >> netplay_version;
-  if (netplay_version != Common::GetScmRevGitStr())
-    return ConnectionError::VersionMismatch;
-
-  if (m_is_running || m_start_pending)
-    return ConnectionError::GameRunning;
-
-  if (m_players.size() >= 255)
-    return ConnectionError::ServerFull;
-
-  Client new_player{};
-  new_player.pid = GiveFirstAvailableIDTo(incoming_connection);
-  new_player.socket = incoming_connection;
-
-  received_packet >> new_player.revision;
-  received_packet >> new_player.name;*/
-
   if (StringUTF8CodePointCount(new_player.account.displayName) > MAX_NAME_LENGTH)
     return ConnectionError::NameTooLong;
 
