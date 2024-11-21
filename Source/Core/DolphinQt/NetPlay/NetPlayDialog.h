@@ -136,7 +136,7 @@ private:
   // Other
   QMenuBar* m_menu_bar;
   QMenu* m_data_menu;
-  QMenu* m_network_menu;
+  //QMenu* m_network_menu;
   QMenu* m_game_digest_menu;
   QMenu* m_other_menu;
   QPushButton* m_game_button;
@@ -153,14 +153,14 @@ private:
   QAction* m_sync_codes_action;
   QAction* m_record_input_action;
   QAction* m_strict_settings_sync_action;
-  QAction* m_host_input_authority_action;
-  QAction* m_golf_mode_action;
-  QAction* m_golf_mode_overlay_action;
-  QAction* m_fixed_delay_action;
-  QAction* m_hide_remote_gbas_action;
+ // QAction* m_host_input_authority_action;
+ // QAction* m_golf_mode_action;
+ //QAction* m_golf_mode_overlay_action;
+ // QAction* m_fixed_delay_action;
+  //QAction* m_hide_remote_gbas_action;
   QPushButton* m_quit_button;
   QSplitter* m_splitter;
-  QActionGroup* m_network_mode_group;
+  //QActionGroup* m_network_mode_group;
 
   QGridLayout* m_main_layout;
   GameDigestDialog* m_game_digest_dialog;

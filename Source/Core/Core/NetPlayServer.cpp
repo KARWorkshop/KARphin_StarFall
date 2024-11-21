@@ -1359,7 +1359,7 @@ bool NetPlayServer::SetupNetSettings()
   // Copy all relevant settings
   settings.cpu_thread = Config::Get(Config::MAIN_CPU_THREAD);
   settings.cpu_core = Config::Get(Config::MAIN_CPU_CORE);
-  settings.enable_cheats = Config::AreCheatsEnabled();
+  settings.enable_cheats = true; //cheats are always on
   settings.selected_language = Config::Get(Config::MAIN_GC_LANGUAGE);
   settings.override_region_settings = Config::Get(Config::MAIN_OVERRIDE_REGION_SETTINGS);
   settings.dsp_hle = Config::Get(Config::MAIN_DSP_HLE);
@@ -1452,7 +1452,7 @@ bool NetPlayServer::SetupNetSettings()
 
   settings.strict_settings_sync = Config::Get(Config::NETPLAY_STRICT_SETTINGS_SYNC);
   settings.sync_codes = Config::Get(Config::NETPLAY_SYNC_CODES);
-  settings.golf_mode = Config::Get(Config::NETPLAY_NETWORK_MODE) == "golf";
+  settings.golf_mode = false; //always fixed delay
   settings.use_fma = DoAllPlayersHaveHardwareFMA();
   settings.hide_remote_gbas = Config::Get(Config::NETPLAY_HIDE_REMOTE_GBAS);
 

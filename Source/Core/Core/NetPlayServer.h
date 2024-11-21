@@ -171,10 +171,6 @@ private:
   // sends the new player to the other players
   inline void SendNewPlayerToAllClients(const Client& newPlayer)
   {
-    // tell other players a new player joined
-    //SendResponseToAllPlayers(MessageID::PlayerJoin, newPlayer.pid, newPlayer.account.displayName,
-     //                        newPlayer.account.rank, newPlayer.account.region);
-
     KAR::Netplay::Packet::OnPlayerJoinPacket packet;
     packet.displayName = newPlayer.account.displayName;
     packet.PID = newPlayer.pid;
@@ -195,9 +191,6 @@ private:
   // sends a specific client data about a new player
   inline void SendSpecificClient_NewPlayerInfo(const Client& targetClient, const Client& player)
   {
-     //SendResponseToPlayer(targetClient, MessageID::PlayerJoin, player.pid,
-     //                    player.account.displayName, player.account.rank, player.account.region);
-
     KAR::Netplay::Packet::OnPlayerJoinPacket packet;
     packet.displayName = player.account.displayName;
     packet.PID = player.pid;

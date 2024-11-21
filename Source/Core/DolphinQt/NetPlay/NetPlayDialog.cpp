@@ -180,9 +180,9 @@ void NetPlayDialog::CreateMainLayout()
          "uses the same video backend."));
   m_strict_settings_sync_action->setCheckable(true);
 
-  m_network_menu = m_menu_bar->addMenu(tr("Network"));
-  m_network_menu->setToolTipsVisible(true);
-  m_fixed_delay_action = m_network_menu->addAction(tr("Fair Input Delay"));
+  //m_network_menu = m_menu_bar->addMenu(tr("Network"));
+ // m_network_menu->setToolTipsVisible(true);
+  /*m_fixed_delay_action = m_network_menu->addAction(tr("Fair Input Delay"));
   m_fixed_delay_action->setToolTip(
       tr("Each player sends their own inputs to the game, with equal buffer size for all players, "
          "configured by the host.\nSuitable for competitive games where fairness and minimal "
@@ -199,14 +199,14 @@ void NetPlayDialog::CreateMainLayout()
       tr("Identical to Host Input Authority, except the \"Host\" (who has zero latency) can be "
          "switched at any time.\nSuitable for turn-based games with timing-sensitive controls, "
          "such as golf."));
-  m_golf_mode_action->setCheckable(true);
+  m_golf_mode_action->setCheckable(true);*/
 
-  m_network_mode_group = new QActionGroup(this);
-  m_network_mode_group->setExclusive(true);
-  m_network_mode_group->addAction(m_fixed_delay_action);
-  m_network_mode_group->addAction(m_host_input_authority_action);
-  m_network_mode_group->addAction(m_golf_mode_action);
-  m_fixed_delay_action->setChecked(true);
+  //m_network_mode_group = new QActionGroup(this);
+  //m_network_mode_group->setExclusive(true);
+  //m_network_mode_group->addAction(m_fixed_delay_action);
+  //m_network_mode_group->addAction(m_host_input_authority_action);
+  //m_network_mode_group->addAction(m_golf_mode_action);
+  //m_fixed_delay_action->setChecked(true);
 
   m_game_digest_menu = m_menu_bar->addMenu(tr("Checksum"));
   m_game_digest_menu->addAction(tr("Current game"), this, [this] {
@@ -229,10 +229,10 @@ void NetPlayDialog::CreateMainLayout()
   m_other_menu = m_menu_bar->addMenu(tr("Other"));
   m_record_input_action = m_other_menu->addAction(tr("Record Inputs"));
   m_record_input_action->setCheckable(true);
-  m_golf_mode_overlay_action = m_other_menu->addAction(tr("Show Golf Mode Overlay"));
-  m_golf_mode_overlay_action->setCheckable(true);
-  m_hide_remote_gbas_action = m_other_menu->addAction(tr("Hide Remote GBAs"));
-  m_hide_remote_gbas_action->setCheckable(true);
+ //m_golf_mode_overlay_action = m_other_menu->addAction(tr("Show Golf Mode Overlay"));
+ //m_golf_mode_overlay_action->setCheckable(true);
+ //m_hide_remote_gbas_action = m_other_menu->addAction(tr("Hide Remote GBAs"));
+ //m_hide_remote_gbas_action->setCheckable(true);
 
   m_game_button->setDefault(false);
   m_game_button->setAutoDefault(false);
@@ -373,10 +373,10 @@ void NetPlayDialog::ConnectWidgets()
     }
   };
 
-  connect(m_host_input_authority_action, &QAction::toggled, this,
-          [hia_function] { hia_function(true); });
-  connect(m_golf_mode_action, &QAction::toggled, this, [hia_function] { hia_function(true); });
-  connect(m_fixed_delay_action, &QAction::toggled, this, [hia_function] { hia_function(false); });
+  //connect(m_host_input_authority_action, &QAction::toggled, this,
+  //        [hia_function] { hia_function(true); });
+  //connect(m_golf_mode_action, &QAction::toggled, this, [hia_function] { hia_function(true); });
+  //connect(m_fixed_delay_action, &QAction::toggled, this, [hia_function] { hia_function(false); });
 
   connect(m_start_button, &QPushButton::clicked, this, &NetPlayDialog::OnStart);
   connect(m_quit_button, &QPushButton::clicked, this, &NetPlayDialog::reject);
@@ -421,11 +421,11 @@ void NetPlayDialog::ConnectWidgets()
   connect(m_sync_codes_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
   connect(m_record_input_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
   connect(m_strict_settings_sync_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  connect(m_host_input_authority_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  connect(m_golf_mode_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  connect(m_golf_mode_overlay_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  connect(m_fixed_delay_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  connect(m_hide_remote_gbas_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
+  //connect(m_host_input_authority_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
+  //connect(m_golf_mode_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
+  //connect(m_golf_mode_overlay_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
+  //connect(m_fixed_delay_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
+  //connect(m_hide_remote_gbas_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
 }
 
 void NetPlayDialog::SendMessage(const std::string& msg)
@@ -530,13 +530,13 @@ void NetPlayDialog::show(std::string nickname, bool use_traversal)
   }
 
   m_data_menu->menuAction()->setVisible(is_hosting);
-  m_network_menu->menuAction()->setVisible(is_hosting);
+ // m_network_menu->menuAction()->setVisible(is_hosting);
   m_game_digest_menu->menuAction()->setVisible(is_hosting);
-#ifdef HAS_LIBMGBA
-  m_hide_remote_gbas_action->setVisible(is_hosting);
-#else
-  m_hide_remote_gbas_action->setVisible(false);
-#endif
+//#ifdef HAS_LIBMGBA
+//  m_hide_remote_gbas_action->setVisible(is_hosting);
+//#else
+//  m_hide_remote_gbas_action->setVisible(false);
+//#endif
   m_start_button->setHidden(!is_hosting);
   m_kick_button->setHidden(!is_hosting);
   m_assign_ports_button->setHidden(!is_hosting);
@@ -844,9 +844,9 @@ void NetPlayDialog::SetOptionsEnabled(bool enabled)
     m_sync_codes_action->setEnabled(enabled);
     m_assign_ports_button->setEnabled(enabled);
     m_strict_settings_sync_action->setEnabled(enabled);
-    m_host_input_authority_action->setEnabled(enabled);
-    m_golf_mode_action->setEnabled(enabled);
-    m_fixed_delay_action->setEnabled(enabled);
+    //m_host_input_authority_action->setEnabled(enabled);
+    //m_golf_mode_action->setEnabled(enabled);
+    //m_fixed_delay_action->setEnabled(enabled);
   }
 
   m_record_input_action->setEnabled(enabled);
@@ -1117,8 +1117,8 @@ void NetPlayDialog::LoadSettings()
   const bool sync_codes = Config::Get(Config::NETPLAY_SYNC_CODES);
   const bool record_inputs = Config::Get(Config::NETPLAY_RECORD_INPUTS);
   const bool strict_settings_sync = Config::Get(Config::NETPLAY_STRICT_SETTINGS_SYNC);
-  const bool golf_mode_overlay = Config::Get(Config::NETPLAY_GOLF_MODE_OVERLAY);
-  const bool hide_remote_gbas = Config::Get(Config::NETPLAY_HIDE_REMOTE_GBAS);
+ // const bool golf_mode_overlay = Config::Get(Config::NETPLAY_GOLF_MODE_OVERLAY);
+ // const bool hide_remote_gbas = Config::Get(Config::NETPLAY_HIDE_REMOTE_GBAS);
 
   m_buffer_size_box->setValue(buffer_size);
 
@@ -1133,28 +1133,28 @@ void NetPlayDialog::LoadSettings()
   m_sync_codes_action->setChecked(sync_codes);
   m_record_input_action->setChecked(record_inputs);
   m_strict_settings_sync_action->setChecked(strict_settings_sync);
-  m_golf_mode_overlay_action->setChecked(golf_mode_overlay);
-  m_hide_remote_gbas_action->setChecked(hide_remote_gbas);
+ // m_golf_mode_overlay_action->setChecked(golf_mode_overlay);
+ // m_hide_remote_gbas_action->setChecked(hide_remote_gbas);
 
-  const std::string network_mode = Config::Get(Config::NETPLAY_NETWORK_MODE);
-
-  if (network_mode == "fixeddelay")
-  {
-    m_fixed_delay_action->setChecked(true);
-  }
-  else if (network_mode == "hostinputauthority")
-  {
-    m_host_input_authority_action->setChecked(true);
-  }
-  else if (network_mode == "golf")
-  {
-    m_golf_mode_action->setChecked(true);
-  }
-  else
-  {
-    WARN_LOG_FMT(NETPLAY, "Unknown network mode '{}', using 'fixeddelay'", network_mode);
-    m_fixed_delay_action->setChecked(true);
-  }
+  //const std::string network_mode = Config::Get(Config::NETPLAY_NETWORK_MODE);
+  //
+  //if (network_mode == "fixeddelay")
+  //{
+  //  m_fixed_delay_action->setChecked(true);
+  //}
+  //else if (network_mode == "hostinputauthority")
+  //{
+  //  m_host_input_authority_action->setChecked(true);
+  //}
+  //else if (network_mode == "golf")
+  //{
+  //  m_golf_mode_action->setChecked(true);
+  //}
+  //else
+  //{
+  //  WARN_LOG_FMT(NETPLAY, "Unknown network mode '{}', using 'fixeddelay'", network_mode);
+  //  m_fixed_delay_action->setChecked(true);
+  //}
 }
 
 void NetPlayDialog::SaveSettings()
@@ -1176,24 +1176,11 @@ void NetPlayDialog::SaveSettings()
   Config::SetBase(Config::NETPLAY_SYNC_CODES, m_sync_codes_action->isChecked());
   Config::SetBase(Config::NETPLAY_RECORD_INPUTS, m_record_input_action->isChecked());
   Config::SetBase(Config::NETPLAY_STRICT_SETTINGS_SYNC, m_strict_settings_sync_action->isChecked());
-  Config::SetBase(Config::NETPLAY_GOLF_MODE_OVERLAY, m_golf_mode_overlay_action->isChecked());
-  Config::SetBase(Config::NETPLAY_HIDE_REMOTE_GBAS, m_hide_remote_gbas_action->isChecked());
+  //Config::SetBase(Config::NETPLAY_GOLF_MODE_OVERLAY, m_golf_mode_overlay_action->isChecked());
+  Config::SetBase(Config::NETPLAY_HIDE_REMOTE_GBAS, true);
 
-  std::string network_mode;
-  if (m_fixed_delay_action->isChecked())
-  {
-    network_mode = "fixeddelay";
-  }
-  else if (m_host_input_authority_action->isChecked())
-  {
-    network_mode = "hostinputauthority";
-  }
-  else if (m_golf_mode_action->isChecked())
-  {
-    network_mode = "golf";
-  }
-
-  Config::SetBase(Config::NETPLAY_NETWORK_MODE, network_mode);
+  //fixed delay always
+  Config::SetBase(Config::NETPLAY_NETWORK_MODE, "fixeddelay");
 }
 
 void NetPlayDialog::ShowGameDigestDialog(const std::string& title)
