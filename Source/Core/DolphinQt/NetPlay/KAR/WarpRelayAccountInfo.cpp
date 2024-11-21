@@ -34,6 +34,8 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   //creates the layout
    m_main_layout = new QGridLayout;
 
+   m_close_button = new QDialogButtonBox(QDialogButtonBox::Cancel);
+
    m_main_layout->addWidget(new QLabel(tr("Connection Type:")), 0, 0);
   // m_main_layout->addWidget(m_connection_type, 0, 1);
   // m_main_layout->addWidget(m_reset_traversal_button, 0, 2);
@@ -41,6 +43,8 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   //m_main_layout->addWidget(m_nickname_edit, 1, 1);
   //m_main_layout->addWidget(m_tab_widget, 2, 0, 1, -1);
   //m_main_layout->addWidget(m_button_box, 3, 0, 1, -1);
+
+   m_main_layout->addWidget(m_close_button, 3, 0, 1, -1);
 
    setLayout(m_main_layout);
 

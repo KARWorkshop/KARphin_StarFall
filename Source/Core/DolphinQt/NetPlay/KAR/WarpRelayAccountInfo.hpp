@@ -6,9 +6,9 @@
 
 //class QCheckBox;
 //class QComboBox;
-//class QDialogButtonBox;
+class QDialogButtonBox;
 //class QLabel;
-//class QLineEdit;
+class QLineEdit;
 //class QListWidget;
 //class QGridLayout;
 //class QPushButton;
@@ -41,7 +41,7 @@ private:
   //void OnConnectionTypeChanged(int index);
   //
   //// Main Widget
-  //QDialogButtonBox* m_button_box;
+  QDialogButtonBox* m_close_button;
   //QComboBox* m_connection_type;
   //QLineEdit* m_nickname_edit;
   QGridLayout* m_main_layout;
