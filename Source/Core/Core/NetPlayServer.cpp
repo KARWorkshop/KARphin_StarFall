@@ -72,6 +72,9 @@
 
 #include "UICommon/GameFile.h"
 
+#include "KAR/Netplay/Packets/ConnectPacket.hpp"
+
+
 #if !defined(_WIN32)
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -192,16 +195,16 @@ static void ClearPeerPlayerId(ENetPeer* peer)
 
 void NetPlayServer::SetupIndex()
 {
-  if (!Config::Get(Config::NETPLAY_USE_INDEX) || Config::Get(Config::NETPLAY_INDEX_NAME).empty() ||
-      Config::Get(Config::NETPLAY_INDEX_REGION).empty())
+  if (!Config::Get(Config::NETPLAY_USE_INDEX) || Config::Get(Config::NETPLAY_INDEX_NAME).empty())
   {
     return;
   }
 
   NetPlaySession session;
+  KAR::WarpRelay::WarpRelayAccount account = KAR::WarpRelay::LoadDefaultGuestAccount();
 
   session.name = Config::Get(Config::NETPLAY_INDEX_NAME);
-  session.region = Config::Get(Config::NETPLAY_INDEX_REGION);
+  session.region = KAR::WarpRelay::GetRegionStr(account.region);
   session.has_password = !Config::Get(Config::NETPLAY_INDEX_PASSWORD).empty();
   session.method = m_traversal_client ? "traversal" : "direct";
   session.game_id = m_selected_game_name.empty() ? "UNKNOWN" : m_selected_game_name;
@@ -433,7 +436,25 @@ static void SendSyncIdentifier(sf::Packet& spac, const SyncIdentifier& sync_iden
 // called from ---NETPLAY--- thread
 ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Packet& received_packet)
 {
-  std::string netplay_version;
+  KAR::Netplay::Packet::ConnectPacket packet = KAR::Netplay::Packet::ParsePacket_Connect(received_packet);
+
+  if (packet.majorBuild != KAR_VERSION_MAJOR)
+    return ConnectionError::VersionMismatch;
+
+  if (m_is_running || m_start_pending)
+    return ConnectionError::GameRunning;
+
+  if (m_players.size() >= 255)
+    return ConnectionError::ServerFull;
+
+  Client new_player{};
+  new_player.pid = GiveFirstAvailableIDTo(incoming_connection);
+  new_player.socket = incoming_connection;
+  new_player.account.displayName = packet.displayName;
+  new_player.account.rank = packet.rank;
+  new_player.account.region = packet.region;
+
+  /*std::string netplay_version;
   received_packet >> netplay_version;
   if (netplay_version != Common::GetScmRevGitStr())
     return ConnectionError::VersionMismatch;
@@ -449,9 +470,9 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   new_player.socket = incoming_connection;
 
   received_packet >> new_player.revision;
-  received_packet >> new_player.name;
+  received_packet >> new_player.name;*/
 
-  if (StringUTF8CodePointCount(new_player.name) > MAX_NAME_LENGTH)
+  if (StringUTF8CodePointCount(new_player.account.displayName) > MAX_NAME_LENGTH)
     return ConnectionError::NameTooLong;
 
   // Update time in milliseconds of no acknoledgment of
@@ -464,8 +485,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   AssignNewUserAPad(new_player);
 
   // tell other players a new player joined
-  SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.name,
-                           new_player.revision);
+  SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.account.displayName, new_player.account.rank, new_player.account.region);
 
   // tell new client they connected and their ID
   SendResponseToPlayer(new_player, MessageID::ConnectionSuccessful, new_player.pid);
@@ -488,7 +508,9 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   for (const auto& existing_player : m_players)
   {
     SendResponseToPlayer(new_player, MessageID::PlayerJoin, existing_player.second.pid,
-                         existing_player.second.name, existing_player.second.revision);
+                         existing_player.second.account.displayName,
+                         existing_player.second.account.rank,
+                         existing_player.second.account.region);
 
     SendResponseToPlayer(new_player, MessageID::GameStatus, existing_player.second.pid,
                          static_cast<u8>(existing_player.second.game_status));
@@ -1170,7 +1192,8 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     case SyncSaveDataID::Failure:
     {
-      m_dialog->AppendChat(Common::FmtFormatT("{0} failed to synchronize.", player.name));
+      m_dialog->AppendChat(
+          Common::FmtFormatT("{0} failed to synchronize.", player.account.displayName));
       m_dialog->OnGameStartAborted();
       ChunkedDataAbort();
       m_start_pending = false;
@@ -1228,7 +1251,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     case SyncCodeID::Failure:
     {
-      m_dialog->AppendChat(Common::FmtFormatT("{0} failed to synchronize codes.", player.name));
+      m_dialog->AppendChat(Common::FmtFormatT("{0} failed to synchronize codes.", player.account.displayName));
       m_dialog->OnGameStartAborted();
       m_start_pending = false;
     }
@@ -2265,6 +2288,7 @@ void NetPlayServer::SendResponseToPlayer(const Client& player, const MessageID m
 
   Send(player.socket, response);
 }
+
 
 template <typename... Data>
 void NetPlayServer::SendResponseToAllPlayers(const MessageID message_id, Data&&... data_to_send)

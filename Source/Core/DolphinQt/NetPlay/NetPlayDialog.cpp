@@ -657,7 +657,7 @@ void NetPlayDialog::UpdateGUI()
   {
     const auto* p = players[i];
 
-    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->name));
+    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
     name_item->setToolTip(name_item->text());
     const auto& status_info = player_status.count(p->game_status) ?
                                   player_status.at(p->game_status) :
@@ -670,7 +670,7 @@ void NetPlayDialog::UpdateGUI()
         new QTableWidgetItem(QString::fromStdString(NetPlay::GetPlayerMappingString(
             p->pid, client->GetPadMapping(), client->GetGBAConfig(), client->GetWiimoteMapping())));
     mapping_item->setToolTip(mapping_item->text());
-    auto* revision_item = new QTableWidgetItem(QString::fromStdString(p->revision));
+    auto* revision_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
     revision_item->setToolTip(revision_item->text());
 
     for (auto* item : {name_item, status_item, ping_item, mapping_item, revision_item})

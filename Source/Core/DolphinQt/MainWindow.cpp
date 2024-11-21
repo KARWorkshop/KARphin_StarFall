@@ -1608,9 +1608,11 @@ bool MainWindow::NetPlayJoin()
     host_port = Config::Get(Config::NETPLAY_CONNECT_PORT);
   }
 
+  KAR::WarpRelay::WarpRelayAccount account = KAR::WarpRelay::LoadDefaultGuestAccount();
+
   const std::string traversal_host = Config::Get(Config::NETPLAY_TRAVERSAL_SERVER);
   const u16 traversal_port = Config::Get(Config::NETPLAY_TRAVERSAL_PORT);
-  const std::string nickname = Config::Get(Config::NETPLAY_NICKNAME);
+  //const std::string nickname = Config::Get(Config::NETPLAY_NICKNAME);
   const std::string network_mode = Config::Get(Config::NETPLAY_NETWORK_MODE);
   const bool host_input_authority = network_mode == "hostinputauthority" || network_mode == "golf";
 
@@ -1623,7 +1625,7 @@ bool MainWindow::NetPlayJoin()
   // Create Client
   const bool is_hosting_netplay = server != nullptr;
   Settings::Instance().ResetNetPlayClient(new NetPlay::NetPlayClient(
-      host_ip, host_port, m_netplay_dialog, nickname,
+      host_ip, host_port, m_netplay_dialog, account.displayName,
       NetPlay::NetTraversalConfig{is_hosting_netplay ? false : is_traversal, traversal_host,
                                   traversal_port}));
 
@@ -1634,7 +1636,7 @@ bool MainWindow::NetPlayJoin()
   }
 
   m_netplay_setup_dialog->close();
-  m_netplay_dialog->show(nickname, is_traversal);
+  m_netplay_dialog->show(account.displayName, is_traversal);
 
   return true;
 }

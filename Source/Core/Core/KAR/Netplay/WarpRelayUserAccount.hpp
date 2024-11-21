@@ -23,30 +23,89 @@ namespace KAR::WarpRelay
   }
 
 	//defines the region
-  enum class Region
+  enum class Region : uint8_t
   {
-    NA,
-    PAL,
-    Asia,
+    EA = 0x00, //East Asia
+    CN, //China
+    EU, // Europe
+    NA, // North America
+    SA, // South America
+    OC, //Oceania
+    AF, // Africa
 
     Count
   };
 
-	//defines the rank level || used on the local rank latter
-  enum class Rank
+  //converts into a region string
+  static inline std::string GetRegionStr(const Region& region)
   {
-    StarDust = 0,
+    switch (region)
+    {
+    case Region::EA:
+      return "East Asia";
+    case Region::CN:
+      return "China";
+    case Region::EU:
+      return "Europe";
+    case Region::NA:
+      return "North America";
+    case Region::SA:
+      return "South America";
+    case Region::OC:
+      return "Oceania";
+    case Region::AF:
+      return "Africa";
+    }
 
-    WhiteHole
+    return std::string();
+  }
+
+  //converts into a region enum
+  static inline Region GetRegionByte(const std::string& str)
+  {
+    if (str == "East Asia")
+      return Region::EA;
+    else if(str == "China")
+      return Region::CN;
+    else if (str == "Europe")
+      return Region::EU;
+    else if (str == "North America")
+      return Region::NA;
+    else if (str == "South America")
+      return Region::SA;
+    else if (str == "Oceania")
+      return Region::OC;
+    else if (str == "Africa")
+      return Region::AF;
+
+    return Region::Count;
+  }
+
+	//defines the rank level || used on the local rank latter
+  enum class Rank : uint8_t
+  {
+    StarDust = 0x00,
+
+    WhiteHole,
+
+    Count
   };
+
+  static inline std::string GetRankStr(const Rank& rank)
+  {
+    return "Star Dust";
+  }
 
 	//defines the data loaded from a warp relay file
 	struct WarpRelayAccount
 	{
     bool isGuestAccount = true; //guest accounts don't get paid sub-features
 
+    Rank rank = Rank::StarDust; //defines the temp latter rank of the user
+    Region region = Region::NA;  // the geo-region to use
+
     std::string displayName = "Kirby",  // the display name used online
-        customIconURL = "",  // the URL/local path to the custom icon if they have one
+      customIconURL = "",  // the URL/local path to the custom icon if they have one
 
         discordAccountLinkHash = "",  // the hash we use to validate they have a linked discord account
         googleAccountLinkHash = "",// the hash we use to validate they have a linked google account

@@ -76,6 +76,8 @@
 #include "VideoCommon/OnScreenDisplay.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <Core/KAR/Netplay/Packets/ConnectPacket.hpp>
+
 namespace NetPlay
 {
 using namespace WiimoteCommon;
@@ -245,11 +247,14 @@ bool NetPlayClient::Connect()
 {
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
+  //constructs a connect packet
+  sf::Packet packet = KAR::Netplay::Packet::GeneratePacket_Connect(KAR::WarpRelay::LoadDefaultGuestAccount());
+
   // send connect message
-  sf::Packet packet;
-  packet << Common::GetScmRevGitStr();
-  packet << Common::GetNetplayDolphinVer();
-  packet << m_player_name;
+  //sf::Packet packet;
+  //packet << Common::GetScmRevGitStr();
+  //packet << Common::GetNetplayDolphinVer();
+  //packet << m_player_name;
   Send(packet);
   enet_host_flush(m_client);
   sf::Packet rpac;
@@ -305,9 +310,10 @@ bool NetPlayClient::Connect()
     rpac >> m_pid;
 
     Player player;
-    player.name = m_player_name;
+    player.account = KAR::WarpRelay::LoadDefaultGuestAccount();
+    //player.account.displayName = m_player_name;
     player.pid = m_pid;
-    player.revision = Common::GetNetplayDolphinVer();
+    //player.revision = Common::GetNetplayDolphinVer();
 
     // add self to player list
     m_players[m_pid] = player;
@@ -486,17 +492,16 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
 {
   Player player{};
   packet >> player.pid;
-  packet >> player.name;
-  packet >> player.revision;
+  packet >> player.account.displayName;
 
-  INFO_LOG_FMT(NETPLAY, "Player {} ({}) using {} joined", player.name, player.pid, player.revision);
+  INFO_LOG_FMT(NETPLAY, "Player {} ({}) joined", player.account.displayName, player.pid);
 
   {
     std::lock_guard lkp(m_crit.players);
     m_players[player.pid] = player;
   }
 
-  m_dialog->OnPlayerConnect(player.name);
+  m_dialog->OnPlayerConnect(player.account.displayName);
 
   m_dialog->Update();
 }
@@ -513,8 +518,8 @@ void NetPlayClient::OnPlayerLeave(sf::Packet& packet)
       return;
 
     const auto& player = it->second;
-    INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", player.name, pid);
-    m_dialog->OnPlayerDisconnect(player.name);
+    INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", player.account.displayName, pid);
+    m_dialog->OnPlayerDisconnect(player.account.displayName);
     m_players.erase(m_players.find(pid));
   }
 
@@ -531,10 +536,10 @@ void NetPlayClient::OnChatMessage(sf::Packet& packet)
   // don't need lock to read in this thread
   const Player& player = m_players[pid];
 
-  INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player.name, player.pid, msg);
+  INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player.account.displayName, player.pid, msg);
 
   // add to gui
-  m_dialog->AppendChat(fmt::format("{}[{}]: {}", player.name, pid, msg));
+  m_dialog->AppendChat(fmt::format("{}[{}]: {}", player.account.displayName, pid, msg));
 }
 
 void NetPlayClient::OnChunkedDataStart(sf::Packet& packet)
@@ -772,7 +777,8 @@ void NetPlayClient::OnGolfSwitch(sf::Packet& packet)
 
   const PlayerId previous_golfer = m_current_golfer;
   m_current_golfer = pid;
-  m_dialog->OnGolferChanged(m_local_player->pid == pid, pid != 0 ? m_players[pid].name : "");
+  m_dialog->OnGolferChanged(m_local_player->pid == pid,
+                            pid != 0 ? m_players[pid].account.displayName : "");
 
   if (m_local_player->pid == previous_golfer)
   {
@@ -991,7 +997,7 @@ void NetPlayClient::OnDesyncDetected(sf::Packet& packet)
   {
     const auto it = m_players.find(pid_to_blame);
     if (it != m_players.end())
-      player = it->second.name;
+      player = it->second.account.displayName;
   }
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) desynced!", player, pid_to_blame);
@@ -2389,7 +2395,7 @@ std::string NetPlayClient::GetCurrentGolfer()
 {
   std::lock_guard lkp(m_crit.players);
   if (m_players.count(m_current_golfer))
-    return m_players[m_current_golfer].name;
+    return m_players[m_current_golfer].account.displayName;
   return "";
 }
 
@@ -2729,7 +2735,7 @@ PadDetails GetPadDetails(int pad_num)
   for (auto player : netplay_client->GetPlayers())
   {
     if (player->pid == pad_map[pad_num])
-      res.player_name = player->name;
+      res.player_name = player->account.displayName;
   }
 
   int local_pad = 0;

@@ -29,7 +29,7 @@ static QString GetPlayerNameFromPID(int pid)
   {
     if (player->pid == pid)
     {
-      player_name = QString::fromStdString(player->name);
+      player_name = QString::fromStdString(player->account.displayName);
       break;
     }
   }

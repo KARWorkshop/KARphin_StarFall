@@ -26,6 +26,8 @@
 #include "InputCommon/GCPadStatus.h"
 #include "UICommon/NetPlayIndex.h"
 
+#include "KAR/Netplay/WarpRelayUserAccount.hpp"
+
 namespace NetPlay
 {
 class NetPlayUI;
@@ -82,9 +84,10 @@ private:
   class Client
   {
   public:
+
+    KAR::WarpRelay::WarpRelayAccount account;
+
     PlayerId pid{};
-    std::string name;
-    std::string revision;
     SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
     bool has_ipl_dump = false;
     bool has_hardware_fma = false;

@@ -73,7 +73,7 @@ private:
   QCheckBox* m_host_server_browser;
   QLineEdit* m_host_server_name;
   QLineEdit* m_host_server_password;
-  QComboBox* m_host_server_region;
+  //QComboBox* m_host_server_region;
 
 #ifdef USE_UPNP
   QCheckBox* m_host_upnp;

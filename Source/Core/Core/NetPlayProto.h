@@ -195,7 +195,8 @@ enum class ConnectionError : u8
   ServerFull = 1,
   GameRunning = 2,
   VersionMismatch = 3,
-  NameTooLong = 4
+  NameTooLong = 4,
+  LackOfGame
 };
 
 enum class SyncSaveDataID : u8

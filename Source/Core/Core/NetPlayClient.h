@@ -24,6 +24,8 @@
 #include "Core/SyncIdentifier.h"
 #include "InputCommon/GCPadStatus.h"
 
+#include "KAR/Netplay/WarpRelayUserAccount.hpp"
+
 class BootSessionData;
 
 namespace IOS::HLE::FS
@@ -99,9 +101,10 @@ public:
 class Player
 {
 public:
+
+  KAR::WarpRelay::WarpRelayAccount account;
+
   PlayerId pid{};
-  std::string name;
-  std::string revision;
   u32 ping = 0;
   SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
 
