@@ -49,6 +49,8 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    displayName_EditFeild = new QLineEdit;
    displayName_EditFeild->setText(QString::fromStdString(account.displayName));
    displayName_EditFeild->setToolTip(tr("This is the name you will show to the public."));
+   displayName_EditFeild->setValidator(
+       new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
    m_main_layout->addWidget(displayName_EditFeild, 0, 1);
 
    m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
