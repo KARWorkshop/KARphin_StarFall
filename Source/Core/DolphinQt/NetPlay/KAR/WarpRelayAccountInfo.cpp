@@ -51,7 +51,7 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
        new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
    m_main_layout->addWidget(displayName_EditFeild, 0, 1);
 
-   m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
+   //m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
    
    //m_main_layout->addWidget(new QLabel(tr("Backend:")), 4, 0);
    //m_main_layout->addWidget(new QLabel(tr("Warp Relay Perma Host Code:")), 5, 0);
