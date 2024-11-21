@@ -55,7 +55,7 @@ namespace KAR
 	"* Minor tweaks\n" \
 	"\n\nFor a full list of changes check out the " \
 	KAR_VERSION_BUILD \
-	" branch on the github: https://github.com/KARWorkshop/KARphin_StarFall"
+	" branch on the github: \"https://github.com/KARWorkshop/KARphin_StarFall\""
 
 		//defines the build data
 		struct BuildData
