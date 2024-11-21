@@ -68,20 +68,22 @@ namespace KAR
 	        j["build"] = KAR_VERSION_BUILD;
           j["hasSeenChangeLog"] = hasSeenChangeLog;
 
-			File::CreateEmptyFile("build.stt");
-	        File::WriteStringToFile(j.dump(), "build.stt");
+					File::CreateEmptyFile(File::GetExeDirectory() + "/build.stt");
+          File::WriteStringToFile(File::GetExeDirectory() + "/build.stt", j.dump());
 		}
 
 		//loads the version data from a file
     static inline BuildData LoadBuildVersionDataFromFile()
     {
-			if (!File::Exists("build.stt"))
+      std::string str = "";
+      if (!File::Exists(File::GetExeDirectory() + "/build.stt") ||
+          !File::ReadFileToString(File::GetExeDirectory() + "/build.stt", str))
 			{
         return BuildData();
 			}
 
 			BuildData d;
-      nlohmann::json j;
+      nlohmann::json j = nlohmann::json::parse(str);
       d.majorVer = j["ver_major"];
       d.minorVer = j["ver_minor"];
       d.hotfix = j["ver_hotfix"];

@@ -133,6 +133,7 @@ int main(int argc, char* argv[])
   //  else
   //    KAR::Core::WriteBuildVersionDataToFile(false);
   //}
+  KAR::Core::WriteBuildVersionDataToFile(false);
 
 #ifdef _WIN32
   const bool console_attached = AttachConsole(ATTACH_PARENT_PROCESS) != FALSE;
