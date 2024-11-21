@@ -633,7 +633,7 @@ void NetPlayDialog::UpdateGUI()
 
   m_players_list->clear();
   m_players_list->setHorizontalHeaderLabels(
-      {tr("Player"), tr("Rank"), tr("Region"), tr("Ping"), tr("Mapping")});
+      {tr("Player"), tr("Game Status"), tr("Ping"), tr("Mapping"), tr("Revision")});
   m_players_list->setRowCount(m_player_count);
 
   static const std::map<NetPlay::SyncIdentifierComparison, std::pair<QString, QString>>
@@ -659,32 +659,31 @@ void NetPlayDialog::UpdateGUI()
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
     name_item->setToolTip(name_item->text());
-
-    auto* rank_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
-    rank_item->setToolTip(rank_item->text());
-
-    auto* region_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRegionLongNameStr(p->account.region)));
-    region_item->setToolTip(region_item->text());
-
+    const auto& status_info = player_status.count(p->game_status) ?
+                                  player_status.at(p->game_status) :
+                                  std::make_pair(QStringLiteral("?"), QStringLiteral("?"));
+    auto* status_item = new QTableWidgetItem(status_info.first);
+    status_item->setToolTip(status_info.second);
     auto* ping_item = new QTableWidgetItem(QStringLiteral("%1 ms").arg(p->ping));
     ping_item->setToolTip(ping_item->text());
-
     auto* mapping_item =
         new QTableWidgetItem(QString::fromStdString(NetPlay::GetPlayerMappingString(
             p->pid, client->GetPadMapping(), client->GetGBAConfig(), client->GetWiimoteMapping())));
     mapping_item->setToolTip(mapping_item->text());
+    auto* revision_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
+    revision_item->setToolTip(revision_item->text());
 
-    for (auto* item : {name_item, rank_item, region_item, ping_item, mapping_item})
+    for (auto* item : {name_item, status_item, ping_item, mapping_item, revision_item})
     {
       item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
       item->setData(Qt::UserRole, static_cast<int>(p->pid));
     }
 
     m_players_list->setItem(i, 0, name_item);
-    m_players_list->setItem(i, 1, rank_item);
-    m_players_list->setItem(i, 2, region_item);
-    m_players_list->setItem(i, 3, ping_item);
-    m_players_list->setItem(i, 4, mapping_item);
+    m_players_list->setItem(i, 1, status_item);
+    m_players_list->setItem(i, 2, ping_item);
+    m_players_list->setItem(i, 3, mapping_item);
+    m_players_list->setItem(i, 4, revision_item);
 
     if (p->pid == selection_pid)
       m_players_list->selectRow(i);
