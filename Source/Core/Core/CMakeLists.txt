@@ -1,4 +1,7 @@
 add_library(core
+  KAR/Versioning.hpp
+  KAR/json.hpp
+  KAR/Netplay/WarpRelayUserAccount.hpp
   AchievementManager.cpp
   AchievementManager.h
   ActionReplay.cpp

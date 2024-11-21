@@ -273,6 +273,8 @@ add_executable(dolphin-emu
   MainWindow.h
   MenuBar.cpp
   MenuBar.h
+  NetPlay/KAR/WarpRelayAccountInfo.cpp
+  NetPlay/KAR/WarpRelayAccountInfo.hpp
   NetPlay/ChunkedProgressDialog.cpp
   NetPlay/ChunkedProgressDialog.h
   NetPlay/GameDigestDialog.cpp

@@ -4,16 +4,20 @@
 
 #include <QDialog>
 
+#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+
 //class QCheckBox;
 //class QComboBox;
 class QDialogButtonBox;
 //class QLabel;
 class QLineEdit;
-//class QListWidget;
-//class QGridLayout;
-//class QPushButton;
+class QCloseEvent;
+    //class QListWidget;
+class QGridLayout;
+class QPushButton;
 //class QSpinBox;
 //class QTabWidget;
+class QLabel;
 
 namespace KAR::WarpRelay
 {
@@ -23,8 +27,8 @@ class AccountInfoDialog : public QDialog
 public:
   explicit AccountInfoDialog(QWidget* parent);
 
-  //void accept() override;
-  //void show();
+  void closeEvent(QCloseEvent* event) override;
+  void show();
 
 //signals:
  // bool Join();
@@ -41,10 +45,22 @@ private:
   //void OnConnectionTypeChanged(int index);
   //
   //// Main Widget
-  QDialogButtonBox* m_close_button;
+  //QDialogButtonBox* m_close_button;
   //QComboBox* m_connection_type;
   //QLineEdit* m_nickname_edit;
+
+  KAR::WarpRelay::WarpRelayAccount account;  // stores data about the Warp Relay account logged in as
+
   QGridLayout* m_main_layout;
+
+  //info tab
+  QLabel* displayName_Label;
+  QLineEdit* displayName_EditFeild;
+
+  //network tab
+
+  //linked accounts tab
+
   //QTabWidget* m_tab_widget;
   //QPushButton* m_reset_traversal_button;
   //

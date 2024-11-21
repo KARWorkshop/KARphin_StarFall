@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include <qevent.h>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
@@ -25,26 +26,39 @@
 #include "UICommon/GameFile.h"
 #include "UICommon/NetPlayIndex.h"
 
+#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+
 KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
     : QDialog(parent)
 {
   setWindowTitle(tr("Warp Relay Account"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+  //loads the account data
+  account = KAR::WarpRelay::LoadWarpRelayAccount(
+      KAR::WarpRelay::GetFolderContainingAllWarpRelayAccountFiles() + "Default" +
+      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+
   //creates the layout
    m_main_layout = new QGridLayout;
 
-   m_close_button = new QDialogButtonBox(QDialogButtonBox::Cancel);
 
-   m_main_layout->addWidget(new QLabel(tr("Connection Type:")), 0, 0);
-  // m_main_layout->addWidget(m_connection_type, 0, 1);
-  // m_main_layout->addWidget(m_reset_traversal_button, 0, 2);
-   m_main_layout->addWidget(new QLabel(tr("Nickname:")), 1, 0);
-  //m_main_layout->addWidget(m_nickname_edit, 1, 1);
-  //m_main_layout->addWidget(m_tab_widget, 2, 0, 1, -1);
-  //m_main_layout->addWidget(m_button_box, 3, 0, 1, -1);
+   displayName_Label = new QLabel(tr("Display Name:"));
+   displayName_Label->setToolTip(tr("This is the name you will show to the public."));
+   m_main_layout->addWidget(displayName_Label, 0, 0);
+   displayName_EditFeild = new QLineEdit;
+   displayName_EditFeild->setText(QString::fromStdString(account.displayName));
+   displayName_EditFeild->setToolTip(tr("This is the name you will show to the public."));
+   m_main_layout->addWidget(displayName_EditFeild, 0, 1);
 
-   m_main_layout->addWidget(m_close_button, 3, 0, 1, -1);
+   m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
+   
+   //m_main_layout->addWidget(new QLabel(tr("Backend:")), 4, 0);
+   //m_main_layout->addWidget(new QLabel(tr("Warp Relay Perma Host Code:")), 5, 0);
+   //m_main_layout->addWidget(new QLabel(tr("Custom Icon:")), 6, 0);
+   //
+   //m_main_layout->addWidget(new QLabel(tr("Warp Relay Private Hash:")), 8, 0);
+   //m_main_layout->addWidget(new QLabel(tr("Warp Relay Discord Link Hash:")), 9, 0);
 
    setLayout(m_main_layout);
 
@@ -96,11 +110,38 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
 //  ConnectWidgets();
 }
 
-//void KAR::WarpRelay::AccountInfoDialog::show()
-//{
-// // PopulateGameList();
-//  QDialog::show();
-//}
+void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
+{
+  // Add your callback or custom handling here
+  QMessageBox::StandardButton res =
+      QMessageBox::question(this, tr("Confirm Account Data"), tr("Are you content with theses Account settings?"),
+                            QMessageBox::Yes | QMessageBox::No);
+
+  if (res == QMessageBox::Yes)
+  {
+    //saves the data to the file
+    account.displayName = displayName_EditFeild->text().toStdString();
+    KAR::WarpRelay::WriteWarpRelayAccount(account);
+
+    // Accept the close event
+    event->accept();
+  }
+  else
+  {
+    // Ignore the close event
+    event->ignore();
+  }
+}
+
+void KAR::WarpRelay::AccountInfoDialog::show()
+{
+  //load the account file
+  account = KAR::WarpRelay::LoadWarpRelayAccount(
+      KAR::WarpRelay::GetFolderContainingAllWarpRelayAccountFiles() + "Default" +
+      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+
+  QDialog::show();
+}
 
 //void KAR::WarpRelay::AccountInfoDialog::accept()
 //{

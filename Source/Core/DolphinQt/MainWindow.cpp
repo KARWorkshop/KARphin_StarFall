@@ -1382,14 +1382,12 @@ void MainWindow::ShowNetPlaySetupDialog()
 
 void MainWindow::ShowWarpRelayAccountInfo()
 {
-  if (!KAR_WarpRelay_Account_dialog)
+  //if (!KAR_WarpRelay_Account_dialog)
     KAR_WarpRelay_Account_dialog = new KAR::WarpRelay::AccountInfoDialog(this);
 
   KAR_WarpRelay_Account_dialog->setAttribute(Qt::WA_DeleteOnClose, true);
   SetQWidgetWindowDecorations(KAR_WarpRelay_Account_dialog);
   KAR_WarpRelay_Account_dialog->show();
-  KAR_WarpRelay_Account_dialog->raise();
-  KAR_WarpRelay_Account_dialog->activateWindow();
 }
 
 void MainWindow::ShowNetPlayBrowser()
