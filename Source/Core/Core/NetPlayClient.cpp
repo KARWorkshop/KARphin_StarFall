@@ -248,8 +248,12 @@ bool NetPlayClient::Connect()
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
   //constructs and sends a connect packet
-  sf::Packet packet = KAR::Netplay::Packet::GeneratePacket_Connect(KAR::WarpRelay::LoadDefaultGuestAccount());
-  Send(packet);
+  KAR::WarpRelay::WarpRelayAccount account = KAR::WarpRelay::LoadDefaultGuestAccount();
+  KAR::Netplay::Packet::ConnectPacket connectPacket;
+  connectPacket.displayName = account.displayName;
+  connectPacket.rank = account.rank;
+  connectPacket.region = account.region;
+  Send(KAR::Netplay::Packet::GeneratePacket_Connect(connectPacket));
   enet_host_flush(m_client);
   sf::Packet rpac;
   // TODO: make this not hang
@@ -482,9 +486,17 @@ void NetPlayClient::OnData(sf::Packet& packet)
 
 void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
 {
-  Player player{};
-  packet >> player.pid;
-  packet >> player.account.displayName;
+ 
+  //packet >> player.pid;
+  //packet >> player.account.displayName;
+
+  KAR::Netplay::Packet::OnPlayerJoinPacket data = KAR::Netplay::Packet::ParsePacket_OnPlayerJoin(packet);
+
+   Player player{};
+  player.pid = data.PID;
+   player.account.displayName = data.displayName;
+  player.account.rank = data.rank;
+   player.account.region = data.region;
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) joined", player.account.displayName, player.pid);
 

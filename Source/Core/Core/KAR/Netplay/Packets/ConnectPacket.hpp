@@ -23,18 +23,18 @@ namespace KAR::Netplay::Packet
 	};
 
 	//generates a connect packet
-	static inline sf::Packet GeneratePacket_Connect(const WarpRelay::WarpRelayAccount& account)
+  static inline sf::Packet GeneratePacket_Connect(const ConnectPacket& data)
 	{
     sf::Packet packet;
 
-    packet << KAR_VERSION_MAJOR;
-    packet << KAR_VERSION_MINOR;
-    packet << KAR_VERSION_HOT_FIX;
+    packet << data.majorBuild;
+    packet << data.minorBuild;
+    packet << data.hotfix;
 
-		packet << account.displayName;
+		packet << data.displayName;
 
-		packet << account.rank;
-    packet << account.region;
+		packet << (uint8_t)data.rank;
+    packet << (uint8_t)data.region;
 
 		return packet;
 	}
@@ -50,8 +50,11 @@ namespace KAR::Netplay::Packet
 
     packet >> connect.displayName;
 
-    packet >> connect.rank;
-    packet >> connect.region;
+    uint8_t d = 0;
+    packet >> d;
+    connect.rank = (WarpRelay::Rank)d;
+    packet >> d;
+    connect.region = (WarpRelay::Region)d;
 
     return connect;
   }

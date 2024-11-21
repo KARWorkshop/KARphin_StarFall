@@ -28,6 +28,9 @@
 
 #include "KAR/Netplay/WarpRelayUserAccount.hpp"
 
+#include "KAR/Netplay/Packets/ConnectPacket.hpp"
+#include "KAR/Netplay/Packets/OnPlayerJoinPacket.hpp"
+
 namespace NetPlay
 {
 class NetPlayUI;
@@ -169,8 +172,17 @@ private:
   inline void SendNewPlayerToAllClients(const Client& newPlayer)
   {
     // tell other players a new player joined
-    SendResponseToAllPlayers(MessageID::PlayerJoin, newPlayer.pid, newPlayer.account.displayName,
-                             newPlayer.account.rank, newPlayer.account.region);
+    //SendResponseToAllPlayers(MessageID::PlayerJoin, newPlayer.pid, newPlayer.account.displayName,
+     //                        newPlayer.account.rank, newPlayer.account.region);
+
+    KAR::Netplay::Packet::OnPlayerJoinPacket packet;
+    packet.displayName = newPlayer.account.displayName;
+    packet.PID = newPlayer.pid;
+
+    packet.rank = newPlayer.account.rank;
+    packet.region = newPlayer.account.region;
+
+    SendToClients(KAR::Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
 
   //tells the new player they connected
@@ -183,8 +195,17 @@ private:
   // sends a specific client data about a new player
   inline void SendSpecificClient_NewPlayerInfo(const Client& targetClient, const Client& player)
   {
-    SendResponseToPlayer(targetClient, MessageID::PlayerJoin, player.pid,
-                         player.account.displayName, player.account.rank, player.account.region);
+     //SendResponseToPlayer(targetClient, MessageID::PlayerJoin, player.pid,
+     //                    player.account.displayName, player.account.rank, player.account.region);
+
+    KAR::Netplay::Packet::OnPlayerJoinPacket packet;
+    packet.displayName = player.account.displayName;
+    packet.PID = player.pid;
+
+    packet.rank = player.account.rank;
+    packet.region = player.account.region;
+
+    Send(targetClient.socket, KAR::Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
 
   // sends a specific client, data about the game status of a player
