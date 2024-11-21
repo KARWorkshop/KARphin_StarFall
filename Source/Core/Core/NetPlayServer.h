@@ -165,6 +165,14 @@ private:
   // returns the PID given
   PlayerId GiveFirstAvailableIDTo(ENetPeer* player);
 
+  // sends the new player to the other players
+  inline void SendNewPlayerToAllClients(const Client& newPlayer)
+  {
+    // tell other players a new player joined
+    SendResponseToAllPlayers(MessageID::PlayerJoin, newPlayer.pid, newPlayer.account.displayName,
+                             newPlayer.account.rank, newPlayer.account.region);
+  }
+
   NetSettings m_settings;
 
   bool m_is_running = false;

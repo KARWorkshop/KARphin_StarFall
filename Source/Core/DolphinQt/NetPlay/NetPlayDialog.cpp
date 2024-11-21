@@ -636,23 +636,6 @@ void NetPlayDialog::UpdateGUI()
       {tr("Player"), tr("Rank"), tr("Region"), tr("Ping"), tr("Mapping")});
   m_players_list->setRowCount(m_player_count);
 
-  /*static const std::map<NetPlay::SyncIdentifierComparison, std::pair<QString, QString>>
-      player_status{
-          {NetPlay::SyncIdentifierComparison::SameGame, {tr("OK"), tr("OK")}},
-          {NetPlay::SyncIdentifierComparison::DifferentHash,
-           {tr("Wrong hash"),
-            tr("Game file has a different hash; right-click it, select Properties, switch to the "
-               "Verify tab, and select Verify Integrity to check the hash")}},
-          {NetPlay::SyncIdentifierComparison::DifferentDiscNumber,
-           {tr("Wrong disc number"), tr("Game has a different disc number")}},
-          {NetPlay::SyncIdentifierComparison::DifferentRevision,
-           {tr("Wrong revision"), tr("Game has a different revision")}},
-          {NetPlay::SyncIdentifierComparison::DifferentRegion,
-           {tr("Wrong region"), tr("Game region does not match")}},
-          {NetPlay::SyncIdentifierComparison::DifferentGame,
-           {tr("Not found"), tr("No matching game was found")}},
-      };*/
-
   for (int i = 0; i < m_player_count; i++)
   {
     const auto* p = players[i];

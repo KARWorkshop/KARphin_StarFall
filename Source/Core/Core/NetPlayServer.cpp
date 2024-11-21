@@ -447,6 +447,8 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   if (m_players.size() >= 255)
     return ConnectionError::ServerFull;
 
+  //do they have the desired game
+
   Client new_player{};
   new_player.pid = GiveFirstAvailableIDTo(incoming_connection);
   new_player.socket = incoming_connection;
@@ -467,7 +469,8 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   AssignNewUserAPad(new_player);
 
   // tell other players a new player joined
-  SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.account.displayName, new_player.account.rank, new_player.account.region);
+  //SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.account.displayName, new_player.account.rank, new_player.account.region);
+  SendNewPlayerToAllClients(new_player);
 
   // tell new client they connected and their ID
   SendResponseToPlayer(new_player, MessageID::ConnectionSuccessful, new_player.pid);
