@@ -98,6 +98,18 @@ public:
 
   void SetHostWiiSyncData(std::vector<u64> titles, std::string redirect_folder) override;
 
+  // prints a system command
+  void PrintSystemCommand(const std::string& command) override
+  {
+    DisplayMessage(QString::fromStdString(command), "Orange");
+  }
+
+  // prints a system annoucment
+  void PrintSystemAnnoucment(const std::string& command) override
+  {
+
+  }
+
 signals:
   void Stop();
 
@@ -108,13 +120,13 @@ private:
   void ConnectWidgets();
   void OnChat();
   void OnStart();
-  void DisplayMessage(const QString& msg, const std::string& color,
-                      int duration = OSD::Duration::NORMAL);
   void ResetExternalIP();
   void UpdateDiscordPresence();
   void UpdateGUI();
   void GameStatusChanged(bool running);
   void SetOptionsEnabled(bool enabled);
+  void DisplayMessage(const QString& msg, const std::string& color,
+                      int duration = OSD::Duration::NORMAL);
 
   void SendMessage(const std::string& message);
 

@@ -97,6 +97,12 @@ public:
   virtual void SetChunkedProgress(int pid, u64 progress) = 0;
 
   virtual void SetHostWiiSyncData(std::vector<u64> titles, std::string redirect_folder) = 0;
+
+  //prints a system command
+  virtual void PrintSystemCommand(const std::string& command) = 0;
+
+  // prints a system annoucment
+  virtual void PrintSystemAnnoucment(const std::string& command) = 0;
 };
 
 class Player

@@ -138,6 +138,9 @@ enum class MessageID : u8
 
   ChatMessage = 0x30,
 
+  //ChatCommand = 0x31,
+  //SystemAnnoucment = 0x32,
+
   ChunkedDataStart = 0x40,
   ChunkedDataEnd = 0x41,
   ChunkedDataPayload = 0x42,

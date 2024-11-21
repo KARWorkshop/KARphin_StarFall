@@ -764,6 +764,24 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     std::string msg;
     packet >> msg;
 
+    ////shows a list of all commands
+    //if (msg == "//help")
+    //{
+    //  msg =
+    //      "----HELP MENU---\n\n"
+    //      "Introduced in KARphin Star Dust is the ability to execute commands. "
+    //      "Only the host can execute theses commands.\n\n"
+    //      "//help || shows this menu\n"
+    //      "---------------------------\n"
+    //      "//set-memcard-rw || allows memory cards to be saved and loaded from\n"
+    //      "---------------------------\n"
+    //      "//set-memcard-r || the default functionality, only loads memory cards, but no writing\n";
+    //}
+
+    //// checks if it's a command
+    //else if (msg == "//set-memcard-rw")  // sets the save to read and write memory cards
+    //  msg = "memory card set to read and write";
+
     // send msg to other clients
     sf::Packet spac;
     spac << MessageID::ChatMessage;

@@ -486,9 +486,6 @@ void NetPlayClient::OnData(sf::Packet& packet)
 
 void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
 {
- 
-  //packet >> player.pid;
-  //packet >> player.account.displayName;
 
   KAR::Netplay::Packet::OnPlayerJoinPacket data = KAR::Netplay::Packet::ParsePacket_OnPlayerJoin(packet);
 

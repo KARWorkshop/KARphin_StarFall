@@ -43,7 +43,7 @@ namespace KAR
 	/*"* Dedicated ROM Patch buttons\n"*/ \
 	/*"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" */ \
 	/*"* memory cards have been disabled for non-NA or modded KAR ROMs\n"*/ \
-	/*"* fair input delay forced, sync codes and replays have been disabled\n"*/ \
+	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	/*"* players can not join a lobby they don't have the Hack Pack\n"*/ \
 	/*"* hide CT FS desync messages\n"*/ \
 	"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n" \
