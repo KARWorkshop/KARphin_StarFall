@@ -329,6 +329,16 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
     StartGame(std::move(m_pending_boot));
     m_pending_boot.reset();
   }
+
+  //sets the ROM paths if it's missing
+  QStringList p = Settings::Instance().GetPaths();
+  if (p.isEmpty() || p[0].toStdString() != File::GetExeDirectory() + "/../ROMs")
+  {
+    for (auto r : p)
+      Settings::Instance().RemovePath(r);
+
+    Settings::Instance().AddPath(QString::fromStdString(File::GetExeDirectory() + "/../ROMs"));
+  }
 }
 
 MainWindow::~MainWindow()
