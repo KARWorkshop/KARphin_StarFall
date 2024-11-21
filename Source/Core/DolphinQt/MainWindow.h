@@ -13,6 +13,8 @@
 
 #include "Core/Boot/Boot.h"
 
+#include <KAR/WarpRelayAccountInfo.hpp>
+
 class QMenu;
 class QStackedWidget;
 class QString;
@@ -53,6 +55,8 @@ class ToolBar;
 class WatchWidget;
 class WiiTASInputWindow;
 struct WindowSystemInfo;
+
+class KAR::WarpRelay::AccountInfoDialog;
 
 namespace DiscIO
 {
@@ -173,6 +177,9 @@ private:
   void ShowCheatsManager();
   void ShowRiivolutionBootWidget(const UICommon::GameFile& game);
 
+  // shows the Warp Relay account info
+  void ShowWarpRelayAccountInfo();
+
 #ifdef USE_RETRO_ACHIEVEMENTS
   void ShowAchievementsWindow();
   void ShowAchievementSettings();
@@ -182,6 +189,8 @@ private:
   bool NetPlayJoin();
   bool NetPlayHost(const UICommon::GameFile& game);
   void NetPlayQuit();
+
+  
 
   void OnBootGameCubeIPL(DiscIO::Region region);
   void OnImportNANDBackup();
@@ -255,6 +264,8 @@ private:
   std::array<GBATASInputWindow*, num_gc_controllers> m_gba_tas_input_windows{};
   static constexpr int num_wii_controllers = 4;
   std::array<WiiTASInputWindow*, num_wii_controllers> m_wii_tas_input_windows{};
+
+  KAR::WarpRelay::AccountInfoDialog* KAR_WarpRelay_Account_dialog;
 
 #ifdef USE_RETRO_ACHIEVEMENTS
   AchievementsWindow* m_achievements_window = nullptr;

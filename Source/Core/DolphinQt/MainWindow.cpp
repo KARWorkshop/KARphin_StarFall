@@ -701,7 +701,7 @@ void MainWindow::ConnectToolBar()
 
   connect(m_tool_bar, &ToolBar::OnKARNetplayConnectPressed, this, &MainWindow::ShowNetPlaySetupDialog);
   connect(m_tool_bar, &ToolBar::OnKARNetplayLobbiesPressed, this, &MainWindow::ShowNetPlayBrowser);
- // void OnKARNetplayAccountPressed();
+  connect(m_tool_bar, &ToolBar::OnKARNetplayAccountPressed, this, &MainWindow::ShowWarpRelayAccountInfo);
 
   connect(m_tool_bar, &ToolBar::PlayPressed, this, [this]() { Play(); });
   connect(m_tool_bar, &ToolBar::PausePressed, this, &MainWindow::Pause);
@@ -1378,6 +1378,18 @@ void MainWindow::ShowNetPlaySetupDialog()
   m_netplay_setup_dialog->show();
   m_netplay_setup_dialog->raise();
   m_netplay_setup_dialog->activateWindow();
+}
+
+void MainWindow::ShowWarpRelayAccountInfo()
+{
+  if (!KAR_WarpRelay_Account_dialog)
+    KAR_WarpRelay_Account_dialog = new KAR::WarpRelay::AccountInfoDialog(this);
+
+  KAR_WarpRelay_Account_dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+  SetQWidgetWindowDecorations(KAR_WarpRelay_Account_dialog);
+  KAR_WarpRelay_Account_dialog->show();
+  KAR_WarpRelay_Account_dialog->raise();
+  KAR_WarpRelay_Account_dialog->activateWindow();
 }
 
 void MainWindow::ShowNetPlayBrowser()
