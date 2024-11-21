@@ -173,20 +173,25 @@ private:
                              newPlayer.account.rank, newPlayer.account.region);
   }
 
-  // sends a specific client data about a new player
-  inline void SendSpecificClientNewPlayerInfo(const Client& targetClient, const Client& player)
-  {
-    SendResponseToPlayer(targetClient, MessageID::PlayerJoin, player.pid,
-                         player.account.displayName,
-                         player.account.rank,
-                         player.account.region);
-  }
-
   //tells the new player they connected
   inline void TellNewPlayerTheyConnected(const Client& newPlayer)
   {
     // tell new client they connected and their ID
     SendResponseToPlayer(newPlayer, MessageID::ConnectionSuccessful, newPlayer.pid);
+  }
+
+  // sends a specific client data about a new player
+  inline void SendSpecificClient_NewPlayerInfo(const Client& targetClient, const Client& player)
+  {
+    SendResponseToPlayer(targetClient, MessageID::PlayerJoin, player.pid,
+                         player.account.displayName, player.account.rank, player.account.region);
+  }
+
+  // sends a specific client, data about the game status of a player
+  inline void SendSpecificClient_GameStatusInfo(const Client& targetClient, const Client& player)
+  {
+    SendResponseToPlayer(targetClient, MessageID::GameStatus, player.pid,
+                         static_cast<u8>(player.game_status));
   }
 
   NetSettings m_settings;

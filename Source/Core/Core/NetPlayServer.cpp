@@ -489,12 +489,11 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
 
   SendResponseToPlayer(new_player, MessageID::HostInputAuthority, m_host_input_authority);
 
+  //tell the new player about the other players already in the lobby
   for (const auto& existing_player : m_players)
   {
-    SendSpecificClientNewPlayerInfo(new_player, existing_player.second);
-
-    SendResponseToPlayer(new_player, MessageID::GameStatus, existing_player.second.pid,
-                         static_cast<u8>(existing_player.second.game_status));
+    SendSpecificClient_NewPlayerInfo(new_player, existing_player.second);
+    SendSpecificClient_GameStatusInfo(new_player, existing_player.second);
   }
 
   if (Config::Get(Config::NETPLAY_ENABLE_QOS))
