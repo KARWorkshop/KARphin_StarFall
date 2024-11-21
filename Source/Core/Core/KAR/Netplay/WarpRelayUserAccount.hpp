@@ -102,4 +102,13 @@ namespace KAR::WarpRelay
 
     return account;
 	}
-}
+
+  //loads a default guest account file
+  static inline WarpRelayAccount LoadDefaultGuestAccount()
+  {
+    return KAR::WarpRelay::LoadWarpRelayAccount(
+        KAR::WarpRelay::GetFolderContainingAllWarpRelayAccountFiles() + "Default" +
+        KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+  }
+
+  }

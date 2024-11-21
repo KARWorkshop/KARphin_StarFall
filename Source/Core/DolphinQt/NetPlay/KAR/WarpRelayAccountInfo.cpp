@@ -35,9 +35,7 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   //loads the account data
-  account = KAR::WarpRelay::LoadWarpRelayAccount(
-      KAR::WarpRelay::GetFolderContainingAllWarpRelayAccountFiles() + "Default" +
-      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+  account = KAR::WarpRelay::LoadDefaultGuestAccount();
 
   //creates the layout
    m_main_layout = new QGridLayout;
