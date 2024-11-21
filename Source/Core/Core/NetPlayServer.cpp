@@ -469,11 +469,10 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   AssignNewUserAPad(new_player);
 
   // tell other players a new player joined
-  //SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.account.displayName, new_player.account.rank, new_player.account.region);
   SendNewPlayerToAllClients(new_player);
 
   // tell new client they connected and their ID
-  SendResponseToPlayer(new_player, MessageID::ConnectionSuccessful, new_player.pid);
+  TellNewPlayerTheyConnected(new_player);
 
   // tell new client the selected game
   if (!m_selected_game_name.empty())

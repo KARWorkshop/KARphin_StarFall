@@ -173,6 +173,13 @@ private:
                              newPlayer.account.rank, newPlayer.account.region);
   }
 
+  //tells the new player they connected
+  inline void TellNewPlayerTheyConnected(const Client& newPlayer)
+  {
+    // tell new client they connected and their ID
+    SendResponseToPlayer(newPlayer, MessageID::ConnectionSuccessful, newPlayer.pid);
+  }
+
   NetSettings m_settings;
 
   bool m_is_running = false;
