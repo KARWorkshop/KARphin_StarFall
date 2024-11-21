@@ -39,7 +39,7 @@ namespace KAR
 	"-" \
 	KAR_VERSION_HOT_FIX \
 	"-----\n" \
-	"* Dedicated ROM Patch buttons replaces Open, Play, Pause\n" \
+	/*"* Dedicated ROM Patch buttons replaces Open, Play, Pause\n"*/ \
 	"* Warp Relay Account data file format ported over\n" \
 	"* memory cards have been disabled for Hack Pack, Backside\n" \
 	"* memory cards have been enabled for KAR Ignition\n" \

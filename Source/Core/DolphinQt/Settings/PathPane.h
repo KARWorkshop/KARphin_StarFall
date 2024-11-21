@@ -10,6 +10,7 @@ class QGroupBox;
 class QLineEdit;
 class QListWidget;
 class QPushButton;
+class QLabel;
 
 class PathPane final : public QWidget
 {
@@ -31,7 +32,9 @@ private:
 
   void OnNANDPathChanged();
 
-  QListWidget* m_path_list;
+ // QLabel* noPaths;
+
+  //QListWidget* m_path_list;
   QLineEdit* m_game_edit;
   QLineEdit* m_nand_edit;
   QLineEdit* m_dump_edit;
@@ -39,5 +42,5 @@ private:
   QLineEdit* m_resource_pack_edit;
   QLineEdit* m_wfs_edit;
 
-  QPushButton* m_remove_path;
+  //QPushButton* m_remove_path;
 };

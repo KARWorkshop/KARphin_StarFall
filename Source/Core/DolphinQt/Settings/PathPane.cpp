@@ -11,6 +11,7 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <qlabel.h>
 
 #include "Common/Config/Config.h"
 #include "Common/FileUtil.h"
@@ -120,51 +121,53 @@ QGroupBox* PathPane::MakeGameFolderBox()
   QGroupBox* game_box = new QGroupBox(tr("Game Folders"));
   QVBoxLayout* vlayout = new QVBoxLayout;
 
-  m_path_list = new QListWidget;
-  m_path_list->insertItems(0, Settings::Instance().GetPaths());
-  m_path_list->setSpacing(1);
-  connect(&Settings::Instance(), &Settings::PathAdded, this,
-          [this](const QString& dir) { m_path_list->addItem(dir); });
-  connect(&Settings::Instance(), &Settings::PathRemoved, this, [this](const QString& dir) {
-    auto items = m_path_list->findItems(dir, Qt::MatchExactly);
-    for (auto& item : items)
-      delete item;
-  });
-  connect(m_path_list, &QListWidget::itemSelectionChanged, this,
-          [this] { m_remove_path->setEnabled(m_path_list->selectedItems().count()); });
+  vlayout->addWidget(new QLabel(tr("Setting the ROM paths has been removed to streamline patching, and centeralizing ROM locations. If you wish to add ROMs, place them in the ROMs directory.")));
 
-  vlayout->addWidget(m_path_list);
+  //m_path_list = new QListWidget;
+  //m_path_list->insertItems(0, Settings::Instance().GetPaths());
+  //m_path_list->setSpacing(1);
+  //connect(&Settings::Instance(), &Settings::PathAdded, this,
+  //        [this](const QString& dir) { m_path_list->addItem(dir); });
+  //connect(&Settings::Instance(), &Settings::PathRemoved, this, [this](const QString& dir) {
+  //  auto items = m_path_list->findItems(dir, Qt::MatchExactly);
+  //  for (auto& item : items)
+  //    delete item;
+  //});
+  //connect(m_path_list, &QListWidget::itemSelectionChanged, this,
+  //        [this] { m_remove_path->setEnabled(m_path_list->selectedItems().count()); });
+  //
+  //vlayout->addWidget(m_path_list);
 
-  QHBoxLayout* hlayout = new QHBoxLayout;
+  //QHBoxLayout* hlayout = new QHBoxLayout;
+  //
+  //hlayout->addStretch();
+  //QPushButton* add = new NonDefaultQPushButton(tr("Add..."));
+  //m_remove_path = new NonDefaultQPushButton(tr("Remove"));
+  //
+  //m_remove_path->setEnabled(false);
+  //
+  //auto* recursive_checkbox = new QCheckBox(tr("Search Subfolders"));
+  //recursive_checkbox->setChecked(Config::Get(Config::MAIN_RECURSIVE_ISO_PATHS));
+  //
+  //auto* auto_checkbox = new QCheckBox(tr("Check for Game List Changes in the Background"));
+  //auto_checkbox->setChecked(Settings::Instance().IsAutoRefreshEnabled());
+  //
+  //hlayout->addWidget(add);
+  //hlayout->addWidget(m_remove_path);
+  //vlayout->addLayout(hlayout);
+  //vlayout->addWidget(recursive_checkbox);
+  //vlayout->addWidget(auto_checkbox);
+  //
+  //connect(recursive_checkbox, &QCheckBox::toggled, [](bool checked) {
+  //  Config::SetBase(Config::MAIN_RECURSIVE_ISO_PATHS, checked);
+  //  Settings::Instance().RefreshGameList();
+  //});
 
-  hlayout->addStretch();
-  QPushButton* add = new NonDefaultQPushButton(tr("Add..."));
-  m_remove_path = new NonDefaultQPushButton(tr("Remove"));
+  //connect(auto_checkbox, &QCheckBox::toggled, &Settings::Instance(),
+  //        &Settings::SetAutoRefreshEnabled);
 
-  m_remove_path->setEnabled(false);
-
-  auto* recursive_checkbox = new QCheckBox(tr("Search Subfolders"));
-  recursive_checkbox->setChecked(Config::Get(Config::MAIN_RECURSIVE_ISO_PATHS));
-
-  auto* auto_checkbox = new QCheckBox(tr("Check for Game List Changes in the Background"));
-  auto_checkbox->setChecked(Settings::Instance().IsAutoRefreshEnabled());
-
-  hlayout->addWidget(add);
-  hlayout->addWidget(m_remove_path);
-  vlayout->addLayout(hlayout);
-  vlayout->addWidget(recursive_checkbox);
-  vlayout->addWidget(auto_checkbox);
-
-  connect(recursive_checkbox, &QCheckBox::toggled, [](bool checked) {
-    Config::SetBase(Config::MAIN_RECURSIVE_ISO_PATHS, checked);
-    Settings::Instance().RefreshGameList();
-  });
-
-  connect(auto_checkbox, &QCheckBox::toggled, &Settings::Instance(),
-          &Settings::SetAutoRefreshEnabled);
-
-  connect(add, &QPushButton::clicked, this, &PathPane::Browse);
-  connect(m_remove_path, &QPushButton::clicked, this, &PathPane::RemovePath);
+  //connect(add, &QPushButton::clicked, this, &PathPane::Browse);
+ // connect(m_remove_path, &QPushButton::clicked, this, &PathPane::RemovePath);
 
   game_box->setLayout(vlayout);
   return game_box;
@@ -185,7 +188,7 @@ QGridLayout* PathPane::MakePathsLayout()
   layout->addWidget(new QLabel(tr("Default ISO:")), 0, 0);
   layout->addWidget(m_game_edit, 0, 1);
   layout->addWidget(game_open, 0, 2);
-
+  
   m_nand_edit = new QLineEdit(QString::fromStdString(File::GetUserPath(D_WIIROOT_IDX)));
   connect(m_nand_edit, &QLineEdit::editingFinished, this, &PathPane::OnNANDPathChanged);
   QPushButton* nand_open = new NonDefaultQPushButton(QStringLiteral("..."));
@@ -193,7 +196,7 @@ QGridLayout* PathPane::MakePathsLayout()
   layout->addWidget(new QLabel(tr("Wii NAND Root:")), 1, 0);
   layout->addWidget(m_nand_edit, 1, 1);
   layout->addWidget(nand_open, 1, 2);
-
+  
   m_dump_edit = new QLineEdit(QString::fromStdString(File::GetUserPath(D_DUMP_IDX)));
   connect(m_dump_edit, &QLineEdit::editingFinished,
           [this] { Config::SetBase(Config::MAIN_DUMP_PATH, m_dump_edit->text().toStdString()); });
@@ -202,7 +205,7 @@ QGridLayout* PathPane::MakePathsLayout()
   layout->addWidget(new QLabel(tr("Dump Path:")), 2, 0);
   layout->addWidget(m_dump_edit, 2, 1);
   layout->addWidget(dump_open, 2, 2);
-
+  
   m_load_edit = new QLineEdit(QString::fromStdString(File::GetUserPath(D_LOAD_IDX)));
   connect(m_load_edit, &QLineEdit::editingFinished,
           [this] { Config::SetBase(Config::MAIN_LOAD_PATH, m_load_edit->text().toStdString()); });
@@ -211,7 +214,7 @@ QGridLayout* PathPane::MakePathsLayout()
   layout->addWidget(new QLabel(tr("Load Path:")), 3, 0);
   layout->addWidget(m_load_edit, 3, 1);
   layout->addWidget(load_open, 3, 2);
-
+  
   m_resource_pack_edit =
       new QLineEdit(QString::fromStdString(File::GetUserPath(D_RESOURCEPACK_IDX)));
   connect(m_resource_pack_edit, &QLineEdit::editingFinished, [this] {
@@ -222,7 +225,7 @@ QGridLayout* PathPane::MakePathsLayout()
   layout->addWidget(new QLabel(tr("Resource Pack Path:")), 4, 0);
   layout->addWidget(m_resource_pack_edit, 4, 1);
   layout->addWidget(resource_pack_open, 4, 2);
-
+  
   m_wfs_edit = new QLineEdit(QString::fromStdString(File::GetUserPath(D_WFSROOT_IDX)));
   connect(m_load_edit, &QLineEdit::editingFinished,
           [this] { Config::SetBase(Config::MAIN_WFS_PATH, m_wfs_edit->text().toStdString()); });
@@ -237,8 +240,8 @@ QGridLayout* PathPane::MakePathsLayout()
 
 void PathPane::RemovePath()
 {
-  auto item = m_path_list->currentItem();
-  if (!item)
-    return;
-  Settings::Instance().RemovePath(item->text());
+  //auto item = m_path_list->currentItem();
+  //if (!item)
+  //  return;
+  //Settings::Instance().RemovePath(item->text());
 }
