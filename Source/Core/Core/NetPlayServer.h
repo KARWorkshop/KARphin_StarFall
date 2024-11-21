@@ -173,6 +173,15 @@ private:
                              newPlayer.account.rank, newPlayer.account.region);
   }
 
+  // sends a specific client data about a new player
+  inline void SendSpecificClientNewPlayerInfo(const Client& targetClient, const Client& player)
+  {
+    SendResponseToPlayer(targetClient, MessageID::PlayerJoin, player.pid,
+                         player.account.displayName,
+                         player.account.rank,
+                         player.account.region);
+  }
+
   //tells the new player they connected
   inline void TellNewPlayerTheyConnected(const Client& newPlayer)
   {

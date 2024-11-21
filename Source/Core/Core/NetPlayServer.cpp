@@ -491,10 +491,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
 
   for (const auto& existing_player : m_players)
   {
-    SendResponseToPlayer(new_player, MessageID::PlayerJoin, existing_player.second.pid,
-                         existing_player.second.account.displayName,
-                         existing_player.second.account.rank,
-                         existing_player.second.account.region);
+    SendSpecificClientNewPlayerInfo(new_player, existing_player.second);
 
     SendResponseToPlayer(new_player, MessageID::GameStatus, existing_player.second.pid,
                          static_cast<u8>(existing_player.second.game_status));
