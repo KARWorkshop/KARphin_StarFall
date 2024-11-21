@@ -298,12 +298,12 @@ int main(int argc, char* argv[])
       KAR::Core::WriteBuildVersionDataToFile(true);
     }
 
-    if (!Settings::Instance().IsBatchModeEnabled())
-    {
-      auto* updater = new Updater(&win, Config::Get(Config::MAIN_AUTOUPDATE_UPDATE_TRACK),
-                                  Config::Get(Config::MAIN_AUTOUPDATE_HASH_OVERRIDE));
-      updater->start();
-    }
+    //if (!Settings::Instance().IsBatchModeEnabled())
+    //{
+    //  auto* updater = new Updater(&win, Config::Get(Config::MAIN_AUTOUPDATE_UPDATE_TRACK),
+    //                              Config::Get(Config::MAIN_AUTOUPDATE_HASH_OVERRIDE));
+    //  updater->start();
+    //}
 
     retval = app.exec();
   }
