@@ -42,6 +42,30 @@ namespace KAR::WarpRelay
     switch (region)
     {
     case Region::EA:
+      return "EA";
+    case Region::CN:
+      return "CN";
+    case Region::EU:
+      return "EU";
+    case Region::NA:
+      return "NA";
+    case Region::SA:
+      return "SA";
+    case Region::OC:
+      return "OC";
+    case Region::AF:
+      return "AF";
+    }
+
+    return std::string();
+  }
+
+  //converts into a region string
+  static inline std::string GetRegionLongNameStr(const Region& region)
+  {
+    switch (region)
+    {
+    case Region::EA:
       return "East Asia";
     case Region::CN:
       return "China";
