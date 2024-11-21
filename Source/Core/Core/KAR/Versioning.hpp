@@ -49,7 +49,7 @@ namespace KAR
 	"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n" \
 	/*"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" */ \
 	/*"* Match Settings files have been ported from KARphin Legacy Tourny Edition\n" */ \
-	/*"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n" */ \
+	"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n"  \
 	"* User Settings is forced into local mode and folder is renamed to \"StarDust_Player_Settings\"\n" \
 	"* ROMs can only be loaded via the ROMs folder\n" \
 	"* Minor tweaks\n" \
