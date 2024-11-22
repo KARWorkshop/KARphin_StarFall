@@ -829,11 +829,12 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
   INFO_LOG_FMT(NETPLAY, "Game changed to {}", netplay_name);
 
   //changes the memory card
-  Config::SetCurrent(Config::GetInfoForMemcardPath(ExpansionInterface::Slot::A),
-                  File::GetExeDirectory() + "/MemoryCards/" + m_selected_game.game_id + ".USA.raw");
+  //Config::SetCurrent(Config::GetInfoForMemcardPath(ExpansionInterface::Slot::A),
+   //               File::GetExeDirectory() + "/MemoryCards/" + m_selected_game.game_id + ".USA.raw");
 
   // update gui
   m_dialog->PrintSystemCommand("Memory Card set to \"" + netplay_name + "\"");
+  m_dialog->PrintSystemCommand("Memory Cards are disabled in your build as they are currently being reserved for tourny play.");
   m_dialog->OnMsgChangeGame(m_selected_game, netplay_name);
 
   SendGameStatus();

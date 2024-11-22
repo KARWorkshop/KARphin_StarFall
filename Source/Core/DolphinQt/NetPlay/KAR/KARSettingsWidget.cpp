@@ -11,6 +11,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <qcheckbox.h>
 
 #include "Common/FileUtil.h"
 #include "Common/IniFile.h"
@@ -92,6 +93,16 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
 
   layout->addWidget(new QLabel(tr("Default Boot Screen")), 1, 0);
   layout->addWidget(m_defaultBootScreen_type, 1, 1);
+
+  /*m_shouldMemCardAutoChange_checkbox = new QCheckBox(tr("should memory cards auto-change to match game"));
+  m_shouldMemCardAutoChange_checkbox->setChecked(true);
+  m_shouldMemCardAutoChange_checkbox->setToolTip(tr(
+      "If set to true, KARphin will auto-change the memory card in use to one matching the game. "
+      "This can cause desyncs when users have inconsistant memory card data. So KARphin defaults "
+      "Memory cards to be off. But if memory card reading and writing is enabled. "
+      "And this option is enabled, KARphin will auto-create memory cards.\n\n(Memory Card Writing "
+      "must be set to enable)"));
+  layout->addWidget(m_shouldMemCardAutoChange_checkbox, 2, 0);*/
 
   WrapInScrollArea(this, layout);
 }

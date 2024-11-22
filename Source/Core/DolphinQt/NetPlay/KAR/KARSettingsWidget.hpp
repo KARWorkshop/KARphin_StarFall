@@ -4,8 +4,8 @@
 
 #include <QDialog>
 
-// class QCheckBox;
-// class QComboBox;
+class QCheckBox;
+ class QComboBox;
 class QDialogButtonBox;
 // class QLabel;
 class QLineEdit;
@@ -56,6 +56,7 @@ signals:
   std::string m_game_id;
   QComboBox* m_FS_type;
   QComboBox* m_defaultBootScreen_type;
+  //QCheckBox* m_shouldMemCardAutoChange_checkbox;
   //  u16 m_game_revision;
 //
 //  CheatWarningWidget* m_warning;
