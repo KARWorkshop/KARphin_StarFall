@@ -1748,6 +1748,13 @@ void NetPlayClient::SendStopGamePacket()
 // called from ---GUI--- thread
 bool NetPlayClient::StartGame(const std::string& path)
 {
+  //sets the memory card
+  //Config::memo
+  //File::GetExeDirectory() + "MemoryCards/ " MemcardAPath =
+  //    C : / KARWorkshop / Project Star Fall / StarFall_KARphin / Binary / x64 /
+  //        StarDust_Player_Settings / GC / USA / Card A /
+  //        HP_Tourny.USA.raw "
+
   std::lock_guard lkg(m_crit.game);
   SendStartGamePacket();
 
