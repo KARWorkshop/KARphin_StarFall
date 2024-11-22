@@ -512,7 +512,7 @@ bool GameCubePane::SetMemcard(ExpansionInterface::Slot slot, const QString& file
   }
 
   const std::string old_eu_path = Config::GetMemcardPath(slot, DiscIO::Region::PAL);
-  Config::SetBase(Config::GetInfoForMemcardPath(slot), raw_path);
+  
 
   auto& system = Core::System::GetInstance();
   if (Core::IsRunning(system))
