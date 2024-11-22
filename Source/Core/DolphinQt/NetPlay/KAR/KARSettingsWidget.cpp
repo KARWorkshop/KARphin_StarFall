@@ -55,6 +55,7 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
 {
   QGridLayout* layout = new QGridLayout();
 
+  //the FS screen code to use
   m_FS_type = new QComboBox();
 
   //m_FS_type->addItem(tr("Auto")); //expermental
@@ -81,6 +82,16 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
   
   layout->addWidget(new QLabel(tr("Screen Code")), 0, 0);
   layout->addWidget(m_FS_type, 0, 1);
+
+  //sets the default boot screen
+  m_defaultBootScreen_type = new QComboBox();
+  m_defaultBootScreen_type->addItem(tr("Debug/Settings Menu"));
+  m_defaultBootScreen_type->addItem(tr("Main Menu"));
+  m_defaultBootScreen_type->setToolTip(
+      tr("Sets which screen to boot into, uses a modified version of the Skip To Main Menu code."));
+
+  layout->addWidget(new QLabel(tr("Default Boot Screen")), 1, 0);
+  layout->addWidget(m_defaultBootScreen_type, 1, 1);
 
   WrapInScrollArea(this, layout);
 }

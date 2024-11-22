@@ -41,7 +41,8 @@ namespace KAR
 	KAR_VERSION_HOT_FIX \
 	"-----\n" \
 	/*"* Dedicated ROM Patch buttons\n"*/ \
-	/*"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" */ \
+	"* Default boot into Debug/Settings Menu \n" \
+	"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" \
 	"* memory cards auto-change based on game.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	"* players are notified if they lack the game, when joining the Lobby\n" \

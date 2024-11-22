@@ -55,6 +55,7 @@ signals:
 //
   std::string m_game_id;
   QComboBox* m_FS_type;
+  QComboBox* m_defaultBootScreen_type;
   //  u16 m_game_revision;
 //
 //  CheatWarningWidget* m_warning;
