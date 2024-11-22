@@ -954,6 +954,15 @@ void NetPlayDialog::OnDesync(u32 frame, const std::string& player)
   DisplayMessage(tr("Possible desync detected: %1 might have desynced at frame %2")
                      .arg(QString::fromStdString(player), QString::number(frame)),
                  "red", OSD::Duration::VERY_LONG);
+
+  //if it's a frame below 3
+  if (frame < 4)
+  {
+    DisplayMessage(tr("A Frame 0-5 desync can mean your codes or memory cards are out of date. If syncing data is correct in KARphin you should not see this issue. "
+      "Report this message in the Discord Support channel for troubleshooting. Provide a screen shot of your Gecko Codes and what game you used. "
+      "If you are running any mods, let us know about them. As mods can cause desyncs due to assets causing delays in load times."),
+                   "red", OSD::Duration::VERY_LONG);
+  }
 }
 
 void NetPlayDialog::OnConnectionLost()

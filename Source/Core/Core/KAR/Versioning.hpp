@@ -44,9 +44,9 @@ namespace KAR
 	/*"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" */ \
 	"* memory cards auto-change based on game.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
-	/*"* players can not join a lobby they don't have the Hack Pack\n"*/ \
+	"* players are notified if they lack the game, when joining the Lobby\n" \
 	/*"* hide CT FS desync messages\n"*/ \
-	/*"* gecko codes are downloadable from inside KARphin\n"*/ \
+	"* gecko codes are downloadable from inside KARphin\n" \
 	"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n" \
 	"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" \
 	"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n"  \

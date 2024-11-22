@@ -360,6 +360,8 @@ private:
   std::unique_ptr<IOS::HLE::FS::FileSystem> m_wii_sync_fs;
   std::vector<u64> m_wii_sync_titles;
   std::string m_wii_sync_redirect_folder;
+
+  bool hasHiddenTheCTFSDesyncMsgAlready = false; //flag we use to hide the desync message caused by FS codes in CT for the first time
 };
 
 void NetPlay_Enable(NetPlayClient* const np);

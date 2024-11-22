@@ -818,6 +818,14 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
     packet >> netplay_name;
   }
 
+  // checks if the user has the game
+  if (!m_dialog->FindGameFile(m_selected_game))
+  {
+    PanicAlertFmtT("Selected game doesn't exist in game list!\n\n"
+                   "To make it useable you must add {0} to your ROMs folder.",
+                   netplay_name);
+  }
+
   INFO_LOG_FMT(NETPLAY, "Game changed to {}", netplay_name);
 
   //changes the memory card
@@ -999,6 +1007,13 @@ void NetPlayClient::OnDesyncDetected(sf::Packet& packet)
   u32 frame;
   packet >> pid_to_blame;
   packet >> frame;
+
+  //hides the desync if it's the first boot of a supported ROM
+  if (frame > 3 && !hasHiddenTheCTFSDesyncMsgAlready)
+  {
+    hasHiddenTheCTFSDesyncMsgAlready = true;
+    return;
+  }
 
   std::string player = "??";
   std::lock_guard lkp(m_crit.players);
@@ -1757,6 +1772,8 @@ bool NetPlayClient::StartGame(const std::string& path)
 {
   std::lock_guard lkg(m_crit.game);
   SendStartGamePacket();
+
+  hasHiddenTheCTFSDesyncMsgAlready = false;  // restes the flag for hiding CT desync messages
 
   if (m_is_running.IsSet())
   {
