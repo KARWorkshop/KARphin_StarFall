@@ -26,6 +26,8 @@
 #include "UICommon/GameFile.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <KAR/KARSettingsWidget.hpp>
+
 PropertiesDialog::PropertiesDialog(QWidget* parent, const UICommon::GameFile& game)
     : QDialog(parent)
 {
@@ -40,7 +42,8 @@ PropertiesDialog::PropertiesDialog(QWidget* parent, const UICommon::GameFile& ga
   QTabWidget* tab_widget = new QTabWidget(this);
   InfoWidget* info = new InfoWidget(game);
 
-  ARCodeWidget* ar = new ARCodeWidget(game.GetGameID(), game.GetRevision());
+  //ARCodeWidget* ar = new ARCodeWidget(game.GetGameID(), game.GetRevision());
+  KAR::Core::KARSettingsWidget* KARSettings = new KAR::Core::KARSettingsWidget(game.GetGameID());
   GeckoCodeWidget* gecko =
       new GeckoCodeWidget(game.GetGameID(), game.GetGameTDBID(), game.GetRevision());
   PatchesWidget* patches = new PatchesWidget(game);
@@ -50,15 +53,15 @@ PropertiesDialog::PropertiesDialog(QWidget* parent, const UICommon::GameFile& ga
   connect(gecko, &GeckoCodeWidget::OpenGeneralSettings, this,
           &PropertiesDialog::OpenGeneralSettings);
 
-  connect(ar, &ARCodeWidget::OpenGeneralSettings, this, &PropertiesDialog::OpenGeneralSettings);
-#ifdef USE_RETRO_ACHIEVEMENTS
-  connect(ar, &ARCodeWidget::OpenAchievementSettings, this,
-          &PropertiesDialog::OpenAchievementSettings);
-  connect(gecko, &GeckoCodeWidget::OpenAchievementSettings, this,
-          &PropertiesDialog::OpenAchievementSettings);
-  connect(patches, &PatchesWidget::OpenAchievementSettings, this,
-          &PropertiesDialog::OpenAchievementSettings);
-#endif  // USE_RETRO_ACHIEVEMENTS
+  //connect(KARSettings, &ARCodeWidget::OpenGeneralSettings, this, &PropertiesDialog::OpenGeneralSettings);
+//#ifdef USE_RETRO_ACHIEVEMENTS
+//  connect(ar, &ARCodeWidget::OpenAchievementSettings, this,
+//          &PropertiesDialog::OpenAchievementSettings);
+//  connect(gecko, &GeckoCodeWidget::OpenAchievementSettings, this,
+//          &PropertiesDialog::OpenAchievementSettings);
+//  connect(patches, &PatchesWidget::OpenAchievementSettings, this,
+//          &PropertiesDialog::OpenAchievementSettings);
+//#endif  // USE_RETRO_ACHIEVEMENTS
 
   connect(graphics_mod_list, &GraphicsModListWidget::OpenGraphicsSettings, this,
           &PropertiesDialog::OpenGraphicsSettings);
@@ -68,7 +71,7 @@ PropertiesDialog::PropertiesDialog(QWidget* parent, const UICommon::GameFile& ga
   tab_widget->addTab(GetWrappedWidget(game_config, this, padding_width, padding_height),
                      tr("Game Config"));
   tab_widget->addTab(GetWrappedWidget(patches, this, padding_width, padding_height), tr("Patches"));
-  tab_widget->addTab(GetWrappedWidget(ar, this, padding_width, padding_height), tr("AR Codes"));
+  tab_widget->addTab(GetWrappedWidget(KARSettings, this, padding_width, padding_height), tr("KAR Settings"));
   tab_widget->addTab(GetWrappedWidget(gecko, this, padding_width, padding_height),
                      tr("Gecko Codes"));
   tab_widget->addTab(GetWrappedWidget(graphics_mod_list, this, padding_width, padding_height),
