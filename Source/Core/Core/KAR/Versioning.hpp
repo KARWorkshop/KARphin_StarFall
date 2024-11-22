@@ -42,14 +42,13 @@ namespace KAR
 	"-----\n" \
 	/*"* Dedicated ROM Patch buttons\n"*/ \
 	/*"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" */ \
-	"* memory cards disabled for non-NA and modded ROMs\n" \
+	"* memory cards auto-change based on game.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	/*"* players can not join a lobby they don't have the Hack Pack\n"*/ \
 	/*"* hide CT FS desync messages\n"*/ \
 	/*"* gecko codes are downloadable from inside KARphin\n"*/ \
 	"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n" \
 	"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" \
-	/*"* Match Settings files have been ported from KARphin Legacy Tourny Edition\n" */ \
 	"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n"  \
 	"* User Settings is forced into local mode and folder is renamed to \"StarDust_Player_Settings\"\n" \
 	"* ROMs can only be loaded via the ROMs folder\n" \

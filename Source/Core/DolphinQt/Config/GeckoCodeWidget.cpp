@@ -351,11 +351,11 @@ void GeckoCodeWidget::DownloadCodes()
 {
   bool success;
 
-  std::vector<Gecko::GeckoCode> codes = Gecko::DownloadCodes(m_gametdb_id, &success);
+  std::vector<Gecko::GeckoCode> codes = Gecko::DownloadCodes(m_game_id, &success);
 
   if (!success)
   {
-    ModalMessageBox::critical(this, tr("Error"), tr("Failed to download codes."));
+    ModalMessageBox::critical(this, tr("Error"), QString::fromStdString("Failed to download codes for " + m_game_id));
     return;
   }
 
