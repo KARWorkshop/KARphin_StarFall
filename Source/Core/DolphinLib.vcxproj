@@ -79,6 +79,9 @@
     <ClInclude Include="Core\KAR\Netplay\WarpRelayUserAccount.hpp" />
     <ClInclude Include="Core\KAR\Versioning.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\KAR\Mods\HPMemoryCard.hpp" />
+  </ItemGroup>
   <UsingTask TaskName="GetProductVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Path ParameterType="System.String" Required="true" />

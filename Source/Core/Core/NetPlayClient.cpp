@@ -859,8 +859,14 @@ void NetPlayClient::OnGameStatus(sf::Packet& packet)
   m_dialog->Update();
 }
 
+#include "KAR/Mods/HPMemoryCard.hpp"
+
 void NetPlayClient::OnStartGame(sf::Packet& packet)
 {
+  //if we have it set to use the default memory card, write it to disc
+  File::WriteStringToFile(File::GetExeDirectory() + "MemoryCards/HP.USA.raw",
+                          HP_RAW_MEMORY_CARD_DEFAULT);
+
   {
     std::lock_guard lkg(m_crit.game);
 

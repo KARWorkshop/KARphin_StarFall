@@ -41,15 +41,15 @@ namespace KAR
 	KAR_VERSION_HOT_FIX \
 	"-----\n" \
 	/*"* Dedicated ROM Patch buttons\n"*/ \
-	"* Default boot into Debug/Settings Menu \n" \
-	"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" \
-	/*"* memory cards auto-change based on game.\n"*/ \
+	/*"* Default boot into Debug/Settings Menu \n"*/ \
+	/*"* FS Codes have been moved into a selectable drop down when using a supported ROM\n"*/ \
+	"* Backside and Hack Pack load pre-configured memory cards.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	"* players are notified if they lack the game, when joining the Lobby\n" \
 	"* hide CT FS desync messages\n" \
 	"* gecko codes are downloadable from inside KARphin\n" \
 	"* Netplay Account, Host, and Browser buttons have been added with Taco's custom icons\n" \
-	/*"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n"*/ \
+	"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" \
 	"* Warp Relay Account data has been ported from KARphin Legacy Tourny Edition\n"  \
 	"* User Settings is forced into local mode and folder is renamed to \"StarDust_Player_Settings\"\n" \
 	"* ROMs can only be loaded via the ROMs folder\n" \
