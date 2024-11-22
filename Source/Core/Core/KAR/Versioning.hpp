@@ -46,6 +46,7 @@ namespace KAR
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	/*"* players can not join a lobby they don't have the Hack Pack\n"*/ \
 	/*"* hide CT FS desync messages\n"*/ \
+	/*"* gecko codes are downloadable from inside KARphin\n"*/ \
 	"* Netplay Account, Host, and Broser buttons have been added with Taco's custom icons\n" \
 	/*"* pre-baked memory cards have been ported from KARphin Legacy Tourny Edition\n" */ \
 	/*"* Match Settings files have been ported from KARphin Legacy Tourny Edition\n" */ \
