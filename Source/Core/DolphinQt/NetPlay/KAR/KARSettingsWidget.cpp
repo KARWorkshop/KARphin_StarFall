@@ -12,6 +12,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <qcheckbox.h>
+#include <qcombobox.h>
 
 #include "Common/FileUtil.h"
 #include "Common/IniFile.h"
@@ -52,65 +53,103 @@ KAR::Core::KARSettingsWidget::KARSettingsWidget(std::string game_id)
 
 KAR::Core::KARSettingsWidget::~KARSettingsWidget() = default;
 
+#include <Core/KAR/GameIDs.hpp>
+
+//forward defines the names of each of the items
+#define FS_MOD_DROP_DOWN_NAME_STR_COUNT 10
+static const char* FS_MOD_DROP_DOWN_NAME_STRS[FS_MOD_DROP_DOWN_NAME_STR_COUNT] = {
+    "Auto",
+                                                   "None",
+                                                   "Single: Port 1",
+                                                   "Single: Port 2",
+                                                   "Single: Port 3",
+                                                   "Single: Port 4",
+                                                   "Multi-Screen: Port 1 and 2",
+                                                   "Multi-Screen: Port 3 and 4",
+                                                   "Multi-Screen: Port 1, 2, and 3",
+                                                   "Multi-Screen: Port 2, 3, and 4"};
+
 void KAR::Core::KARSettingsWidget::CreateWidgets()
 {
   QGridLayout* layout = new QGridLayout();
 
-  //the FS screen code to use
-  m_FS_type = new QComboBox();
+  //if it's NA or Modded
+  if (KAR::GameData::IsNA_OrModdedVariant(m_game_id))
+  {
+    bool e = false;
+    std::string m = "";
+    settings = KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, m);
 
-  //m_FS_type->addItem(tr("Auto")); //expermental
-  m_FS_type->addItem(tr("None")); //sets no screen code
+    // the FS screen code to use
+    m_FS_type = new QComboBox();
 
-  //core single person screen
-  m_FS_type->addItem(tr("Single: Port 1"));
-  m_FS_type->addItem(tr("Single: Port 2"));
-  m_FS_type->addItem(tr("Single: Port 3"));
-  m_FS_type->addItem(tr("Single: Port 4"));
+    // m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[0])); //expermental
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[1]));  // sets no screen code
 
-  //shows multiable screens screen
-  m_FS_type->addItem(tr("Multi-Screen: Port 1 and 2"));
-  m_FS_type->addItem(tr("Multi-Screen: Port 3 and 4"));
-  m_FS_type->addItem(tr("Multi-Screen: Port 1, 2, and 3"));
-  m_FS_type->addItem(tr("Multi-Screen: Port 2, 3, and 4"));
+    // core single person screen
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[2]));
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[3]));
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[4]));
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[5]));
 
+    // shows multiable screens screen
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[6]));
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[7]));
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[8]));
+    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[9]));
+    m_FS_type->setCurrentIndex((((uint8_t)settings.FSCode > 0 ? (uint8_t)settings.FSCode - 1 : (uint8_t)settings.FSCode))); //temp subtract till auto is in
 
-  m_FS_type->setToolTip(tr("Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
-                           "This must match the port you are set as in Netplay. You can check this under your GC Mapping or have your port manually set via the "
-                           "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in the drop down. That way you only see yourself and none of the split screen.\n\n"
-                           "The Multi-Screen codes show several ports at once. Theses are mainly used for local play or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
-                           "None tells KARphin to not use any screen codes. This will result in a normal split screen.\n\n"));
-  
-  layout->addWidget(new QLabel(tr("Screen Code")), 0, 0);
-  layout->addWidget(m_FS_type, 0, 1);
+    m_FS_type->setToolTip(tr(
+        "CLIENT SIDE ONLY\n\n"
+        "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
+        "This must match the port you are set as in Netplay. You can check this under your GC "
+        "Mapping or have your port manually set via the "
+        "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
+        "the drop down. That way you only see yourself and none of the split screen.\n\n"
+        "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
+        "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
+        "None tells KARphin to not use any screen codes. This will result in a normal split "
+        "screen.\n\n"));
 
-  //sets the default boot screen
-  m_defaultBootScreen_type = new QComboBox();
-  m_defaultBootScreen_type->addItem(tr("Debug/Settings Menu"));
-  m_defaultBootScreen_type->addItem(tr("Main Menu"));
-  m_defaultBootScreen_type->setToolTip(
-      tr("Sets which screen to boot into, uses a modified version of the Skip To Main Menu code."));
+    layout->addWidget(new QLabel(tr("Screen Code")), 0, 0);
+    layout->addWidget(m_FS_type, 0, 1);
 
-  layout->addWidget(new QLabel(tr("Default Boot Screen")), 1, 0);
-  layout->addWidget(m_defaultBootScreen_type, 1, 1);
+    // sets the default boot screen
+    //m_defaultBootScreen_type = new QComboBox();
+    //m_defaultBootScreen_type->addItem(tr("Debug/Settings Menu"));
+    //m_defaultBootScreen_type->addItem(tr("Main Menu"));
+    //m_defaultBootScreen_type->setToolTip(tr(
+    //    "SERVER SIDE ONLY\n\n"
+    //    "Sets which screen to boot into, uses a modified version of the Skip To Main Menu code."));
+    //
+    //layout->addWidget(new QLabel(tr("Default Boot Screen")), 1, 0);
+    //layout->addWidget(m_defaultBootScreen_type, 1, 1);
 
-  /*m_shouldMemCardAutoChange_checkbox = new QCheckBox(tr("should memory cards auto-change to match game"));
-  m_shouldMemCardAutoChange_checkbox->setChecked(true);
-  m_shouldMemCardAutoChange_checkbox->setToolTip(tr(
-      "If set to true, KARphin will auto-change the memory card in use to one matching the game. "
-      "This can cause desyncs when users have inconsistant memory card data. So KARphin defaults "
-      "Memory cards to be off. But if memory card reading and writing is enabled. "
-      "And this option is enabled, KARphin will auto-create memory cards.\n\n(Memory Card Writing "
-      "must be set to enable)"));
-  layout->addWidget(m_shouldMemCardAutoChange_checkbox, 2, 0);*/
+    /*m_shouldMemCardAutoChange_checkbox = new QCheckBox(tr("should memory cards auto-change to
+    match game")); m_shouldMemCardAutoChange_checkbox->setChecked(true);
+    m_shouldMemCardAutoChange_checkbox->setToolTip(tr(
+        "If set to true, KARphin will auto-change the memory card in use to one matching the game. "
+        "This can cause desyncs when users have inconsistant memory card data. So KARphin defaults "
+        "Memory cards to be off. But if memory card reading and writing is enabled. "
+        "And this option is enabled, KARphin will auto-create memory cards.\n\n(Memory Card Writing
+    " "must be set to enable)")); layout->addWidget(m_shouldMemCardAutoChange_checkbox, 2, 0);*/
+
+    //if we're in Hack Pack or BS
+
+      //if we're in BS
+  }
+  else //if it's not
+  {
+    layout->addWidget(new QLabel(QString::fromStdString(std::string(m_game_id + " is not supported for theses extra KAR features. KARphin will designed for Netplay for the KAR Netplay Community.\nOur main game is the Hackpack, Backside, or ones based on the North American release. KARphin is able to patch to patch games into our modded variant so long as you have the right base ROM."))), 1, 0);
+  }
 
   WrapInScrollArea(this, layout);
 }
 
 void KAR::Core::KARSettingsWidget::ConnectWidgets()
 {
- // connect(m_FS_type, &QComboBox::currentIndexChanged, this,
- //         &NetPlaySetupDialog::OnConnectionTypeChanged);
+  connect(m_FS_type, &QComboBox::currentIndexChanged, this,
+          &KARSettingsWidget::OnDropDownChanged);
 
 //  connect(m_warning, &CheatWarningWidget::OpenCheatEnableSettings, this,
 //          &ARCodeWidget::OpenGeneralSettings);
@@ -130,6 +169,27 @@ void KAR::Core::KARSettingsWidget::ConnectWidgets()
 //  connect(m_code_edit, &QPushButton::clicked, this, &ARCodeWidget::OnCodeEditClicked);
 //  connect(m_code_remove, &QPushButton::clicked, this, &ARCodeWidget::OnCodeRemoveClicked);
 }
+
+// when one of the custom drop down changes
+void KAR::Core::KARSettingsWidget::OnDropDownChanged()
+{
+  //parses the fs code set
+  const std::string fs = m_FS_type->currentText().toStdString();
+  for (size_t i = 0; i < FS_MOD_DROP_DOWN_NAME_STR_COUNT; ++i)
+  {
+    if (fs == FS_MOD_DROP_DOWN_NAME_STRS[i])
+    {
+      settings.FSCode = (KAR::Mod::BuiltIn::NA::FS::FullScreenCodeIndex)i;
+      break;
+    }
+  }
+
+  //parses what menu we boot into
+
+  //saves to file
+  KAR::Mod::BuiltIn::WriteKARBuiltInModSettingsToDisc(settings);
+}
+
 //
 //void ARCodeWidget::OnItemChanged(QListWidgetItem* item)
 //{

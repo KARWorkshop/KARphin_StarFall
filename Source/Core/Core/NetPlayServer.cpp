@@ -2050,6 +2050,8 @@ bool NetPlayServer::SyncSaveData(const SaveSyncInfo& sync_info)
   return true;
 }
 
+#include <Core/KAR/GameIDs.hpp>
+
 bool NetPlayServer::SyncCodes()
 {
   INFO_LOG_FMT(NETPLAY, "Sending codes to clients.");
@@ -2061,16 +2063,30 @@ bool NetPlayServer::SyncCodes()
   const auto game = m_dialog->FindGameFile(m_selected_game_identifier);
   if (game == nullptr)
   {
-    PanicAlertFmtT("Selected game doesn't exist in game list!");
+    PanicAlertFmtT("You don't have the game in your ROMs folder. Add it to playe Netplay.");
     return false;
   }
 
-  // Find all INI files
-  const auto game_id = game->GetGameID();
-  const auto revision = game->GetRevision();
+  //loads the core netplay
   Common::IniFile globalIni;
-  for (const std::string& filename : ConfigLoaders::GetGameIniFilenames(game_id, revision))
-    globalIni.Load(File::GetSysDirectory() + GAMESETTINGS_DIR DIR_SEP + filename, true);
+
+  const auto game_id = game->GetGameID();
+
+  // if it's NA, Backside, or Hack Pack
+  if (KAR::GameData::IsNA_OrModdedVariant(game_id))
+  {
+    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/CoreNetplayCodes/CoreNetplay.ini", true);
+    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/LightTweaks/GetOutOfStar.ini", true);
+    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/LightTweaks/PatchNoDrop.ini", true);
+    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/LightTweaks/StarFlockFix.ini", true);
+  }
+
+  
+
+  // Find all INI files
+  
+  const auto revision = game->GetRevision();
+
   Common::IniFile localIni;
   for (const std::string& filename : ConfigLoaders::GetGameIniFilenames(game_id, revision))
     localIni.Load(File::GetUserPath(D_GAMESETTINGS_IDX) + filename, true);
@@ -2087,6 +2103,8 @@ bool NetPlayServer::SyncCodes()
   }
   // Sync Gecko Codes
   {
+    //loads all the server sync codes
+
     // Create a Gecko Code Vector with just the active codes
     std::vector<Gecko::GeckoCode> s_active_codes =
         Gecko::SetAndReturnActiveCodes(Gecko::LoadCodes(globalIni, localIni));

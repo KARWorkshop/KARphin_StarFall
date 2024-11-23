@@ -4,6 +4,8 @@
 
 #include <QDialog>
 
+#include <Core/KAR/Mods/BuiltIn/KARBuiltInSettings.hpp>
+
 class QCheckBox;
  class QComboBox;
 class QDialogButtonBox;
@@ -19,6 +21,7 @@ class QLabel;
 
 namespace KAR::Core
 {
+
 class KARSettingsWidget : public QWidget
 {
 
@@ -51,8 +54,14 @@ signals:
 //  void OnCodeEditClicked();
 //  void OnCodeRemoveClicked();
 //
-//  void OnListReordered();
+//  void OnListReordered();\
 //
+
+  //when one of the custom drop down changes
+  void OnDropDownChanged();
+
+  KAR::Mod::BuiltIn::KARSettings settings;
+
   std::string m_game_id;
   QComboBox* m_FS_type;
   QComboBox* m_defaultBootScreen_type;

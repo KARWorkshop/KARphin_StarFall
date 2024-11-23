@@ -72,7 +72,10 @@
     <Text Include="$(BuildInfoTemplate)" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\KAR\GameIDs.hpp" />
     <ClInclude Include="Core\KAR\json.hpp" />
+    <ClInclude Include="Core\KAR\Mods\BuiltIn\FSCodes.hpp" />
+    <ClInclude Include="Core\KAR\Mods\BuiltIn\KARBuiltInSettings.hpp" />
     <ClInclude Include="Core\KAR\Mods\Specs\GeckkoMod.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\ConnectPacket.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\OnPlayerJoinPacket.hpp" />

@@ -87,6 +87,8 @@ void SetSyncedCodesAsActive()
   s_active_codes.clear();
   s_active_codes.reserve(s_synced_codes.size());
   s_active_codes = s_synced_codes;
+
+  //adds the FS code for this user
 }
 
 void UpdateSyncedCodes(std::span<const GeckoCode> gcodes)
@@ -113,7 +115,11 @@ std::vector<GeckoCode> SetAndReturnActiveCodes(std::span<const GeckoCode> gcodes
 
   s_code_handler_installed = Installation::Uninstalled;
 
-  return s_active_codes;
+  std::vector<GeckoCode> codesToSync = s_active_codes;
+
+  // adds the FS code for this user
+
+  return codesToSync;
 }
 
 // Requires s_active_codes_lock
