@@ -863,10 +863,6 @@ void NetPlayClient::OnGameStatus(sf::Packet& packet)
 
 void NetPlayClient::OnStartGame(sf::Packet& packet)
 {
-  //if we have it set to use the default memory card, write it to disc
-  File::WriteStringToFile(File::GetExeDirectory() + "MemoryCards/HP.USA.raw",
-                          HP_RAW_MEMORY_CARD_DEFAULT);
-
   {
     std::lock_guard lkg(m_crit.game);
 
@@ -1777,6 +1773,31 @@ void NetPlayClient::SendStopGamePacket()
 // called from ---GUI--- thread
 bool NetPlayClient::StartGame(const std::string& path)
 {
+  // if we have it set to use the default memory card, write it to disc
+  // File::WriteStringToFile(File::GetExeDirectory() + "MemoryCards/HP.USA.raw",
+  //                        HP_RAW_MEMORY_CARD_DEFAULT);
+  // Open file in binary write mode
+  File::CreateEmptyFile(std::string(File::GetExeDirectory() + "/MemoryCards/HP.USA.raw"));
+  FILE* file = fopen(std::string(File::GetExeDirectory() + "/MemoryCards/HP.USA.raw").c_str(), "wb");
+  if (file == NULL)
+  {
+    //perror("Error opening file");
+    // return EXIT_FAILURE;
+  }
+
+  // Write the binary array to the file
+  const size_t memCardByteSize = sizeof(HP_RAW_MEMORY_CARD_DEFAULT);
+  size_t written = fwrite(HP_RAW_MEMORY_CARD_DEFAULT, sizeof(unsigned char), memCardByteSize, file);
+  if (written != memCardByteSize)
+  {
+    //perror("Error writing to file");
+    fclose(file);
+    // return EXIT_FAILURE;
+  }
+
+  // Close the file
+  fclose(file);
+
   std::lock_guard lkg(m_crit.game);
   SendStartGamePacket();
 
