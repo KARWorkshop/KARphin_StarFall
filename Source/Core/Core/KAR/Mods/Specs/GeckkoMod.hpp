@@ -9,7 +9,7 @@ namespace KAR::Mod::ASM
 	//permapath for built-in gecko codes
 	static inline std::string GetPermaBuiltInGeckoCodePath()
 	{
-    return File::GetExeDirectory() + "/EmbededCodes/";
+    return File::GetExeDirectory() + "/Sys/EmbededCodes/";
 	}
 
 	//defines a gecko code it bundles

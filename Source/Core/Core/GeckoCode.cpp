@@ -21,6 +21,9 @@
 #include "Core/PowerPC/PowerPC.h"
 #include "Core/System.h"
 
+#include <Core/KAR/Mods/BuiltIn/KARBuiltInSettings.hpp>
+#include <Core/KAR/GameIDs.hpp>
+
 namespace Gecko
 {
 static constexpr u32 CODE_SIZE = 8;
@@ -89,6 +92,16 @@ void SetSyncedCodesAsActive()
   s_active_codes = s_synced_codes;
 
   //adds the FS code for this user
+  std::string t = "";
+  bool e = false;
+  KAR::Mod::BuiltIn::KARSettings settings =
+      KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, t);
+  if (KAR::GameData::IsNA_OrModdedVariant(settings.gameID))
+  {
+    GeckoCode fs = KAR::Mod::BuiltIn::NA::FS::GetFSCode(settings.FSCode);
+    if (fs.enabled)
+      s_active_codes.emplace_back(fs);
+  }
 }
 
 void UpdateSyncedCodes(std::span<const GeckoCode> gcodes)
@@ -118,6 +131,15 @@ std::vector<GeckoCode> SetAndReturnActiveCodes(std::span<const GeckoCode> gcodes
   std::vector<GeckoCode> codesToSync = s_active_codes;
 
   // adds the FS code for this user
+  std::string t = "";
+  bool e = false;
+  KAR::Mod::BuiltIn::KARSettings settings = KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, t);
+  if (KAR::GameData::IsNA_OrModdedVariant(settings.gameID))
+  {
+    GeckoCode fs = KAR::Mod::BuiltIn::NA::FS::GetFSCode(settings.FSCode);
+    if (fs.enabled)
+      s_active_codes.emplace_back(fs);
+  }
 
   return codesToSync;
 }

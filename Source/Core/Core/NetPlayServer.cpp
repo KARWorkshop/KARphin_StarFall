@@ -2072,17 +2072,6 @@ bool NetPlayServer::SyncCodes()
 
   const auto game_id = game->GetGameID();
 
-  // if it's NA, Backside, or Hack Pack
-  if (KAR::GameData::IsNA_OrModdedVariant(game_id))
-  {
-    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/CoreNetplayCodes/CoreNetplay.ini", true);
-    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/LightTweaks/GetOutOfStar.ini", true);
-    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/LightTweaks/PatchNoDrop.ini", true);
-    globalIni.Load(File::GetSysDirectory() + "EmbededCodes/LightTweaks/StarFlockFix.ini", true);
-  }
-
-  
-
   // Find all INI files
   
   const auto revision = game->GetRevision();

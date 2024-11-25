@@ -80,6 +80,9 @@
 
 #include <Core/KAR/Netplay/Packets/ConnectPacket.hpp>
 
+#include <Core/KAR/Mods/BuiltIn/KARBuiltInSettings.hpp>
+#include <Core/KAR/Mods/MemoryCards/MemoryCardAutoGen.hpp>
+
 namespace NetPlay
 {
 using namespace WiimoteCommon;
@@ -828,13 +831,49 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
 
   INFO_LOG_FMT(NETPLAY, "Game changed to {}", netplay_name);
 
-  //changes the memory card
-  //Config::SetCurrent(Config::GetInfoForMemcardPath(ExpansionInterface::Slot::A),
-   //               File::GetExeDirectory() + "/MemoryCards/" + m_selected_game.game_id + ".USA.raw");
+  //updates the global mod KAR settings
+  std::string d = "";
+  bool e = false;
+  KAR::Mod::BuiltIn::KARSettings settings = KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, d);
+  settings.gameID = m_selected_game.game_id;
 
-  // update gui
-  m_dialog->PrintSystemCommand("Memory Card set for Hack Pack/Backside");
-  //m_dialog->PrintSystemCommand("Memory Cards are disabled in your build as they are currently being reserved for tourny play.");
+  //changes the memory card if it's set to default gen
+  if (settings.useDefaultAutoGenMemoryCard)
+  {
+    // if the game is a unknown one, we don't bother setting it
+    const KAR::Mod::BuiltIn::Memory::MemoryCard memoryCard =
+        KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(m_selected_game.game_id);
+    std::string memoryCardPath = KAR::Mod::BuiltIn::Memory::GetMemoryCard_Path(memoryCard);
+
+    //if no memory card is set, create a NULL one
+    if (memoryCard == KAR::Mod::BuiltIn::Memory::MemoryCard::None)
+    {
+      m_dialog->PrintSystemCommand(std::string("KARphin auto-gen memory cards is not supported by  " + netplay_name + ". A random memory card blob will be generated. If you wish to not have a memory card auto-genned. To disable "
+        "this feature right click a supported KAR game, Properties, KAR Settings, uncheck \"Auto-Gen "
+        "MemoryCards\""));
+    }
+
+    else
+    {
+      // set to whatever to make sure we have a memory card set
+      Config::SetCurrent(Config::GetInfoForMemcardPath(ExpansionInterface::Slot::A),
+                         memoryCardPath);
+
+    // update gui
+      m_dialog->PrintSystemCommand(std::string("Memory Card set for " +
+                                   KAR::Mod::BuiltIn::Memory::GetMemoryCard_LongDisplayName(memoryCard)));
+
+      // auto-gen a memory card
+        KAR::Mod::BuiltIn::Memory::GenerateMemoryCard(memoryCard);
+
+    }
+  }
+  else
+    m_dialog->PrintSystemCommand(
+        "Auto-gen memory cards is disabled. Memory cards could potentially not match. To re-enable "
+        "this feature right click a supported KAR game, Properties, KAR Settings, check \"Auto-Gen "
+        "MemoryCards\"");
+
   m_dialog->OnMsgChangeGame(m_selected_game, netplay_name);
 
   SendGameStatus();
@@ -858,8 +897,6 @@ void NetPlayClient::OnGameStatus(sf::Packet& packet)
 
   m_dialog->Update();
 }
-
-#include "KAR/Mods/HPMemoryCard.hpp"
 
 void NetPlayClient::OnStartGame(sf::Packet& packet)
 {
@@ -1773,31 +1810,6 @@ void NetPlayClient::SendStopGamePacket()
 // called from ---GUI--- thread
 bool NetPlayClient::StartGame(const std::string& path)
 {
-  // if we have it set to use the default memory card, write it to disc
-  // File::WriteStringToFile(File::GetExeDirectory() + "MemoryCards/HP.USA.raw",
-  //                        HP_RAW_MEMORY_CARD_DEFAULT);
-  // Open file in binary write mode
-  File::CreateEmptyFile(std::string(File::GetExeDirectory() + "/MemoryCards/HP.USA.raw"));
-  FILE* file = fopen(std::string(File::GetExeDirectory() + "/MemoryCards/HP.USA.raw").c_str(), "wb");
-  if (file == NULL)
-  {
-    //perror("Error opening file");
-    // return EXIT_FAILURE;
-  }
-
-  // Write the binary array to the file
-  const size_t memCardByteSize = sizeof(HP_RAW_MEMORY_CARD_DEFAULT);
-  size_t written = fwrite(HP_RAW_MEMORY_CARD_DEFAULT, sizeof(unsigned char), memCardByteSize, file);
-  if (written != memCardByteSize)
-  {
-    //perror("Error writing to file");
-    fclose(file);
-    // return EXIT_FAILURE;
-  }
-
-  // Close the file
-  fclose(file);
-
   std::lock_guard lkg(m_crit.game);
   SendStartGamePacket();
 
@@ -2394,6 +2406,15 @@ bool NetPlayClient::StopGame()
 
   // stop game
   m_dialog->StopGame();
+
+  // auto-gen a memory card if we're supposed to, this way we clear it out
+  std::string d = "";
+  bool e = false;
+  KAR::Mod::BuiltIn::KARSettings modSettings =
+      KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, d);
+  if (modSettings.useDefaultAutoGenMemoryCard)
+    KAR::Mod::BuiltIn::Memory::GenerateMemoryCard(
+        KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(modSettings.gameID));
 
   return true;
 }

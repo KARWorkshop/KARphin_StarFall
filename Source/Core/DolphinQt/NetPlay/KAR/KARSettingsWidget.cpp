@@ -28,6 +28,9 @@
 
 #include "UICommon/GameFile.h"
 
+#include <DolphinQt/QtUtils/ModalMessageBox.h>
+
+
 KAR::Core::KARSettingsWidget::KARSettingsWidget(std::string game_id)
     : m_game_id(std::move(game_id))
 {
@@ -51,7 +54,22 @@ KAR::Core::KARSettingsWidget::KARSettingsWidget(std::string game_id)
  // OnSelectionChanged();
 }
 
-KAR::Core::KARSettingsWidget::~KARSettingsWidget() = default;
+KAR::Core::KARSettingsWidget::~KARSettingsWidget()
+{
+  // valide the gecko codes exist
+  if (!File::Exists(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini"))
+  {
+    ModalMessageBox::critical(
+        this, tr("Out of date deps"),
+        tr("Your KARphin may be updated but it's missing sys files needed for netplay "
+           "functionality. "
+           "You should reset your client data via the launcher, or delete your Client Data and "
+           "re-run "
+           "the Luncher. KARphin had a soft reset so it is best to true this like a 3.0 and fresh "
+           "install. If this error still persists even after doing a reset. Notify the Support "
+           "channel in the discord. A full reinstall may be needed for KARphin."));
+  }
+}
 
 #include <Core/KAR/GameIDs.hpp>
 
@@ -100,7 +118,7 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
     m_FS_type->setCurrentIndex((((uint8_t)settings.FSCode > 0 ? (uint8_t)settings.FSCode - 1 : (uint8_t)settings.FSCode))); //temp subtract till auto is in
 
     m_FS_type->setToolTip(tr(
-        "CLIENT SIDE ONLY\n\n"
+        "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
         "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
         "This must match the port you are set as in Netplay. You can check this under your GC "
         "Mapping or have your port manually set via the "
@@ -125,14 +143,18 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
     //layout->addWidget(new QLabel(tr("Default Boot Screen")), 1, 0);
     //layout->addWidget(m_defaultBootScreen_type, 1, 1);
 
-    /*m_shouldMemCardAutoChange_checkbox = new QCheckBox(tr("should memory cards auto-change to
-    match game")); m_shouldMemCardAutoChange_checkbox->setChecked(true);
-    m_shouldMemCardAutoChange_checkbox->setToolTip(tr(
-        "If set to true, KARphin will auto-change the memory card in use to one matching the game. "
-        "This can cause desyncs when users have inconsistant memory card data. So KARphin defaults "
-        "Memory cards to be off. But if memory card reading and writing is enabled. "
-        "And this option is enabled, KARphin will auto-create memory cards.\n\n(Memory Card Writing
-    " "must be set to enable)")); layout->addWidget(m_shouldMemCardAutoChange_checkbox, 2, 0);*/
+    //m_shouldMemCardAutoChange_checkbox = new QCheckBox(tr("should memory cards auto-change to
+    //match game")); m_shouldMemCardAutoChange_checkbox->setChecked(true);
+    //m_shouldMemCardAutoChange_checkbox->setToolTip(tr(
+    //    "If set to true, KARphin will auto-change the memory card in use to one matching the game. "
+    //    "This can cause desyncs when users have inconsistant memory card data. So KARphin defaults "
+    //    "Memory cards to be off. But if memory card reading and writing is enabled. "
+    //    "And this option is enabled, KARphin will auto-create memory cards.<br<br>"
+    //    "<dolphin_emphasis>If unsure leave checked, as it can desyncs without it</dolphin_emphasis>"
+    //
+    //
+    //  (Memory Card Writing
+    //" "must be set to enable)")); layout->addWidget(m_shouldMemCardAutoChange_checkbox, 2, 0);
 
     //if we're in Hack Pack or BS
 
@@ -148,8 +170,11 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
 
 void KAR::Core::KARSettingsWidget::ConnectWidgets()
 {
-  connect(m_FS_type, &QComboBox::currentIndexChanged, this,
-          &KARSettingsWidget::OnDropDownChanged);
+  if (KAR::GameData::IsNA_OrModdedVariant(m_game_id))
+  {
+    connect(m_FS_type, &QComboBox::currentIndexChanged, this,
+            &KARSettingsWidget::OnDropDownChanged);
+  }
 
 //  connect(m_warning, &CheatWarningWidget::OpenCheatEnableSettings, this,
 //          &ARCodeWidget::OpenGeneralSettings);
@@ -185,6 +210,8 @@ void KAR::Core::KARSettingsWidget::OnDropDownChanged()
   }
 
   //parses what menu we boot into
+
+  //sets the custom memory card
 
   //saves to file
   KAR::Mod::BuiltIn::WriteKARBuiltInModSettingsToDisc(settings);

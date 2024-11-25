@@ -19,6 +19,8 @@ struct KARSettings
 
   bool useDefaultAutoGenMemoryCard =
       true;  // are we using the default memory card or loading whatever is there
+
+  std::string gameID = "";  // the Game ID we're injecting mods into
 };
 
 // writes it to disc
@@ -29,6 +31,8 @@ static inline void WriteKARBuiltInModSettingsToDisc(const KARSettings& settings)
 
   nlohmann::json j;
   j["majorVer"] = KAR_VERSION_MAJOR;
+
+  j["gameID"] = settings.gameID;
 
   j["fs"] = (uint8_t)settings.FSCode;
   j["useAutoGenMemCard"] = settings.useDefaultAutoGenMemoryCard;
@@ -44,7 +48,7 @@ static inline KARSettings LoadKARBuiltInModSettingsFromDisc(bool& error, std::st
   if (!File::Exists(p))
   {
     error = true;
-    errorMessage = "No built in Mod file";
+    errorMessage = "No built-in Mod file";
     return settings;
   }
 
@@ -61,6 +65,8 @@ static inline KARSettings LoadKARBuiltInModSettingsFromDisc(bool& error, std::st
       ver + "\"");
     return settings;
   }
+
+  settings.gameID = j["gameID"];
 
   settings.FSCode = (NA::FS::FullScreenCodeIndex)j["fs"];
   settings.useDefaultAutoGenMemoryCard = j["useAutoGenMemCard"];

@@ -76,6 +76,7 @@
     <ClInclude Include="Core\KAR\json.hpp" />
     <ClInclude Include="Core\KAR\Mods\BuiltIn\FSCodes.hpp" />
     <ClInclude Include="Core\KAR\Mods\BuiltIn\KARBuiltInSettings.hpp" />
+    <ClInclude Include="Core\KAR\Mods\MemoryCards\MemoryCardAutoGen.hpp" />
     <ClInclude Include="Core\KAR\Mods\Specs\GeckkoMod.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\ConnectPacket.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\OnPlayerJoinPacket.hpp" />
@@ -83,7 +84,7 @@
     <ClInclude Include="Core\KAR\Versioning.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\KAR\Mods\HPMemoryCard.hpp" />
+    <None Include="Core\KAR\Mods\MemoryCards\HPMemoryCard.hpp" />
   </ItemGroup>
   <UsingTask TaskName="GetProductVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
