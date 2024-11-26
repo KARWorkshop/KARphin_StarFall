@@ -843,7 +843,7 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
     // if the game is a unknown one, we don't bother setting it
     const KAR::Mod::BuiltIn::Memory::MemoryCard memoryCard =
         KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(m_selected_game.game_id);
-    std::string memoryCardPath = KAR::Mod::BuiltIn::Memory::GetMemoryCard_Path(memoryCard);
+    std::string memoryCardPath = KAR::Mod::BuiltIn::Memory::GetMemoryCard_DstPath(memoryCard);
 
     //if no memory card is set, create a NULL one
     if (memoryCard == KAR::Mod::BuiltIn::Memory::MemoryCard::None)

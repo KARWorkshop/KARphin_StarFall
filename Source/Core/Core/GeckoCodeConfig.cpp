@@ -23,7 +23,7 @@ std::vector<GeckoCode> DownloadCodes(std::string gameID, bool* succeeded)
   // codes.rc24.xyz is a mirror of the now defunct geckocodes.org. || eff this shit, we pull from KAR Workshop git hub release
   std::string endpoint
   {
-    "https://github.com/KARWorkshop/KAR-Gecko-ASM/releases/download/K1.0/" + gameID + ".ini"};
+    "https://github.com/KARWorkshop/KAR-Gecko-ASM/releases/download/stardust/" + gameID + ".ini"};
   Common::HttpRequest http;
 
   // The server always redirects once to the same location.

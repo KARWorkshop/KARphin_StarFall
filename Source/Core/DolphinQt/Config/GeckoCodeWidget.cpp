@@ -365,7 +365,14 @@ void GeckoCodeWidget::DownloadCodes()
     return;
   }
 
-  size_t added_count = 0;
+  //replace all the codes
+  const size_t c = m_gecko_codes.size();
+  m_gecko_codes.clear();
+  m_gecko_codes.reserve(c);
+  for (const auto& code : codes)
+    m_gecko_codes.emplace_back(code);
+
+  /*size_t added_count = 0;
 
   for (const auto& code : codes)
   {
@@ -376,7 +383,7 @@ void GeckoCodeWidget::DownloadCodes()
       m_gecko_codes.push_back(code);
       added_count++;
     }
-  }
+  }*/
 
   UpdateList();
   SaveCodes();
@@ -384,5 +391,5 @@ void GeckoCodeWidget::DownloadCodes()
   ModalMessageBox::information(
       this, tr("Download complete"),
       tr("Downloaded %1 codes. (added %2)")
-          .arg(QString::number(codes.size()), QString::number(added_count)));
+          .arg(QString::number(codes.size()), QString::number(c)));
 }
