@@ -148,6 +148,19 @@ std::vector<GeckoCode> SetAndReturnActiveCodes(std::span<const GeckoCode> gcodes
 // NOTE: Refer to "codehandleronly.s" from Gecko OS.
 static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
 {
+  //injects the FS code
+  // adds the FS code for this user
+   std::string t = "";
+   bool e = false;
+   KAR::Mod::BuiltIn::KARSettings settings =
+       KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, t);
+  // if (KAR::GameData::IsNA_OrModdedVariant(settings.gameID))
+ // {
+     GeckoCode fs = KAR::Mod::BuiltIn::NA::FS::GetFSCode(settings.FSCode);
+     if (fs.enabled)
+       s_active_codes.emplace_back(fs);
+ //  }
+
   std::string data;
   if (!File::ReadFileToString(File::GetSysDirectory() + GECKO_CODE_HANDLER, data))
   {

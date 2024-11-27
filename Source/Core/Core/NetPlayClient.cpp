@@ -856,7 +856,7 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
     else
     {
       // set to whatever to make sure we have a memory card set
-      Config::SetCurrent(Config::GetInfoForMemcardPath(ExpansionInterface::Slot::A),
+      Config::SetBaseOrCurrent(Config::MAIN_MEMCARD_A_PATH,
                          memoryCardPath);
 
     // update gui

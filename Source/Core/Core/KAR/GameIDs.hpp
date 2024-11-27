@@ -36,6 +36,6 @@ static inline std::string GetGameID_BS()
 	//if it's NA and or modded
 static inline bool IsNA_OrModdedVariant(const std::string& gameID)
 {
-  return (gameID == GetGameID_NA() || gameID == GetGameID_HP() || gameID == GetGameID_BS());
+  return ((gameID == GetGameID_NA() || gameID == GetGameID_HP() || gameID == GetGameID_BS()) == true ? true : false);
 }
 }

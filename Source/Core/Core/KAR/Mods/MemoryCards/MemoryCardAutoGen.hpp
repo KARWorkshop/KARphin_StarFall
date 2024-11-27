@@ -26,6 +26,10 @@ namespace KAR::Mod::BuiltIn::Memory
 		{
       return MemoryCard::HackPack;
 		}
+    else if (gameID == GameData::GetGameID_BS())
+    {
+      return MemoryCard::BacksideV2;
+    }
 
 		return MemoryCard::None;
 	}
@@ -48,7 +52,9 @@ namespace KAR::Mod::BuiltIn::Memory
     switch (card)
     {
     case MemoryCard::HackPack:
-      return "HackPack";
+      return "HP";
+    case MemoryCard::BacksideV2:
+      return "BS";
     }
 
     return "";
@@ -61,6 +67,9 @@ namespace KAR::Mod::BuiltIn::Memory
     {
     case MemoryCard::HackPack:
       return "Hack Pack 1.0.1";
+
+			case MemoryCard::BacksideV2:
+      return "Backside V2";
     }
 
     return "";
