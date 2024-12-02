@@ -9,7 +9,7 @@
 class QCheckBox;
  class QComboBox;
 class QDialogButtonBox;
-// class QLabel;
+ class QLabel;
 class QLineEdit;
 class QCloseEvent;
 // class QListWidget;

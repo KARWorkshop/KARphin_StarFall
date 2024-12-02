@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 #include <qcheckbox.h>
 #include <qcombobox.h>
+#include <qlabel.h>
 
 #include "Common/FileUtil.h"
 #include "Common/IniFile.h"
@@ -129,7 +130,19 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
         "None tells KARphin to not use any screen codes. This will result in a normal split "
         "screen.\n\n"));
 
-    layout->addWidget(new QLabel(tr("Screen Code")), 0, 0);
+    QLabel* FSLable = new QLabel(tr("Screen Code"));
+    FSLable->setToolTip(tr(
+        "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
+        "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
+        "This must match the port you are set as in Netplay. You can check this under your GC "
+        "Mapping or have your port manually set via the "
+        "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
+        "the drop down. That way you only see yourself and none of the split screen.\n\n"
+        "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
+        "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
+        "None tells KARphin to not use any screen codes. This will result in a normal split "
+        "screen.\n\n"));
+    layout->addWidget(FSLable, 0, 0);
     layout->addWidget(m_FS_type, 0, 1);
 
     // sets the default boot screen

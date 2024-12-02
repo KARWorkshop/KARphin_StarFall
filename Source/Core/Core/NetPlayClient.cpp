@@ -837,42 +837,42 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
   KAR::Mod::BuiltIn::KARSettings settings = KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, d);
   settings.gameID = m_selected_game.game_id;
 
-  //changes the memory card if it's set to default gen
-  if (settings.useDefaultAutoGenMemoryCard)
-  {
-    // if the game is a unknown one, we don't bother setting it
-    const KAR::Mod::BuiltIn::Memory::MemoryCard memoryCard =
-        KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(m_selected_game.game_id);
-    std::string memoryCardPath = KAR::Mod::BuiltIn::Memory::GetMemoryCard_DstPath(memoryCard);
+  ////changes the memory card if it's set to default gen
+  //if (settings.useDefaultAutoGenMemoryCard)
+  //{
+  //  // if the game is a unknown one, we don't bother setting it
+  //  const KAR::Mod::BuiltIn::Memory::MemoryCard memoryCard =
+  //      KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(m_selected_game.game_id);
+  //  std::string memoryCardPath = KAR::Mod::BuiltIn::Memory::GetMemoryCard_DstPath(memoryCard);
 
-    //if no memory card is set, create a NULL one
-    if (memoryCard == KAR::Mod::BuiltIn::Memory::MemoryCard::None)
-    {
-      m_dialog->PrintSystemCommand(std::string("KARphin auto-gen memory cards is not supported by  " + netplay_name + ". A random memory card blob will be generated. If you wish to not have a memory card auto-genned. To disable "
-        "this feature right click a supported KAR game, Properties, KAR Settings, uncheck \"Auto-Gen "
-        "MemoryCards\""));
-    }
+  //  //if no memory card is set, create a NULL one
+  //  if (memoryCard == KAR::Mod::BuiltIn::Memory::MemoryCard::None)
+  //  {
+  //    m_dialog->PrintSystemCommand(std::string("KARphin auto-gen memory cards is not supported by  " + netplay_name + ". A random memory card blob will be generated. If you wish to not have a memory card auto-genned. To disable "
+  //      "this feature right click a supported KAR game, Properties, KAR Settings, uncheck \"Auto-Gen "
+  //      "MemoryCards\""));
+  //  }
 
-    else
-    {
-      // set to whatever to make sure we have a memory card set
-      Config::SetBaseOrCurrent(Config::MAIN_MEMCARD_A_PATH,
-                         memoryCardPath);
+  //  else
+  //  {
+  //    // set to whatever to make sure we have a memory card set
+  //    Config::SetBaseOrCurrent(Config::MAIN_MEMCARD_A_PATH,
+  //                       memoryCardPath);
 
-    // update gui
-      m_dialog->PrintSystemCommand(std::string("Memory Card set for " +
-                                   KAR::Mod::BuiltIn::Memory::GetMemoryCard_LongDisplayName(memoryCard)));
+  //  // update gui
+  //    m_dialog->PrintSystemCommand(std::string("Memory Card set for " +
+  //                                 KAR::Mod::BuiltIn::Memory::GetMemoryCard_LongDisplayName(memoryCard)));
 
-      // auto-gen a memory card
-        KAR::Mod::BuiltIn::Memory::GenerateMemoryCard(memoryCard);
+  //    // auto-gen a memory card
+  //      KAR::Mod::BuiltIn::Memory::GenerateMemoryCard(memoryCard);
 
-    }
-  }
-  else
-    m_dialog->PrintSystemCommand(
-        "Auto-gen memory cards is disabled. Memory cards could potentially not match. To re-enable "
-        "this feature right click a supported KAR game, Properties, KAR Settings, check \"Auto-Gen "
-        "MemoryCards\"");
+  //  }
+  //}
+  //else
+  //  m_dialog->PrintSystemCommand(
+  //      "Auto-gen memory cards is disabled. Memory cards could potentially not match. To re-enable "
+  //      "this feature right click a supported KAR game, Properties, KAR Settings, check \"Auto-Gen "
+  //      "MemoryCards\"");
 
   m_dialog->OnMsgChangeGame(m_selected_game, netplay_name);
 
@@ -2407,14 +2407,14 @@ bool NetPlayClient::StopGame()
   // stop game
   m_dialog->StopGame();
 
-  // auto-gen a memory card if we're supposed to, this way we clear it out
-  std::string d = "";
-  bool e = false;
-  KAR::Mod::BuiltIn::KARSettings modSettings =
-      KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, d);
-  if (modSettings.useDefaultAutoGenMemoryCard)
-    KAR::Mod::BuiltIn::Memory::GenerateMemoryCard(
-        KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(modSettings.gameID));
+  //// auto-gen a memory card if we're supposed to, this way we clear it out
+  //std::string d = "";
+  //bool e = false;
+  //KAR::Mod::BuiltIn::KARSettings modSettings =
+  //    KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, d);
+  //if (modSettings.useDefaultAutoGenMemoryCard)
+  //  KAR::Mod::BuiltIn::Memory::GenerateMemoryCard(
+  //      KAR::Mod::BuiltIn::Memory::GetMemoryCardTypeFromGameID(modSettings.gameID));
 
   return true;
 }
