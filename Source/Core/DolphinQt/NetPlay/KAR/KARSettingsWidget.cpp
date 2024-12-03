@@ -175,7 +175,7 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
   }
   else //if it's not
   {
-    layout->addWidget(new QLabel(QString::fromStdString(std::string(m_game_id + " is not supported for theses extra KAR features. KARphin will designed for Netplay for the KAR Netplay Community.\nOur main game is the Hackpack, Backside, or ones based on the North American release. KARphin is able to patch to patch games into our modded variant so long as you have the right base ROM."))), 1, 0);
+    layout->addWidget(new QLabel(QString::fromStdString(std::string(m_game_id + " is not supported for theses extra KAR features. KARphin was designed for Netplay for the KAR Netplay Community.\nOur main game is the Hackpack, Backside, or ones based on the North American release.\nFor patching your game into the Hack Pack or another of our supported ROMs. Or for helping us work on more game regions. Join the Discord: http://discord.gg/p3rGrcr"))), 1, 0);
   }
 
   WrapInScrollArea(this, layout);
