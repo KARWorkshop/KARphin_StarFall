@@ -614,19 +614,19 @@ void MenuBar::AddHelpMenu()
 
   QAction* website = help_menu->addAction(tr("&Website"));
   connect(website, &QAction::triggered, this,
-          []() { QDesktopServices::openUrl(QUrl(QStringLiteral("https://dolphin-emu.org/"))); });
-  QAction* documentation = help_menu->addAction(tr("Online &Documentation"));
+          []() { QDesktopServices::openUrl(QUrl(QStringLiteral("https://karworkshop.sean-mott.com"))); });
+  QAction* documentation = help_menu->addAction(tr("&Wiki"));
   connect(documentation, &QAction::triggered, this, []() {
-    QDesktopServices::openUrl(QUrl(QStringLiteral("https://dolphin-emu.org/docs/guides")));
+    QDesktopServices::openUrl(QUrl(QStringLiteral("https://kar.miraheze.org/wiki/Main_Page")));
   });
   QAction* github = help_menu->addAction(tr("&GitHub Repository"));
   connect(github, &QAction::triggered, this, []() {
-    QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/dolphin-emu/dolphin")));
+    QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/KARWorkshop/KARphin_StarFall")));
   });
-  QAction* bugtracker = help_menu->addAction(tr("&Bug Tracker"));
+  QAction* bugtracker = help_menu->addAction(tr("&KARphin Feedback/Bugs"));
   connect(bugtracker, &QAction::triggered, this, []() {
     QDesktopServices::openUrl(
-        QUrl(QStringLiteral("https://bugs.dolphin-emu.org/projects/emulator")));
+        QUrl(QStringLiteral("https://discord.com/channels/266095631804792835/1279494758661881919")));
   });
 
   if (AutoUpdateChecker::SystemSupportsAutoUpdates())
