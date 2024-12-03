@@ -13,12 +13,16 @@ namespace KAR
 		//stores the legacy version string for KARphin Legacy and R10
 #define LEGACY_R10_VERSION_STRING "50f504eb710d1b1e74356e75f8fbef310b811951"
 
+	//types of builds
+#define KAR_VERSION_STABLE_STR "Stable"
+#define KAR_VERSION_DEV_STR "Dev"
+
 		//client data
 #define KAR_VERSION_MAJOR "1"
 #define KAR_VERSION_MINOR "0"
 #define KAR_VERSION_HOT_FIX "0"
 #define KAR_VERSION_BUILD "Star Dust"
-#define KAR_VERSION_STABILITY "Stable"
+#define KAR_VERSION_STABILITY KAR_VERSION_DEV_STR
 
 		//the change log info
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
@@ -64,7 +68,7 @@ namespace KAR
 		};
 
 		//writes the version data to a file
-		static inline void WriteBuildVersionDataToFile(bool hasSeenChangeLog = false)
+		static inline void WriteBuildVersionDataToFile(bool hasSeenChangeLog)
 		{
 	        nlohmann::json j;
 	        j["ver_major"] = KAR_VERSION_MAJOR;
