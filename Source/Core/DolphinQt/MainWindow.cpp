@@ -696,19 +696,19 @@ void MainWindow::ConnectToolBar()
 {
   addToolBar(m_tool_bar);
 
-  connect(m_tool_bar, &ToolBar::OpenPressed, this, &MainWindow::Open);
+ // connect(m_tool_bar, &ToolBar::OpenPressed, this, &MainWindow::Open);
   connect(m_tool_bar, &ToolBar::RefreshPressed, this, &MainWindow::RefreshGameList);
 
   connect(m_tool_bar, &ToolBar::OnKARNetplayConnectPressed, this, &MainWindow::ShowNetPlaySetupDialog);
   connect(m_tool_bar, &ToolBar::OnKARNetplayLobbiesPressed, this, &MainWindow::ShowNetPlayBrowser);
   connect(m_tool_bar, &ToolBar::OnKARNetplayAccountPressed, this, &MainWindow::ShowWarpRelayAccountInfo);
 
-  connect(m_tool_bar, &ToolBar::PlayPressed, this, [this]() { Play(); });
-  connect(m_tool_bar, &ToolBar::PausePressed, this, &MainWindow::Pause);
-  connect(m_tool_bar, &ToolBar::StopPressed, this, &MainWindow::RequestStop);
+ // connect(m_tool_bar, &ToolBar::PlayPressed, this, [this]() { Play(); });
+ // connect(m_tool_bar, &ToolBar::PausePressed, this, &MainWindow::Pause);
+ // connect(m_tool_bar, &ToolBar::StopPressed, this, &MainWindow::RequestStop);
 
   connect(m_tool_bar, &ToolBar::FullScreenPressed, this, &MainWindow::FullScreen);
-  connect(m_tool_bar, &ToolBar::ScreenShotPressed, this, &MainWindow::ScreenShot);
+ // connect(m_tool_bar, &ToolBar::ScreenShotPressed, this, &MainWindow::ScreenShot);
   connect(m_tool_bar, &ToolBar::SettingsPressed, this, &MainWindow::ShowSettingsWindow);
   connect(m_tool_bar, &ToolBar::ControllersPressed, this, &MainWindow::ShowControllersWindow);
   connect(m_tool_bar, &ToolBar::GraphicsPressed, this, &MainWindow::ShowGraphicsWindow);
