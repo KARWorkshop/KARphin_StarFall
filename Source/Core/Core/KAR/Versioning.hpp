@@ -46,7 +46,7 @@ namespace KAR
 	"-----\n" \
 	"* Default boot into Debug/Settings Menu \n" \
 	"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" \
-	"* Auto FS Codes if not set via Dropdown.\n" \
+	"* Auto FS if \"Auto\" is selected in the Full Screen Code Dropdown, this is default.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	"* players are notified if they lack the game, when joining the Lobby\n" \
 	"* hide CT FS desync messages\n" \
@@ -54,6 +54,7 @@ namespace KAR
 	"* Netplay Account, Host, and Browser buttons have been added with Taco's custom icons\n" \
 	"* User Settings is forced into local mode and folder is renamed to \"StarDust_Player_Settings\"\n" \
 	"* ROMs can only be loaded via the ROMs folder\n" \
+	"* Controller Profiles are loaded from the Profiles folder in the Accounts folder.\n" \
 	"* Minor tweaks\n" \
 	"\n\nFor a full list of changes check out the " \
 	KAR_VERSION_BUILD \
