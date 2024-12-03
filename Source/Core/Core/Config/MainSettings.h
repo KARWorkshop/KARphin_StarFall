@@ -50,6 +50,8 @@ enum class HSPDeviceType : int;
 
 namespace Config
 {
+extern uint16_t KAR_NETPLAY_PORT_INDEX;
+
 // Main.Core
 
 extern const Info<bool> MAIN_SKIP_IPL;

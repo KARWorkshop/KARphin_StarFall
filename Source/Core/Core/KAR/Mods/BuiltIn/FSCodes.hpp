@@ -5,6 +5,7 @@
 #include <Common/IniFile.h>
 #include <Core/GeckoCode.h>
 #include <Core/GeckoCodeConfig.h>
+#include <Core/Config/MainSettings.h>
 
 #include <Core/KAR/Mods/Specs/GeckkoMod.hpp>
 
@@ -31,13 +32,18 @@ enum class FullScreenCodeIndex : uint8_t
 };
 
 // loads the correct gecko code
-inline Gecko::GeckoCode GetFSCode(const FullScreenCodeIndex& index)
+inline Gecko::GeckoCode GetFSCode(FullScreenCodeIndex index)
 {
   Common::IniFile f;
   Gecko::GeckoCode code;
 
+  //if we're auto, we override the index, temporarly
+  if (index == FullScreenCodeIndex::Auto)
+    index = (FullScreenCodeIndex)(Config::KAR_NETPLAY_PORT_INDEX + 2);  // plus one, since None = 1
+
   switch (index)
   {
+
   case FullScreenCodeIndex::Port1:
     f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];

@@ -102,7 +102,7 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
     // the FS screen code to use
     m_FS_type = new QComboBox();
 
-    // m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[0])); //expermental
+     m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[0])); //auto
     m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[1]));  // sets no screen code
 
     // core single person screen
@@ -116,7 +116,9 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
     m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[7]));
     m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[8]));
     m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[9]));
-    m_FS_type->setCurrentIndex((((uint8_t)settings.FSCode > 0 ? (uint8_t)settings.FSCode - 1 : (uint8_t)settings.FSCode))); //temp subtract till auto is in
+    m_FS_type->setCurrentIndex(
+        (uint8_t)settings.FSCode);  //(((uint8_t)settings.FSCode > 0 ? (uint8_t)settings.FSCode - 1
+                                    //: (uint8_t)settings.FSCode))); //temp subtract till auto is in
 
     m_FS_type->setToolTip(tr(
         "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"

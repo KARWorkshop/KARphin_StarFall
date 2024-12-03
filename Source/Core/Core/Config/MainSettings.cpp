@@ -32,6 +32,8 @@
 
 namespace Config
 {
+uint16_t KAR_NETPLAY_PORT_INDEX = 0; //the port we use for auto-fs
+
 // Main.Core
 
 const Info<bool> MAIN_SKIP_IPL{{System::Main, "Core", "SkipIPL"}, true};

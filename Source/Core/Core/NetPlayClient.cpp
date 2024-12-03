@@ -1975,6 +1975,9 @@ void NetPlayClient::UpdateDevices()
         {
           GCAdapter::ResetDeviceType(local_pad);
         }
+
+        //sets our index for auto FS
+        Config::KAR_NETPLAY_PORT_INDEX = pad;
       }
       else
       {

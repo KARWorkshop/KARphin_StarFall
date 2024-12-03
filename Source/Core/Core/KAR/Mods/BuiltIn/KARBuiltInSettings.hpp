@@ -13,7 +13,7 @@ namespace KAR::Mod::BuiltIn
 struct KARSettings
 {
   BuiltIn::NA::FS::FullScreenCodeIndex FSCode =
-      BuiltIn::NA::FS::FullScreenCodeIndex::None;  // what FS code are we using
+      BuiltIn::NA::FS::FullScreenCodeIndex::Auto;  // what FS code are we using
 
   // are we booting into the main menu or the debug menu
 
