@@ -8,6 +8,7 @@
 
 #include <QAction>
 #include <QIcon>
+#include <QDesktopServices>
 
 #include "Core/Core.h"
 #include "Core/NetPlayProto.h"
@@ -126,8 +127,12 @@ void ToolBar::MakeActions()
 
   addSeparator();
 
-  KAR_Donate_action = addAction(tr("Donate"), this, &ToolBar::OnKARNetplayAccountPressed);
-  KAR_Discord_action = addAction(tr("Discord"), this, &ToolBar::OnKARNetplayAccountPressed);
+  KAR_Donate_action = addAction(tr("Donate"), this, []() {
+    QDesktopServices::openUrl(QUrl(QStringLiteral("https://ko-fi.com/jas_kar_workshop")));
+  });
+  KAR_Discord_action = addAction(tr("Discord"), this, []() {
+    QDesktopServices::openUrl(QUrl(QStringLiteral("http://discord.gg/p3rGrcr")));
+  });
 
   //m_pause_play_action = addAction(tr("Play"), this, &ToolBar::PlayPressed);
 
