@@ -114,7 +114,7 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
 {
   // Add your callback or custom handling here
   QMessageBox::StandardButton res =
-      QMessageBox::question(this, tr("Confirm Account Data"), tr("Are you content with theses Account settings?"),
+      QMessageBox::question(this, tr("Confirm Account Data"), tr("Are you content with these Account settings?"),
                             QMessageBox::Yes | QMessageBox::No);
 
   if (res == QMessageBox::Yes)
