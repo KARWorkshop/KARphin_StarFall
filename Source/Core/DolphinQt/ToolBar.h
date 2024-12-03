@@ -56,6 +56,11 @@ private:
   QAction* KAR_HostNetplay_action;
   QAction* KAR_ConnectNetplay_action;
 
+  QAction* KAR_Mods_action;
+
+  QAction* KAR_Donate_action;
+  QAction* KAR_Discord_action;
+
   //QAction* m_open_action;
   QAction* m_refresh_action;
   //QAction* m_pause_play_action;

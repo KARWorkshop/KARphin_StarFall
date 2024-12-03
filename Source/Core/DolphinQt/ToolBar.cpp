@@ -122,17 +122,22 @@ void ToolBar::MakeActions()
   KAR_HostNetplay_action = addAction(tr("Host"), this, &ToolBar::OnKARNetplayConnectPressed);
   KAR_ConnectNetplay_action = addAction(tr("Lobbies"), this, &ToolBar::OnKARNetplayLobbiesPressed);
   KAR_Account_action = addAction(tr("Account"), this, &ToolBar::OnKARNetplayAccountPressed);
+  KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OnKARNetplayAccountPressed);
 
   addSeparator();
+
+  KAR_Donate_action = addAction(tr("Donate"), this, &ToolBar::OnKARNetplayAccountPressed);
+  KAR_Discord_action = addAction(tr("Discord"), this, &ToolBar::OnKARNetplayAccountPressed);
 
   //m_pause_play_action = addAction(tr("Play"), this, &ToolBar::PlayPressed);
 
  // m_stop_action = addAction(tr("Stop"), this, &ToolBar::StopPressed);
-  m_fullscreen_action = addAction(tr("FullScr"), this, &ToolBar::FullScreenPressed);
+  
  // m_screenshot_action = addAction(tr("ScrShot"), this, &ToolBar::ScreenShotPressed);
 
   addSeparator();
 
+  m_fullscreen_action = addAction(tr("FullScr"), this, &ToolBar::FullScreenPressed);
   m_config_action = addAction(tr("Config"), this, &ToolBar::SettingsPressed);
   m_graphics_action = addAction(tr("Graphics"), this, &ToolBar::GraphicsPressed);
   m_controllers_action = addAction(tr("Controllers"), this, &ToolBar::ControllersPressed);
@@ -141,7 +146,10 @@ void ToolBar::MakeActions()
   std::vector<QWidget*> items;
   for (const auto& action :
        {/*m_open_action, m_pause_play_action, m_stop_action,*//* m_stop_action,*/ KAR_HostNetplay_action,
-        KAR_ConnectNetplay_action, KAR_Account_action,
+        KAR_ConnectNetplay_action, KAR_Account_action, KAR_Mods_action,
+
+        KAR_Donate_action, KAR_Discord_action, KAR_Discord_action,
+
       m_fullscreen_action,
         /*m_screenshot_action,*/ m_config_action, m_graphics_action, m_controllers_action,
         m_step_action, m_step_over_action, m_step_out_action, m_skip_action, m_show_pc_action,
@@ -196,6 +204,14 @@ void ToolBar::UpdateIcons()
   else
     m_pause_play_action->setIcon(Resources::GetThemeIcon("pause"));*/
 
+  KAR_HostNetplay_action->setIcon(Resources::GetThemeIcon("wifi"));
+  KAR_ConnectNetplay_action->setIcon(Resources::GetThemeIcon("sessisonBrowser"));
+  KAR_Account_action->setIcon(Resources::GetThemeIcon("account"));
+  KAR_Mods_action->setIcon(Resources::GetThemeIcon("mods"));
+
+  KAR_Donate_action->setIcon(Resources::GetThemeIcon("donate"));
+  KAR_Discord_action->setIcon(Resources::GetThemeIcon("discord"));
+
   //m_stop_action->setIcon(Resources::GetThemeIcon("stop"));
   m_fullscreen_action->setIcon(Resources::GetThemeIcon("fullscreen"));
   //m_screenshot_action->setIcon(Resources::GetThemeIcon("screenshot"));
@@ -203,7 +219,5 @@ void ToolBar::UpdateIcons()
   m_controllers_action->setIcon(Resources::GetThemeIcon("classic"));
   m_graphics_action->setIcon(Resources::GetThemeIcon("graphics"));
 
-  KAR_HostNetplay_action->setIcon(Resources::GetThemeIcon("wifi"));
-  KAR_ConnectNetplay_action->setIcon(Resources::GetThemeIcon("sessisonBrowser@2x"));
-  KAR_Account_action->setIcon(Resources::GetThemeIcon("account"));
+  
 }
