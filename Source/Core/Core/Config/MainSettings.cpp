@@ -301,7 +301,7 @@ const Info<std::string> MAIN_WII_SD_CARD_SYNC_FOLDER_PATH{
     {System::Main, "General", "WiiSDCardSyncFolder"}, ""};
 const Info<std::string> MAIN_WFS_PATH{{System::Main, "General", "WFSPath"}, ""};
 const Info<bool> MAIN_SHOW_LAG{{System::Main, "General", "ShowLag"}, false};
-const Info<bool> MAIN_SHOW_FRAME_COUNT{{System::Main, "General", "ShowFrameCount"}, true};
+const Info<bool> MAIN_SHOW_FRAME_COUNT{{System::Main, "General", "ShowFrameCount"}, false};
 const Info<std::string> MAIN_WIRELESS_MAC{{System::Main, "General", "WirelessMac"}, ""};
 const Info<std::string> MAIN_GDB_SOCKET{{System::Main, "General", "GDBSocket"}, ""};
 const Info<int> MAIN_GDB_PORT{{System::Main, "General", "GDBPort"}, -1};
