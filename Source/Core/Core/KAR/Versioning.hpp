@@ -44,6 +44,7 @@ namespace KAR
 	"-" \
 	KAR_VERSION_HOT_FIX \
 	"-----\n" \
+	/*"* KARphin itself can now auto-update\n"*/ \
 	"* Default boot into Debug/Settings Menu \n" \
 	"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" \
 	"* Auto FS if \"Auto\" is selected in the Full Screen Code Dropdown, this is default.\n" \
