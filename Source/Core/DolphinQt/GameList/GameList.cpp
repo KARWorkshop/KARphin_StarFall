@@ -278,22 +278,21 @@ void GameList::UpdateColumnVisibility()
 void GameList::MakeEmptyView()
 {
   const QString refreshing_msg = tr("Refreshing...");
-  const QString empty_msg = tr("Dolphin could not find any GameCube/Wii ISOs or WADs.\n"
-                               "Double-click here to set a games directory...");
+  const QString empty_msg = tr("No ROMs could be found, place them in the ROMs directory to be found.");
 
   m_empty = new QLabel(this);
   m_empty->setText(refreshing_msg);
   m_empty->setEnabled(false);
   m_empty->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-  auto event_filter = new DoubleClickEventFilter{m_empty};
+  /*auto event_filter = new DoubleClickEventFilter{m_empty};
   m_empty->installEventFilter(event_filter);
   connect(event_filter, &DoubleClickEventFilter::doubleClicked, [this] {
     auto current_dir = QDir::currentPath();
     auto dir = DolphinFileDialog::getExistingDirectory(this, tr("Select a Directory"), current_dir);
     if (!dir.isEmpty())
       Settings::Instance().AddPath(dir);
-  });
+  });*/
 
   QSizePolicy size_policy{m_empty->sizePolicy()};
   size_policy.setRetainSizeWhenHidden(true);
