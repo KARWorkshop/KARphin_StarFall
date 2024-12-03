@@ -21,13 +21,13 @@ public:
 
   void closeEvent(QCloseEvent*) override;
 signals:
-  void OpenPressed();
+ // void OpenPressed();
   void RefreshPressed();
-  void PlayPressed();
-  void PausePressed();
-  void StopPressed();
+  //void PlayPressed();
+  //void PausePressed();
+  //void StopPressed();
   void FullScreenPressed();
-  void ScreenShotPressed();
+  //void ScreenShotPressed();
 
   void OnKARNetplayConnectPressed();
   void OnKARNetplayLobbiesPressed();
@@ -56,12 +56,12 @@ private:
   QAction* KAR_HostNetplay_action;
   QAction* KAR_ConnectNetplay_action;
 
-  QAction* m_open_action;
+  //QAction* m_open_action;
   QAction* m_refresh_action;
-  QAction* m_pause_play_action;
-  QAction* m_stop_action;
+  //QAction* m_pause_play_action;
+  //QAction* m_stop_action;
   QAction* m_fullscreen_action;
-  QAction* m_screenshot_action;
+ // QAction* m_screenshot_action;
   QAction* m_config_action;
   QAction* m_controllers_action;
   QAction* m_graphics_action;
