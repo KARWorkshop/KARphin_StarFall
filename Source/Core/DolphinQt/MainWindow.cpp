@@ -124,6 +124,7 @@
 #include "DolphinQt/TAS/WiiTASInputWindow.h"
 #include "DolphinQt/ToolBar.h"
 #include "DolphinQt/WiiUpdate.h"
+#include "DolphinQt/KAR/Mods/KARModPackManager.h"
 
 #include "InputCommon/ControllerInterface/ControllerInterface.h"
 #include "InputCommon/GCAdapter.h"
@@ -702,6 +703,7 @@ void MainWindow::ConnectToolBar()
   connect(m_tool_bar, &ToolBar::OnKARNetplayConnectPressed, this, &MainWindow::ShowNetPlaySetupDialog);
   connect(m_tool_bar, &ToolBar::OnKARNetplayLobbiesPressed, this, &MainWindow::ShowNetPlayBrowser);
   connect(m_tool_bar, &ToolBar::OnKARNetplayAccountPressed, this, &MainWindow::ShowWarpRelayAccountInfo);
+  connect(m_tool_bar, &ToolBar::OnKAR_ModPackManagerPressed, this, &MainWindow::ShowKARModPackManager);
 
  // connect(m_tool_bar, &ToolBar::PlayPressed, this, [this]() { Play(); });
  // connect(m_tool_bar, &ToolBar::PausePressed, this, &MainWindow::Pause);
@@ -2075,6 +2077,15 @@ void MainWindow::ShowResourcePackManager()
 
   SetQWidgetWindowDecorations(&manager);
   manager.exec();
+}
+
+// shows the mod pack manager
+void MainWindow::ShowKARModPackManager()
+{
+  KARModPackManager modManager(this);
+
+  SetQWidgetWindowDecorations(&modManager);
+  modManager.exec();
 }
 
 void MainWindow::ShowCheatsManager()

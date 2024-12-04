@@ -123,7 +123,7 @@ void ToolBar::MakeActions()
   KAR_HostNetplay_action = addAction(tr("Host"), this, &ToolBar::OnKARNetplayConnectPressed);
   KAR_ConnectNetplay_action = addAction(tr("Lobbies"), this, &ToolBar::OnKARNetplayLobbiesPressed);
   KAR_Account_action = addAction(tr("Account"), this, &ToolBar::OnKARNetplayAccountPressed);
-  KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OnKARNetplayAccountPressed);
+  KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OnKAR_ModPackManagerPressed);
 
   addSeparator();
 

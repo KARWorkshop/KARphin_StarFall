@@ -180,6 +180,9 @@ private:
   // shows the Warp Relay account info
   void ShowWarpRelayAccountInfo();
 
+  //shows the mod pack manager
+  void ShowKARModPackManager();
+
 #ifdef USE_RETRO_ACHIEVEMENTS
   void ShowAchievementsWindow();
   void ShowAchievementSettings();

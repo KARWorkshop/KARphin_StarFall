@@ -33,6 +33,8 @@ signals:
   void OnKARNetplayLobbiesPressed();
   void OnKARNetplayAccountPressed();
 
+  void OnKAR_ModPackManagerPressed();
+
   void SettingsPressed();
   void ControllersPressed();
   void GraphicsPressed();
