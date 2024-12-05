@@ -199,6 +199,8 @@ int main(int argc, char* argv[])
   // Hook up translations
   Translation::Initialize();
 
+  //loads the mods
+
   // Whenever the event loop is about to go to sleep, dispatch the jobs
   // queued in the Core first.
   QObject::connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::aboutToBlock,

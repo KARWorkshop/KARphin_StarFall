@@ -17,13 +17,16 @@
 #include "DolphinQt/QtUtils/SetWindowDecorations.h"
 #include "UICommon/ResourcePack/Manager.h"
 
+#include <Core/KAR/Mods/ModPack.hpp>
+#include <Core/KAR/Mods/ModPacks.hpp>
+
 KARModPackManager::KARModPackManager(QWidget* widget) : QDialog(widget)
 {
   CreateWidgets();
   ConnectWidgets();
   RepopulateTable();
 
-  setWindowTitle(tr("Resource Pack Manager"));
+  setWindowTitle(tr("KAR Mod Pack Manager"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   resize(QSize(900, 600));
@@ -79,8 +82,8 @@ void KARModPackManager::ConnectWidgets()
 
 void KARModPackManager::OpenResourcePackDir()
 {
-  QDesktopServices::openUrl(
-      QUrl::fromLocalFile(QString::fromStdString(File::GetUserPath(D_RESOURCEPACK_IDX))));
+  //opens mods folder
+  QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(KAR::Mod::Pack::GetModsDirectory())));
 }
 
 void KARModPackManager::RepopulateTable()
@@ -89,7 +92,7 @@ void KARModPackManager::RepopulateTable()
   m_table_widget->setColumnCount(6);
 
   m_table_widget->setHorizontalHeaderLabels(
-      {QString{}, tr("Name"), tr("Version"), tr("Description"), tr("Author"), tr("Git Release")});
+      {QString{}, tr("Name"), tr("Version"), tr("Description"), tr("Author"), tr("Git Repo")});
 
   auto* header = m_table_widget->horizontalHeader();
 
@@ -303,7 +306,8 @@ void KARModPackManager::PriorityUp()
 
 void KARModPackManager::Refresh()
 {
-  ResourcePack::Init();
+  //ResourcePack::Init();
+  KAR::Mod::Pack::LoadMods(); //loads the mods
   RepopulateTable();
 }
 

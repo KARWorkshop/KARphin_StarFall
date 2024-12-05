@@ -4,11 +4,18 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 
 #include <mz_compat.h>
+#include <mz_os.h>
 
-#include "Common/CommonTypes.h"
+#include "Common/CommonPaths.h"
+#include "Common/FileSearch.h"
+#include "Common/FileUtil.h"
+#include "Common/IOFile.h"
+#include "Common/MinizipUtil.h"
 #include "Common/ScopeGuard.h"
+#include "Common/StringUtil.h"
 
 namespace Common
 {

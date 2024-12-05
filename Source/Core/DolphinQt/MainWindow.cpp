@@ -218,6 +218,8 @@ static std::vector<std::string> StringListToStdVector(QStringList list)
   return result;
 }
 
+#include "Core/KAR/Mods/ModPacks.hpp"
+
 MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
                        const std::string& movie_path)
     : QMainWindow(nullptr)
@@ -305,12 +307,23 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
   // shouldn't be so we have to reapply all our rules afterwards.
   Settings::Instance().RefreshWidgetVisibility();
 
+  //loads the KAR mods
+  if (!KAR::Mod::Pack::LoadMods())
+  {
+    ModalMessageBox::critical(this, tr("KAR Mod Error"),
+                              tr("Some KAR Mods are malformed, check them in the Mods folder."));
+  }
+
+
+
+  //loads resource packs
   if (!ResourcePack::Init())
   {
     ModalMessageBox::critical(this, tr("Error"),
                               tr("Error occurred while loading some texture packs"));
   }
 
+  //checks packs
   for (auto& pack : ResourcePack::GetPacks())
   {
     if (!pack.IsValid())
