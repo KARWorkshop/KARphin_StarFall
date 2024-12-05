@@ -34,18 +34,19 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   setWindowTitle(tr("Warp Relay Account"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-  //loads the account data
-  account = KAR::WarpRelay::LoadDefaultGuestAccount();
+  //gets the logged in account
+  GetLoggedInAccount();
 
   //creates the layout
    m_main_layout = new QGridLayout;
 
+   //show the list of accounts to cycle through
 
    displayName_Label = new QLabel(tr("Display Name:"));
    displayName_Label->setToolTip(tr("This is the name you will show to the public."));
    m_main_layout->addWidget(displayName_Label, 0, 0);
    displayName_EditFeild = new QLineEdit;
-   displayName_EditFeild->setText(QString::fromStdString(account.displayName));
+   displayName_EditFeild->setText(QString::fromStdString(loggedInAccount->displayName));
    displayName_EditFeild->setToolTip(tr("This is the name you will show to the public."));
    displayName_EditFeild->setValidator(
        new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
@@ -120,8 +121,8 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
   if (res == QMessageBox::Yes)
   {
     //saves the data to the file
-    account.displayName = displayName_EditFeild->text().toStdString();
-    KAR::WarpRelay::WriteWarpRelayAccount(account);
+    loggedInAccount->displayName = displayName_EditFeild->text().toStdString();
+    KAR::WarpRelay::WriteWarpRelayAccount(*loggedInAccount);
 
     // Accept the close event
     event->accept();
@@ -135,9 +136,7 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
 
 void KAR::WarpRelay::AccountInfoDialog::show()
 {
-  //load the account file
-  account = KAR::WarpRelay::LoadWarpRelayAccount(KAR::WarpRelay::GetAccountsDir() + "Default" +
-      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+  GetLoggedInAccount(); //refreshes the logged in account
 
   QDialog::show();
 }

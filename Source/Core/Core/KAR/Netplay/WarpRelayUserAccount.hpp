@@ -11,28 +11,6 @@ namespace KAR::WarpRelay
 {
 #define WARP_RELAY_USER_ACCOUNT_API_VERSION "1.0.0"
 
-	//returns the path to the folder containing all the Warp Relay Accounts
-	static inline std::string GetAccountsDir()
-	{
-    const std::string dir = File::GetExeDirectory() + "/../Accounts/";
-    if (!File::Exists(dir))
-      File::CreateDir(dir);
-
-    return dir;
-	}
-
-	//returns the file extention for a warp relay account file
-  static inline std::string GetWarpRelayAccountFileExtension()
-  {
-    return ".wra";
-  }
-
-  //gets all the accounts folders
-  static inline std::vector<std::string> GetAllAccounts()
-  {
-    return Common::DoFileSearch({GetAccountsDir()}, {GetWarpRelayAccountFileExtension()});
-  }
-
 	//defines the region
   enum class Region : uint8_t
   {
@@ -131,6 +109,18 @@ namespace KAR::WarpRelay
     return "Star Dust";
   }
 
+  //defines the platform
+  enum class Platform : uint8_t
+  {
+    Windows = 0x00,
+    Mac,
+    Linux_SteamDeck,
+
+    Switch,
+
+    Count
+  };
+
 	//defines the data loaded from a warp relay file
 	struct WarpRelayAccount
 	{
@@ -138,6 +128,8 @@ namespace KAR::WarpRelay
 
     Rank rank = Rank::StarDust; //defines the temp latter rank of the user
     Region region = Region::NA;  // the geo-region to use
+
+    Platform platform = Platform::Windows;  // the platform this data was loaded on
 
     std::string displayName = "Kirby",  // the display name used online
       customIconURL = "",  // the URL/local path to the custom icon if they have one
@@ -147,10 +139,26 @@ namespace KAR::WarpRelay
         warpRelayAccountHash = "";  // the hash we use to validate they have a Warp Relay account and aren't just a guest
 	};
 
+  // returns the path to the folder containing all the Warp Relay Accounts
+  static inline std::string GetAccountsDir()
+  {
+    const std::string dir = File::GetExeDirectory() + "/../Accounts/";
+    if (!File::Exists(dir))
+      File::CreateDir(dir);
+
+    return dir;
+  }
+
+  // returns the file extention for a warp relay account file
+  static inline std::string GetWarpRelayAccountFileExtension()
+  {
+    return ".wra";
+  }
+
   //writes it to disc
   static inline void WriteWarpRelayAccount(const WarpRelayAccount& account)
   {
-    const std::string accountPath = GetAccountsDir() + "Default" + GetWarpRelayAccountFileExtension();
+    const std::string accountPath = GetAccountsDir() + (account.warpRelayAccountHash == "" ? "Guest" : account.warpRelayAccountHash) + GetWarpRelayAccountFileExtension();
 
     nlohmann::json j;
     j["version"] = WARP_RELAY_USER_ACCOUNT_API_VERSION;
@@ -188,16 +196,83 @@ namespace KAR::WarpRelay
     account.customIconURL = j["customIcon"];
 
     //make a call to validate if they're a guest || for now we force everyone to be a guest
-    account.isGuestAccount = true;
+    account.isGuestAccount = (account.warpRelayAccountHash == "");
 
     return account;
 	}
 
-  //loads a default guest account file
-  static inline WarpRelayAccount LoadDefaultGuestAccount()
+  ////loads a default guest account file
+  //static inline WarpRelayAccount LoadDefaultGuestAccount()
+  //{
+  //  return KAR::WarpRelay::LoadWarpRelayAccount(KAR::WarpRelay::GetAccountsDir() + "Default" +
+  //      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+  //}
+
+  // gets all the accounts folders
+  static inline std::vector<std::string> GetAllAccountFiles()
   {
-    return KAR::WarpRelay::LoadWarpRelayAccount(KAR::WarpRelay::GetAccountsDir() + "Default" +
-        KAR::WarpRelay::GetWarpRelayAccountFileExtension());
+    return Common::DoFileSearch({GetAccountsDir()}, {GetWarpRelayAccountFileExtension()});
+  }
+
+  // stores all the Warp Relay accounts the user has locally
+  static std::vector<WarpRelayAccount> accounts;
+
+   // stores the currently loaded in account
+  static WarpRelayAccount* loggedInAccount = nullptr;
+  static uint32_t accountIndex = 0;
+
+  //sets the logged in account
+  static inline bool SetLoggedInAccount(const uint32_t index)
+  {
+    //fail if we have no accounts
+    const size_t count = accounts.size();
+    if (!count)
+      return false;
+
+    //sets the index, if we need to, fall back to a latest account in case our index is out of range
+    accountIndex =
+        (index > static_cast<uint32_t>(count) - 1 ? static_cast<uint32_t>(count) - 1 : index);
+    loggedInAccount = &accounts[accountIndex];
+    return true;
+  }
+
+  //gets the currently logged in account || if nothing is found, we generate a guest account
+  static inline WarpRelayAccount* GetLoggedInAccount()
+  {
+    if (!loggedInAccount)
+    {
+      //attempt to relog in the user
+      if (!SetLoggedInAccount(accountIndex))
+      {
+        //generates a Guest account
+        accounts.resize(1, WarpRelayAccount());
+        SetLoggedInAccount(0);
+      }
+    }
+
+    return loggedInAccount;
+  }
+
+  //loads all the accounts, if none are found, force create a default account
+  static inline bool LoadAllAccounts()
+  {
+    const std::vector<std::string> accFiles = GetAllAccountFiles();
+    const size_t count = accFiles.size();
+    accounts.clear();
+
+    //if none are found we force a default guest account
+    if (!count)
+    {
+      accounts.resize(1, WarpRelayAccount());
+      return false;
+    }
+
+    //load the accounts
+    accounts.resize(count);
+    for (size_t i = 0; i < count; ++i)
+      accounts[i] = LoadWarpRelayAccount(accFiles[i]);
+
+    return true;
   }
 
   }

@@ -201,6 +201,9 @@ int main(int argc, char* argv[])
 
   //loads the mods
 
+  //loads all the accounts
+  KAR::WarpRelay::LoadAllAccounts();
+
   // Whenever the event loop is about to go to sleep, dispatch the jobs
   // queued in the Core first.
   QObject::connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::aboutToBlock,

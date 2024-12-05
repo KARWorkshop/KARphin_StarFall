@@ -49,7 +49,7 @@ private:
   //QComboBox* m_connection_type;
   //QLineEdit* m_nickname_edit;
 
-  KAR::WarpRelay::WarpRelayAccount account;  // stores data about the Warp Relay account logged in as
+  //KAR::WarpRelay::WarpRelayAccount* currentAccount;  // stores data about the Warp Relay account logged in as
 
   QGridLayout* m_main_layout;
 
