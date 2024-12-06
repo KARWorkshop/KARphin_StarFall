@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
   //loads the mods
 
   //loads all the accounts
-  KAR::WarpRelay::LoadAllAccounts();
+  WarpRelay::LoadAllAccounts();
 
   // Whenever the event loop is about to go to sleep, dispatch the jobs
   // queued in the Core first.

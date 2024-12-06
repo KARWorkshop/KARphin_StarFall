@@ -7,13 +7,13 @@
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 #include <Core/KAR/Versioning.hpp>
 
-namespace KAR::Netplay::Packet
+namespace Netplay::Packet
 {
 	//defines a connect packet
 	struct ConnectPacket
 	{
-    KAR::WarpRelay::Rank rank = KAR::WarpRelay::Rank::Count;
-    KAR::WarpRelay::Region region = KAR::WarpRelay::Region::Count;
+    WarpRelay::Rank rank = WarpRelay::Rank::Count;
+    WarpRelay::Region region = WarpRelay::Region::Count;
 
     std::string displayName = "",  // the name of the user to display
 

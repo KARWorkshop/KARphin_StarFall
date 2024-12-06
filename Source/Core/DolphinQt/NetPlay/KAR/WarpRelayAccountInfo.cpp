@@ -28,14 +28,11 @@
 
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 
-KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
+KAR::GUI::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
     : QDialog(parent)
 {
   setWindowTitle(tr("Warp Relay Account"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-  //gets the logged in account
-  GetLoggedInAccount();
 
   //creates the layout
    m_main_layout = new QGridLayout;
@@ -46,7 +43,8 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    displayName_Label->setToolTip(tr("This is the name you will show to the public."));
    m_main_layout->addWidget(displayName_Label, 0, 0);
    displayName_EditFeild = new QLineEdit;
-   displayName_EditFeild->setText(QString::fromStdString(loggedInAccount->displayName));
+   displayName_EditFeild->setText(
+       QString::fromStdString(WarpRelay::GetLoggedInAccount()->displayName));
    displayName_EditFeild->setToolTip(tr("This is the name you will show to the public."));
    displayName_EditFeild->setValidator(
        new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
@@ -111,7 +109,7 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
 //  ConnectWidgets();
 }
 
-void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
+void KAR::GUI::AccountInfoDialog::closeEvent(QCloseEvent* event)
 {
   // Add your callback or custom handling here
   QMessageBox::StandardButton res =
@@ -121,8 +119,9 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
   if (res == QMessageBox::Yes)
   {
     //saves the data to the file
-    loggedInAccount->displayName = displayName_EditFeild->text().toStdString();
-    KAR::WarpRelay::WriteWarpRelayAccount(*loggedInAccount);
+    WarpRelay::WarpRelayAccount* account = WarpRelay::GetLoggedInAccount();
+    account->displayName = displayName_EditFeild->text().toStdString();
+    WarpRelay::WriteWarpRelayAccount(*account);
 
     // Accept the close event
     event->accept();
@@ -134,12 +133,12 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
   }
 }
 
-void KAR::WarpRelay::AccountInfoDialog::show()
-{
-  GetLoggedInAccount(); //refreshes the logged in account
-
-  QDialog::show();
-}
+//void KAR::GUI::AccountInfoDialog::show()
+//{
+//  //WarpRelay::GetLoggedInAccount();  // refreshes the logged in account
+//
+//  QDialog::show();
+//}
 
 //void KAR::WarpRelay::AccountInfoDialog::accept()
 //{

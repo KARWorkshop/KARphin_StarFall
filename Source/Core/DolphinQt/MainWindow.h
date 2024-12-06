@@ -56,7 +56,7 @@ class WatchWidget;
 class WiiTASInputWindow;
 struct WindowSystemInfo;
 
-class KAR::WarpRelay::AccountInfoDialog;
+class KAR::GUI::AccountInfoDialog;
 
 namespace DiscIO
 {
@@ -268,7 +268,7 @@ private:
   static constexpr int num_wii_controllers = 4;
   std::array<WiiTASInputWindow*, num_wii_controllers> m_wii_tas_input_windows{};
 
-  KAR::WarpRelay::AccountInfoDialog* KAR_WarpRelay_Account_dialog;
+  KAR::GUI::AccountInfoDialog* KAR_WarpRelay_Account_dialog;
 
 #ifdef USE_RETRO_ACHIEVEMENTS
   AchievementsWindow* m_achievements_window = nullptr;

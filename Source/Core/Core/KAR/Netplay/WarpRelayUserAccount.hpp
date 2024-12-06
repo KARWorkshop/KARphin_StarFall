@@ -7,7 +7,7 @@
 #include <Common/FileUtil.h>
 #include "Common/FileSearch.h"
 
-namespace KAR::WarpRelay
+namespace WarpRelay
 {
 #define WARP_RELAY_USER_ACCOUNT_API_VERSION "1.0.0"
 
@@ -218,8 +218,8 @@ namespace KAR::WarpRelay
   static std::vector<WarpRelayAccount> accounts;
 
    // stores the currently loaded in account
-  static WarpRelayAccount* loggedInAccount = nullptr;
-  static uint32_t accountIndex = 0;
+  static WarpRelayAccount* loggedInAccount;
+  static uint32_t accountIndex;
 
   //sets the logged in account
   static inline bool SetLoggedInAccount(const uint32_t index)

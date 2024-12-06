@@ -1397,12 +1397,10 @@ void MainWindow::ShowNetPlaySetupDialog()
 
 void MainWindow::ShowWarpRelayAccountInfo()
 {
-  //if (!KAR_WarpRelay_Account_dialog)
-    KAR_WarpRelay_Account_dialog = new KAR::WarpRelay::AccountInfoDialog(this);
-
+  KAR_WarpRelay_Account_dialog = new KAR::GUI::AccountInfoDialog(this);
   KAR_WarpRelay_Account_dialog->setAttribute(Qt::WA_DeleteOnClose, true);
   SetQWidgetWindowDecorations(KAR_WarpRelay_Account_dialog);
-  KAR_WarpRelay_Account_dialog->show();
+  KAR_WarpRelay_Account_dialog->exec();
 }
 
 void MainWindow::ShowNetPlayBrowser()
@@ -1623,7 +1621,7 @@ bool MainWindow::NetPlayJoin()
     host_port = Config::Get(Config::NETPLAY_CONNECT_PORT);
   }
 
-  KAR::WarpRelay::WarpRelayAccount* account = KAR::WarpRelay::GetLoggedInAccount();
+  WarpRelay::WarpRelayAccount* account = WarpRelay::GetLoggedInAccount();
 
   const std::string traversal_host = Config::Get(Config::NETPLAY_TRAVERSAL_SERVER);
   const u16 traversal_port = Config::Get(Config::NETPLAY_TRAVERSAL_PORT);

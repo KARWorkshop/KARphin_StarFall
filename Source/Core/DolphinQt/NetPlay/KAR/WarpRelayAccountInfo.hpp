@@ -19,7 +19,7 @@ class QPushButton;
 //class QTabWidget;
 class QLabel;
 
-namespace KAR::WarpRelay
+namespace KAR::GUI
 {
 class AccountInfoDialog : public QDialog
 {

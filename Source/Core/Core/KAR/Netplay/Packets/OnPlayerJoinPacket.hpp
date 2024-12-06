@@ -8,7 +8,7 @@
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 #include <Core/KAR/Versioning.hpp>
 
-namespace KAR::Netplay::Packet
+namespace Netplay::Packet
 {
 	//defines a packet for on player join data
 	struct OnPlayerJoinPacket

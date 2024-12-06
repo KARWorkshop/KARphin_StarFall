@@ -72,8 +72,6 @@
 
 #include "UICommon/GameFile.h"
 
-#include "KAR/Netplay/Packets/ConnectPacket.hpp"
-
 
 #if !defined(_WIN32)
 #include <sys/socket.h>
@@ -201,10 +199,9 @@ void NetPlayServer::SetupIndex()
   }
 
   NetPlaySession session;
-  KAR::WarpRelay::WarpRelayAccount account = KAR::WarpRelay::LoadDefaultGuestAccount();
 
   session.name = Config::Get(Config::NETPLAY_INDEX_NAME);
-  session.region = KAR::WarpRelay::GetRegionStr(account.region);
+  session.region = 
   session.has_password = !Config::Get(Config::NETPLAY_INDEX_PASSWORD).empty();
   session.method = m_traversal_client ? "traversal" : "direct";
   session.game_id = m_selected_game_name.empty() ? "UNKNOWN" : m_selected_game_name;
@@ -436,7 +433,7 @@ static void SendSyncIdentifier(sf::Packet& spac, const SyncIdentifier& sync_iden
 // called from ---NETPLAY--- thread
 ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Packet& received_packet)
 {
-  KAR::Netplay::Packet::ConnectPacket packet = KAR::Netplay::Packet::ParsePacket_Connect(received_packet);
+  Netplay::Packet::ConnectPacket packet = Netplay::Packet::ParsePacket_Connect(received_packet);
 
   if (packet.majorBuild != KAR_VERSION_MAJOR)
     return ConnectionError::VersionMismatch;

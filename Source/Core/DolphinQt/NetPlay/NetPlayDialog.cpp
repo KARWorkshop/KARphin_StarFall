@@ -643,10 +643,10 @@ void NetPlayDialog::UpdateGUI()
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
     name_item->setToolTip(name_item->text());
 
-    const auto& rank_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
+    const auto& rank_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRankStr(p->account.rank)));
     rank_item->setToolTip(rank_item->text());
 
-    const auto& region_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRegionLongStr(p->account.region)));
+    const auto& region_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRegionLongStr(p->account.region)));
     region_item->setToolTip(region_item->text());
 
     auto* ping_item = new QTableWidgetItem(QStringLiteral("%1 ms").arg(p->ping));

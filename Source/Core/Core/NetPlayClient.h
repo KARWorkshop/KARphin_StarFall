@@ -109,7 +109,7 @@ class Player
 {
 public:
 
-  KAR::WarpRelay::WarpRelayAccount account;
+  WarpRelay::WarpRelayAccount account;
 
   PlayerId pid{};
   u32 ping = 0;
