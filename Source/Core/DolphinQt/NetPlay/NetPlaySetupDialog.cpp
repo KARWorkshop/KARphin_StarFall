@@ -37,10 +37,8 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   CreateMainLayout();
 
   bool use_index = Config::Get(Config::NETPLAY_USE_INDEX);
- // std::string index_region = Config::Get(Config::NETPLAY_INDEX_REGION);
   std::string index_name = Config::Get(Config::NETPLAY_INDEX_NAME);
   std::string index_password = Config::Get(Config::NETPLAY_INDEX_PASSWORD);
-  //std::string nickname = Config::Get(Config::NETPLAY_NICKNAME);
   std::string traversal_choice = Config::Get(Config::NETPLAY_TRAVERSAL_CHOICE);
   int connect_port = Config::Get(Config::NETPLAY_CONNECT_PORT);
   int host_port = Config::Get(Config::NETPLAY_HOST_PORT);
@@ -53,7 +51,6 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   m_host_upnp->setChecked(use_upnp);
 #endif
 
-  //m_nickname_edit->setText(QString::fromStdString(nickname));
   m_connection_type->setCurrentIndex(traversal_choice == "direct" ? 0 : 1);
   m_connect_port_box->setValue(connect_port);
   m_host_port_box->setValue(host_port);
@@ -63,10 +60,6 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
 
   m_host_server_browser->setChecked(use_index);
 
-  //m_host_server_region->setEnabled(use_index);
-  //m_host_server_region->setCurrentIndex(
-  //    m_host_server_region->findData(QString::fromStdString(index_region)));
-  //
   m_host_server_name->setEnabled(use_index);
   m_host_server_name->setText(QString::fromStdString(index_name));
 
@@ -86,13 +79,9 @@ void NetPlaySetupDialog::CreateMainLayout()
 {
   m_main_layout = new QGridLayout;
   m_button_box = new QDialogButtonBox(QDialogButtonBox::Cancel);
-  //m_nickname_edit = new QLineEdit;
   m_connection_type = new QComboBox;
   m_reset_traversal_button = new NonDefaultQPushButton(tr("Reset Traversal Settings"));
   m_tab_widget = new QTabWidget;
-
-  //m_nickname_edit->setValidator(
-  //    new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, m_nickname_edit));
 
   // Connection widget
   auto* connection_widget = new QWidget;
@@ -103,6 +92,7 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_connect_port_label = new QLabel(tr("Port:"));
   m_connect_port_box = new QSpinBox;
   m_connect_button = new NonDefaultQPushButton(tr("Connect"));
+  m_connect_spectate_button = new NonDefaultQPushButton(tr("Spectate"));
 
   m_connect_port_box->setMaximum(65535);
 
@@ -128,6 +118,7 @@ void NetPlaySetupDialog::CreateMainLayout()
   connection_layout->addWidget(alert_label, 1, 0, 1, -1);
   connection_layout->addItem(new QSpacerItem(1, 1), 2, 0, -1, -1);
   connection_layout->addWidget(m_connect_button, 3, 3, Qt::AlignRight);
+  connection_layout->addWidget(m_connect_spectate_button, 2, 3, Qt::AlignRight);
 
   connection_widget->setLayout(connection_layout);
 
@@ -143,7 +134,6 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_host_server_browser = new QCheckBox(tr("Show in server browser"));
   m_host_server_name = new QLineEdit;
   m_host_server_password = new QLineEdit;
-  //m_host_server_region = new QComboBox;
 
 #ifdef USE_UPNP
   m_host_upnp = new QCheckBox(tr("Forward port (UPnP)"));
@@ -165,20 +155,12 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_host_server_password->setToolTip(tr("Password for joining your game (leave empty for none)"));
   m_host_server_password->setPlaceholderText(tr("Password"));
 
-  //for (const auto& region : NetPlayIndex::GetRegions())
-  //{
-  //  m_host_server_region->addItem(
-  //      tr("%1 (%2)").arg(tr(region.second.c_str())).arg(QString::fromStdString(region.first)),
-  //      QString::fromStdString(region.first));
-  //}
-
   host_layout->addWidget(m_host_port_label, 0, 0);
   host_layout->addWidget(m_host_port_box, 0, 1);
 #ifdef USE_UPNP
   host_layout->addWidget(m_host_upnp, 0, 2);
 #endif
   host_layout->addWidget(m_host_server_browser, 1, 0);
-  //host_layout->addWidget(m_host_server_region, 1, 1);
   host_layout->addWidget(m_host_server_name, 1, 2);
   host_layout->addWidget(m_host_server_password, 1, 3);
   host_layout->addWidget(m_host_games, 2, 0, 1, -1);
@@ -196,8 +178,6 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_main_layout->addWidget(new QLabel(tr("Connection Type:")), 0, 0);
   m_main_layout->addWidget(m_connection_type, 0, 1);
   m_main_layout->addWidget(m_reset_traversal_button, 0, 2);
-  //m_main_layout->addWidget(new QLabel(tr("Nickname:")), 1, 0);
-  //m_main_layout->addWidget(m_nickname_edit, 1, 1);
   m_main_layout->addWidget(m_tab_widget, 2, 0, 1, -1);
   m_main_layout->addWidget(m_button_box, 3, 0, 1, -1);
 
@@ -212,7 +192,6 @@ void NetPlaySetupDialog::ConnectWidgets()
 {
   connect(m_connection_type, &QComboBox::currentIndexChanged, this,
           &NetPlaySetupDialog::OnConnectionTypeChanged);
-  //connect(m_nickname_edit, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
 
   // Connect widget
   connect(m_ip_edit, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
@@ -238,21 +217,18 @@ void NetPlaySetupDialog::ConnectWidgets()
   connect(m_host_server_browser, &QCheckBox::toggled, this, &NetPlaySetupDialog::SaveSettings);
   connect(m_host_server_name, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
   connect(m_host_server_password, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
-  //connect(m_host_server_region,
-  //        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
-  //        &NetPlaySetupDialog::SaveSettings);
 
 #ifdef USE_UPNP
   connect(m_host_upnp, &QCheckBox::stateChanged, this, &NetPlaySetupDialog::SaveSettings);
 #endif
 
   connect(m_connect_button, &QPushButton::clicked, this, &QDialog::accept);
+  connect(m_connect_spectate_button, &QPushButton::clicked, this, &QDialog::accept);
   connect(m_host_button, &QPushButton::clicked, this, &QDialog::accept);
   connect(m_button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(m_reset_traversal_button, &QPushButton::clicked, this,
           &NetPlaySetupDialog::ResetTraversalHost);
   connect(m_host_server_browser, &QCheckBox::toggled, this, [this](bool value) {
-    //m_host_server_region->setEnabled(value);
     m_host_server_name->setEnabled(value);
     m_host_server_password->setEnabled(value);
   });
@@ -262,7 +238,6 @@ void NetPlaySetupDialog::SaveSettings()
 {
   Config::ConfigChangeCallbackGuard config_guard;
 
-  //Config::SetBaseOrCurrent(Config::NETPLAY_NICKNAME, m_nickname_edit->text().toStdString());
   Config::SetBaseOrCurrent(m_connection_type->currentIndex() == 0 ? Config::NETPLAY_ADDRESS :
                                                                     Config::NETPLAY_HOST_CODE,
                            m_ip_edit->text().toStdString());
@@ -283,8 +258,6 @@ void NetPlaySetupDialog::SaveSettings()
                            m_host_chunked_upload_limit_box->value());
 
   Config::SetBaseOrCurrent(Config::NETPLAY_USE_INDEX, m_host_server_browser->isChecked());
-  //Config::SetBaseOrCurrent(Config::NETPLAY_INDEX_REGION,
-   //                        m_host_server_region->currentData().toString().toStdString());
   Config::SetBaseOrCurrent(Config::NETPLAY_INDEX_NAME, m_host_server_name->text().toStdString());
   Config::SetBaseOrCurrent(Config::NETPLAY_INDEX_PASSWORD,
                            m_host_server_password->text().toStdString());
@@ -343,14 +316,7 @@ void NetPlaySetupDialog::accept()
       return;
     }
 
-    //if (m_host_server_browser->isChecked() &&
-    //    m_host_server_region->currentData().toString().isEmpty())
-    //{
-    //  ModalMessageBox::critical(this, tr("Error"),
-    //                            tr("You must provide a region for your session!"));
-    //  return;
-    //}
-
+    
     emit Host(*items[0]->data(Qt::UserRole).value<std::shared_ptr<const UICommon::GameFile>>());
   }
 }

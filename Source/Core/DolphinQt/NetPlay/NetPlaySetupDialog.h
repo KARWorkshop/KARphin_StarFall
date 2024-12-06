@@ -49,7 +49,6 @@ private:
   // Main Widget
   QDialogButtonBox* m_button_box;
   QComboBox* m_connection_type;
-  //QLineEdit* m_nickname_edit;
   QGridLayout* m_main_layout;
   QTabWidget* m_tab_widget;
   QPushButton* m_reset_traversal_button;
@@ -60,6 +59,7 @@ private:
   QLabel* m_connect_port_label;
   QSpinBox* m_connect_port_box;
   QPushButton* m_connect_button;
+  QPushButton* m_connect_spectate_button;
 
   // Host Widget
   QLabel* m_host_port_label;
@@ -73,7 +73,6 @@ private:
   QCheckBox* m_host_server_browser;
   QLineEdit* m_host_server_name;
   QLineEdit* m_host_server_password;
-  //QComboBox* m_host_server_region;
 
 #ifdef USE_UPNP
   QCheckBox* m_host_upnp;
