@@ -171,11 +171,8 @@ private:
   inline void SendNewPlayerToAllClients(const Client& newPlayer)
   {
     Netplay::Packet::OnPlayerJoinPacket packet;
-    packet.displayName = newPlayer.account.displayName;
     packet.PID = newPlayer.pid;
-
-    packet.rank = newPlayer.account.rank;
-    packet.region = newPlayer.account.region;
+    packet.account = newPlayer.account;
 
     SendToClients(Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
@@ -191,12 +188,8 @@ private:
   inline void SendSpecificClient_NewPlayerInfo(const Client& targetClient, const Client& player)
   {
     Netplay::Packet::OnPlayerJoinPacket packet;
-    packet.displayName = player.account.displayName;
     packet.PID = player.pid;
-
-    packet.rank = player.account.rank;
-    packet.region = player.account.region;
-
+    packet.account = player.account;
     Send(targetClient.socket, Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
 

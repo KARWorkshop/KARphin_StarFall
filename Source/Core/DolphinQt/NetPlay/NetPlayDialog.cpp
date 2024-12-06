@@ -3,6 +3,7 @@
 
 #include "DolphinQt/NetPlay/NetPlayDialog.h"
 
+#include <QDebug>
 #include <QAction>
 #include <QActionGroup>
 #include <QApplication>
@@ -65,7 +66,7 @@
 #include "VideoCommon/NetPlayGolfUI.h"
 #include "VideoCommon/VideoConfig.h"
 
-#include "../curl/curl/include/curl/curl.h"
+#include "Common/HttpRequest.h"
 
 namespace
 {
@@ -614,6 +615,44 @@ void NetPlayDialog::UpdateDiscordPresence()
 #endif
 }
 
+//starts a download of a icon
+static inline QPixmap StartPlayerIconDownload(const std::string URL, const uint8_t playerIndex)
+{
+  QPixmap pixmap;
+
+  //gets the image
+  //std::string endpoint{URL};
+  Common::HttpRequest http;
+
+  // The server always redirects once to the same location.
+  http.FollowRedirects(1);
+
+  const Common::HttpRequest::Response response = http.Get(URL);
+  std::string FP = "";
+ if(response.has_value()) //writes the image to cache
+  {
+    // net cache
+    const std::string netCacheDir = File::GetExeDirectory() + "/NetCache/";
+    if (!File::Exists(netCacheDir))
+      File::CreateDir(netCacheDir);
+    
+    // packs data
+    const std::vector<uint8_t> data = response.value();
+    FP = netCacheDir + "Data" + std::to_string(playerIndex) + ".png";
+    File::CreateEmptyFile(FP);
+    std::ofstream outFile(FP, std::ios::binary);
+    outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+    outFile.close();
+  }
+  else //if we failed, fallback
+     FP = File::GetExeDirectory() + "/Sys/NetUserFallback/Guest_Icon_Fallback.png";
+
+  //loads data
+  pixmap.load(QString::fromStdString(FP));
+
+  return pixmap;
+}
+
 void NetPlayDialog::UpdateGUI()
 {
   auto client = Settings::Instance().GetNetPlayClient();
@@ -630,29 +669,27 @@ void NetPlayDialog::UpdateGUI()
   m_player_count = static_cast<int>(players.size());
 
   int selection_pid = m_players_list->currentItem() ?
-                          m_players_list->currentItem()->data(Qt::UserRole).toInt() :
-                          -1;
+                          m_players_list->currentItem()->data(Qt::UserRole).toInt() :  -1;
 
   m_players_list->clear();
   m_players_list->setHorizontalHeaderLabels(
       {tr("Player"), tr("Rank"), tr("Region"), tr("Ping"), tr("Mapping")});
   m_players_list->setRowCount(m_player_count);
+  m_players_list->setIconSize(QSize(80, 80));
+  //m_players_list->setColumnWidth(0, 100);
 
   for (int i = 0; i < m_player_count; i++)
   {
     const auto* p = players[i];
 
-    //checks for their icon, if it doesn't exist we load it
+    //checks for their icon, if it doesn't exist we download it
     if (icons.find(p->account.customIconURL) == icons.end())
     {
-      icons[p->account.customIconURL] = QIcon();
-
-      //start downloading it
-      //networkManager->get(QNetworkRequest(QUrl(imageUrl)));
+      icons[p->account.customIconURL] = QIcon(StartPlayerIconDownload(p->account.customIconURL, i));
+      //icons[URL].actualSize({80, 80}, QIcon::Mode::Active, QIcon::State::On);
     }
-    QIcon icon = icons.at(p->account.customIconURL);
 
-    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
+    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName), 1000);
     name_item->setIcon(icons.at(p->account.customIconURL));
     name_item->setToolTip(name_item->text());
 
@@ -670,11 +707,11 @@ void NetPlayDialog::UpdateGUI()
             p->pid, client->GetPadMapping(), client->GetGBAConfig(), client->GetWiimoteMapping())));
     mapping_item->setToolTip(mapping_item->text());
 
-    for (auto* item : {name_item, rank_item, region_item, ping_item, mapping_item})
-    {
-      item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-      item->setData(Qt::UserRole, static_cast<int>(p->pid));
-    }
+   for (auto* item : {name_item, rank_item, region_item, ping_item, mapping_item})
+   {
+     item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+     item->setData(Qt::UserRole, static_cast<int>(p->pid));
+   }
 
     m_players_list->setItem(i, 0, name_item);
     m_players_list->setItem(i, 1, rank_item);

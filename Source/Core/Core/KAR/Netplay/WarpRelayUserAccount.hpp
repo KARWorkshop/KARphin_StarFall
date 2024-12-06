@@ -132,7 +132,7 @@ namespace WarpRelay
     Platform platform = Platform::Windows;  // the platform this data was loaded on
 
     std::string displayName = "Kirby",  // the display name used online
-      customIconURL = "",  // the URL/local path to the custom icon if they have one
+      customIconURL = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-account/Guest_Icon_NULL1.png",  // the URL/local path to the custom icon if they have one
 
         discordAccountLinkHash = "",  // the hash we use to validate they have a linked discord account
         googleAccountLinkHash = "",// the hash we use to validate they have a linked google account

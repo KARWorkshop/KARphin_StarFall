@@ -9,37 +9,37 @@
 
 namespace Netplay::Packet
 {
-	//defines a connect packet
-	struct ConnectPacket
-	{
-    WarpRelay::Rank rank = WarpRelay::Rank::Count;
-    WarpRelay::Region region = WarpRelay::Region::Count;
+// defines a connect packet
+struct ConnectPacket
+{
+  //account data
+  WarpRelay::WarpRelayAccount account;
 
-    std::string displayName = "",  // the name of the user to display
+      // build data
+      std::string majorBuild = KAR_VERSION_MAJOR, minorBuild = KAR_VERSION_MINOR, hotfix = KAR_VERSION_HOT_FIX;
+};
 
-			//build data
-			majorBuild = KAR_VERSION_MAJOR, minorBuild = KAR_VERSION_MINOR,
-                hotfix = KAR_VERSION_HOT_FIX;
-	};
-
-	//generates a connect packet
-  static inline sf::Packet GeneratePacket_Connect(const ConnectPacket& data)
-	{
+  //generate a connect packet
+  static inline sf::Packet GeneratePacket_Connect(const WarpRelay::WarpRelayAccount account)
+  {
     sf::Packet packet;
 
-    packet << data.majorBuild;
-    packet << data.minorBuild;
-    packet << data.hotfix;
+    //send over the build data
+    packet << KAR_VERSION_MAJOR;
+    packet << KAR_VERSION_MINOR;
+    packet << KAR_VERSION_HOT_FIX;
 
-		packet << data.displayName;
+    packet << account.displayName;
+    packet << account.customIconURL;
 
-		packet << (uint8_t)data.rank;
-    packet << (uint8_t)data.region;
+    packet << (uint8_t)account.platform;
+    packet << (uint8_t)account.rank;
+    packet << (uint8_t)account.region;
 
-		return packet;
-	}
+    return packet;
+  }
 
-	//parses a connect packet
+  // parses a connect packet into a account
   static inline ConnectPacket ParsePacket_Connect(sf::Packet& packet)
   {
     ConnectPacket connect;
@@ -48,14 +48,18 @@ namespace Netplay::Packet
     packet >> connect.minorBuild;
     packet >> connect.hotfix;
 
-    packet >> connect.displayName;
+    packet >> connect.account.displayName;
+    packet >> connect.account.customIconURL;
 
     uint8_t d = 0;
     packet >> d;
-    connect.rank = (WarpRelay::Rank)d;
+    connect.account.platform = (WarpRelay::Platform)d;
     packet >> d;
-    connect.region = (WarpRelay::Region)d;
+    connect.account.rank = (WarpRelay::Rank)d;
+    packet >> d;
+    connect.account.region = (WarpRelay::Region)d;
 
     return connect;
   }
+
   }

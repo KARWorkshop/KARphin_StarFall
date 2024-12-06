@@ -13,12 +13,9 @@ namespace Netplay::Packet
 	//defines a packet for on player join data
 	struct OnPlayerJoinPacket
 	{
-    WarpRelay::Rank rank = WarpRelay::Rank::StarDust;
-    WarpRelay::Region region = WarpRelay::Region::NA;
+    WarpRelay::WarpRelayAccount account; //the account of the player
 
 		uint8_t PID = 0;
-
-    std::string displayName = "";
 	};
 
 	//packages a player join packet
@@ -27,12 +24,14 @@ namespace Netplay::Packet
     sf::Packet p;
     p << (uint8_t)NetPlay::MessageID::PlayerJoin;
 
-		p << data.displayName;
-
-		p << (uint8_t)data.rank;
-    p << (uint8_t)data.region;
-
 		p << data.PID;
+
+		p << data.account.displayName;
+    p << data.account.customIconURL;
+
+		p << (uint8_t)data.account.rank;
+    p << (uint8_t)data.account.region;
+    p << (uint8_t)data.account.platform;
 
 		return p;
   }
@@ -42,15 +41,18 @@ namespace Netplay::Packet
 	{
     OnPlayerJoinPacket data;
 
-		packet >> data.displayName;
+		packet >> data.PID;
+
+    packet >> data.account.displayName;
+    packet >> data.account.customIconURL;
 
 		uint8_t d = 0;
     packet >> d;
-    data.rank = (WarpRelay::Rank)d;
+    data.account.rank = (WarpRelay::Rank)d;
     packet >> d;
-    data.region = (WarpRelay::Region)d;
-
-		packet >> data.PID;
+    data.account.region = (WarpRelay::Region)d;
+    packet >> d;
+    data.account.platform = (WarpRelay::Platform)d;
 
     return data;
 	}
