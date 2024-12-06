@@ -201,13 +201,6 @@ namespace WarpRelay
     return account;
 	}
 
-  ////loads a default guest account file
-  //static inline WarpRelayAccount LoadDefaultGuestAccount()
-  //{
-  //  return KAR::WarpRelay::LoadWarpRelayAccount(KAR::WarpRelay::GetAccountsDir() + "Default" +
-  //      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
-  //}
-
   // gets all the accounts folders
   static inline std::vector<std::string> GetAllAccountFiles()
   {

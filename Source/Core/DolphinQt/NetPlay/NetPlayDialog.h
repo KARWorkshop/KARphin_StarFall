@@ -9,6 +9,7 @@
 
 #include <QDialog>
 #include <QMenuBar>
+#include <QPixmap>
 
 #include "Common/Lazy.h"
 #include "Core/NetPlayClient.h"
@@ -129,6 +130,9 @@ private:
                       int duration = OSD::Duration::NORMAL);
 
   void SendMessage(const std::string& message);
+
+  //stores a map of Icon byte data to arrays to their URLs
+  std::unordered_map<std::string, QIcon> icons;
 
   // Chat
   QGroupBox* m_chat_box;

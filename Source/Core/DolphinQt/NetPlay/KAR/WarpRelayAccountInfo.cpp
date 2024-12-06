@@ -37,6 +37,9 @@ KAR::GUI::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   //creates the layout
    m_main_layout = new QGridLayout;
 
+   //loads the accounts in case new ones have spawned
+   WarpRelay::LoadAllAccounts();
+
    //show the list of accounts to cycle through
 
    displayName_Label = new QLabel(tr("Display Name:"));

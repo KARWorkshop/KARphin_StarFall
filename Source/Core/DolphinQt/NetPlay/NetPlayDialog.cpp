@@ -640,7 +640,18 @@ void NetPlayDialog::UpdateGUI()
   {
     const auto* p = players[i];
 
+    //checks for their icon, if it doesn't exist we load it
+    if (icons.find(p->account.customIconURL) == icons.end())
+    {
+      icons[p->account.customIconURL] = QIcon();
+
+      //start downloading it
+      //networkManager->get(QNetworkRequest(QUrl(imageUrl)));
+    }
+    QIcon icon = icons.at(p->account.customIconURL);
+
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
+    name_item->setIcon(icons.at(p->account.customIconURL));
     name_item->setToolTip(name_item->text());
 
     const auto& rank_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRankStr(p->account.rank)));
