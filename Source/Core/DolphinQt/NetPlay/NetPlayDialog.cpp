@@ -65,6 +65,8 @@
 #include "VideoCommon/NetPlayGolfUI.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include "../curl/curl/include/curl/curl.h"
+
 namespace
 {
 QString InetAddressToString(const Common::TraversalInetAddress& addr)

@@ -11,8 +11,6 @@
 #include <QMenuBar>
 #include <QPixmap>
 
-#include "../curl/curl/include/curl/curl.h"
-
 #include "Common/Lazy.h"
 #include "Core/NetPlayClient.h"
 #include "DolphinQt/GameList/GameListModel.h"
