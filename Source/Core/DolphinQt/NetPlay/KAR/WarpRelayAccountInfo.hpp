@@ -28,7 +28,6 @@ public:
   explicit AccountInfoDialog(QWidget* parent);
 
   void closeEvent(QCloseEvent* event) override;
-  void show();
 
 //signals:
  // bool Join();
