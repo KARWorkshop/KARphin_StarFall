@@ -103,6 +103,9 @@ public:
 
   // prints a system annoucment
   virtual void PrintSystemAnnoucment(const std::string& command) = 0;
+
+  //when no game is found
+  virtual void OnNoGameForLobby() = 0;
 };
 
 class Player

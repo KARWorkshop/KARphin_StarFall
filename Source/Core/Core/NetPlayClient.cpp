@@ -815,11 +815,15 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
   }
 
   // checks if the user has the game
-  if (!m_dialog->FindGameFile(m_selected_game))
+  if (!m_dialog->FindGameFile(m_selected_game)) //if the player doesn't have the game, we forcibly disconnect them
   {
-    PanicAlertFmtT("Selected game doesn't exist in game list!\n\n"
-                   "To make it useable you must add {0} to your ROMs folder.",
-                   netplay_name);
+    //PanicAlertFmtT("Selected game doesn't exist in game list!\n\n"
+    //               "To make it useable you must add {0} to your ROMs folder.",
+   //                netplay_name);
+
+    m_dialog->OnNoGameForLobby();
+    Disconnect();
+    return;
   }
 
   INFO_LOG_FMT(NETPLAY, "Game changed to {}", netplay_name);

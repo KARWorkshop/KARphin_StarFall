@@ -11,9 +11,12 @@
 #include <QMenuBar>
 #include <QPixmap>
 
+#include "DolphinQt/QtUtils/ModalMessageBox.h"
+
 #include "Common/Lazy.h"
 #include "Core/NetPlayClient.h"
 #include "DolphinQt/GameList/GameListModel.h"
+#include "DolphinQt/Settings.h"
 #include "VideoCommon/OnScreenDisplay.h"
 
 class BootSessionData;
@@ -110,6 +113,9 @@ public:
   {
 
   }
+
+  //when the user attempts to join but doesn't have the game
+  void OnNoGameForLobby() override { DisplayMessage(tr("You can't join the lobby since you lack the game. Add it to your ROMs folder first."), "Red");}
 
 signals:
   void Stop();

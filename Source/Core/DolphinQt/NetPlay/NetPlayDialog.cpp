@@ -376,11 +376,6 @@ void NetPlayDialog::ConnectWidgets()
     }
   };
 
-  //connect(m_host_input_authority_action, &QAction::toggled, this,
-  //        [hia_function] { hia_function(true); });
-  //connect(m_golf_mode_action, &QAction::toggled, this, [hia_function] { hia_function(true); });
-  //connect(m_fixed_delay_action, &QAction::toggled, this, [hia_function] { hia_function(false); });
-
   connect(m_start_button, &QPushButton::clicked, this, &NetPlayDialog::OnStart);
   connect(m_quit_button, &QPushButton::clicked, this, &NetPlayDialog::reject);
 
@@ -424,11 +419,6 @@ void NetPlayDialog::ConnectWidgets()
   connect(m_sync_codes_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
   connect(m_record_input_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
   connect(m_strict_settings_sync_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  //connect(m_host_input_authority_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  //connect(m_golf_mode_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  //connect(m_golf_mode_overlay_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  //connect(m_fixed_delay_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
-  //connect(m_hide_remote_gbas_action, &QAction::toggled, this, &NetPlayDialog::SaveSettings);
 }
 
 void NetPlayDialog::SendMessage(const std::string& msg)
@@ -483,6 +473,7 @@ void NetPlayDialog::OnStart()
         this, tr("Error"),
         tr("Auto internal resolution is not allowed in strict sync mode, as it depends on window "
            "size.\n\nPlease select a specific internal resolution."));
+
     return;
   }
 
@@ -533,13 +524,8 @@ void NetPlayDialog::show(std::string nickname, bool use_traversal)
   }
 
   m_data_menu->menuAction()->setVisible(is_hosting);
- // m_network_menu->menuAction()->setVisible(is_hosting);
   m_game_digest_menu->menuAction()->setVisible(is_hosting);
-//#ifdef HAS_LIBMGBA
-//  m_hide_remote_gbas_action->setVisible(is_hosting);
-//#else
-//  m_hide_remote_gbas_action->setVisible(false);
-//#endif
+
   m_start_button->setHidden(!is_hosting);
   m_kick_button->setHidden(!is_hosting);
   m_assign_ports_button->setHidden(!is_hosting);
