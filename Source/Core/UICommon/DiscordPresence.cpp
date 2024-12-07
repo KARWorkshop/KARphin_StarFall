@@ -25,6 +25,8 @@
 #include "Core/Config/AchievementSettings.h"
 #include "Core/System.h"
 
+#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+
 #endif
 
 namespace Discord
@@ -59,8 +61,10 @@ void HandleDiscordJoin(const char* join_secret)
   if (event_handler == nullptr)
     return;
 
-  if (Config::Get(Config::NETPLAY_NICKNAME) == Config::NETPLAY_NICKNAME.GetDefaultValue())
-    Config::SetCurrent(Config::NETPLAY_NICKNAME, username);
+  /*if (Config::Get(Config::NETPLAY_NICKNAME) == Config::NETPLAY_NICKNAME.GetDefaultValue())
+    Config::SetCurrent(Config::NETPLAY_NICKNAME, username);*/
+  //sets the discord name to the nickname
+  WarpRelay::GetLoggedInAccount()->displayName = username;
 
   std::string secret(join_secret);
 

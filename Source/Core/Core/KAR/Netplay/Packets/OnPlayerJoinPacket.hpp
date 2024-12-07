@@ -16,7 +16,7 @@ namespace Netplay::Packet
 	{
     uint8_t PID = 0;
 
-    WarpRelay::WarpRelayAccount account; //the account of the player
+    //WarpRelay::WarpRelayAccount account; //the account of the player
 	};
 
 	//packages a player join packet
@@ -27,7 +27,7 @@ namespace Netplay::Packet
 
 		p << data.PID;
 
-		Serilize::SerilizeIntoPacket_AccountData(&data.account, p);
+		//Serilize::SerilizeIntoPacket_AccountData(&data.account, p);
 
 		return p;
   }
@@ -39,7 +39,7 @@ namespace Netplay::Packet
 
 		packet >> data.PID;
 
-   Serilize::DeserilizeFromPacket_AccountData(&data.account, packet);
+  // Serilize::DeserilizeFromPacket_AccountData(&data.account, packet);
 
     return data;
 	}

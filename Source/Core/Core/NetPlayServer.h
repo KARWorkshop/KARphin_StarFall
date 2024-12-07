@@ -170,7 +170,7 @@ private:
   {
     Netplay::Packet::OnPlayerJoinPacket packet;
     packet.PID = newPlayer.player.pid;
-    packet.account.displayName = newPlayer.player.displayName;
+   // packet.account.displayName = newPlayer.player.displayName;
 
     SendToClients(Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
@@ -187,7 +187,7 @@ private:
   {
     Netplay::Packet::OnPlayerJoinPacket packet;
     packet.PID = player.player.pid;
-    packet.account.displayName = player.player.displayName;
+    //packet.account.displayName = player.player.displayName;
     Send(targetClient.socket, Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
 

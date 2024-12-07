@@ -14,14 +14,14 @@ namespace Netplay::Packet
 struct ConnectPacket
 {
   //account data
-  WarpRelay::WarpRelayAccount account;
+  //WarpRelay::WarpRelayAccount account;
 
       // build data
       std::string majorBuild = KAR_VERSION_MAJOR, minorBuild = KAR_VERSION_MINOR, hotfix = KAR_VERSION_HOT_FIX;
 };
 
   //generate a connect packet
-  static inline sf::Packet GeneratePacket_Connect(const WarpRelay::WarpRelayAccount account)
+  static inline sf::Packet GeneratePacket_Connect()
   {
     sf::Packet packet;
 
@@ -30,7 +30,7 @@ struct ConnectPacket
     packet << KAR_VERSION_MINOR;
     packet << KAR_VERSION_HOT_FIX;
 
-    Serilize::SerilizeIntoPacket_AccountData(&account, packet);
+    //Serilize::SerilizeIntoPacket_AccountData(&account, packet);
 
     return packet;
   }
@@ -44,7 +44,7 @@ struct ConnectPacket
     packet >> connect.minorBuild;
     packet >> connect.hotfix;
 
-    Serilize::DeserilizeFromPacket_AccountData(&connect.account, packet);
+    //Serilize::DeserilizeFromPacket_AccountData(&connect.account, packet);
 
     return connect;
   }

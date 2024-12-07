@@ -253,10 +253,13 @@ bool NetPlayClient::Connect()
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
   //constructs and sends a connect packet
-  WarpRelay::WarpRelayAccount account = *WarpRelay::GetLoggedInAccount();
-  account.displayName = "OWO!";
-  Send(Netplay::Packet::GeneratePacket_Connect(account));
+  //WarpRelay::WarpRelayAccount account = *WarpRelay::GetLoggedInAccount();
+  //account.displayName = "OWO!";
+  Send(Netplay::Packet::GeneratePacket_Connect());
   enet_host_flush(m_client);
+
+
+  //wait we wait for a response
   sf::Packet rpac;
   // TODO: make this not hang
   ENetEvent netEvent;
@@ -318,6 +321,9 @@ bool NetPlayClient::Connect()
     m_dialog->Update();
 
     m_is_connected = true;
+
+    //send the account info
+    //Send(Netplay::Packet::GeneratePacket_Account(account));
 
     return true;
   }
@@ -491,7 +497,7 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
 
    Netplay::Core::Player player{};
    player.pid = data.PID;
-   player.displayName = std::move(data.account.displayName);
+   //player.displayName = std::move(data.account.displayName);
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) joined", player.displayName, player.pid);
 
