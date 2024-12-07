@@ -122,7 +122,12 @@ public:
                 const std::string& name, const NetTraversalConfig& traversal_config);
   ~NetPlayClient();
 
-  std::vector<const Netplay::Core::Player*> GetPlayers();
+  //gets the players and the spectators
+  inline Netplay::Core::PlayerSpectatorGroupData* GetPlayers()
+  {
+    std::lock_guard lkp(m_crit.players);
+    return &m_players;
+  }
   const NetSettings& GetNetSettings() const;
 
   // Called from the GUI thread.
@@ -137,7 +142,9 @@ public:
   void SendPowerButtonEvent();
   void RequestGolfControl(PlayerId pid);
   void RequestGolfControl();
-  std::string GetCurrentGolfer();
+
+  //we don't golf here
+  inline std::string GetCurrentGolfer() { return ""; }
 
   // Send and receive pads values
   struct WiimoteDataBatchEntry
@@ -276,7 +283,7 @@ private:
   void SendGameStatus();
   void ComputeGameDigest(const SyncIdentifier& sync_identifier);
   void DisplayPlayersPing();
-  u32 GetPlayersMaxPing() const;
+  inline u32 GetPlayersMaxPing() const { return m_players.GetMaxPingOfActivePlayers(); }
 
   void OnData(sf::Packet& packet);
   void OnPlayerJoin(sf::Packet& packet);
@@ -325,9 +332,12 @@ private:
   bool m_is_connected = false;
   ConnectionState m_connection_state = ConnectionState::Failure;
 
+  //std::map<PlayerId, Netplay::Core::Player> m_players;
+  Netplay::Core::PlayerSpectatorGroupData m_players;
+
   PlayerId m_pid = 0;
   NetSettings m_net_settings{};
-  std::map<PlayerId, Netplay::Core::Player> m_players;
+  
   std::string m_host_spec;
   std::string m_player_name;
   bool m_connecting = false;

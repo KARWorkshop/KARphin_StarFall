@@ -310,10 +310,10 @@ bool NetPlayClient::Connect()
     rpac >> m_pid;
 
     // add self to player list
-    m_players[m_pid] = Netplay::Core::Player();
-    m_local_player = &m_players[m_pid];
-    m_local_player->displayName = WarpRelay::GetLoggedInAccount()->displayName;
-    m_local_player->pid = m_pid;
+    Netplay::Core::Player p;
+    p.displayName = WarpRelay::GetLoggedInAccount()->displayName;
+    p.pid = m_pid;
+    m_local_player = m_players.AddActivePlayer(p);
 
     m_dialog->Update();
 
@@ -497,7 +497,7 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
 
   {
     std::lock_guard lkp(m_crit.players);
-    m_players[player.pid] = std::move(player);
+    m_players.AddActivePlayer(player);
   }
 
   m_dialog->OnPlayerConnect(player.displayName);
@@ -512,14 +512,23 @@ void NetPlayClient::OnPlayerLeave(sf::Packet& packet)
 
   {
     std::lock_guard lkp(m_crit.players);
-    const auto it = m_players.find(pid);
+
+    Netplay::Core::Player* p = m_players.GetActivePlayer(pid);
+    if (!p)
+      return;
+
+    INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", p->displayName, pid);
+    m_dialog->OnPlayerDisconnect(p->displayName);
+    m_players.RemoveActivePlayer(pid);
+
+   /* const auto it = m_players.find(pid);
     if (it == m_players.end())
       return;
 
     const auto& player = it->second;
     INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", player.displayName, pid);
     m_dialog->OnPlayerDisconnect(player.displayName);
-    m_players.erase(m_players.find(pid));
+    m_players.erase(m_players.find(pid));*/
   }
 
   m_dialog->Update();
@@ -533,12 +542,12 @@ void NetPlayClient::OnChatMessage(sf::Packet& packet)
   packet >> msg;
 
   // don't need lock to read in this thread
-  const Netplay::Core::Player& player = m_players[pid];
+  const Netplay::Core::Player* player = m_players.GetActivePlayer(pid);
 
-  INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player.displayName, player.pid, msg);
+  INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player->displayName, player->pid, msg);
 
   // add to gui
-  m_dialog->AppendChat(fmt::format("{}[{}]: {}", player.displayName, pid, msg));
+  m_dialog->AppendChat(fmt::format("{}[{}]: {}", player->displayName, pid, msg));
 }
 
 void NetPlayClient::OnChunkedDataStart(sf::Packet& packet)
@@ -777,7 +786,7 @@ void NetPlayClient::OnGolfSwitch(sf::Packet& packet)
   const PlayerId previous_golfer = m_current_golfer;
   m_current_golfer = pid;
   m_dialog->OnGolferChanged(m_local_player->pid == pid,
-                            pid != 0 ? m_players[pid].displayName : "");
+                            pid != 0 ? m_players.GetActivePlayer(pid)->displayName : "");
 
   if (m_local_player->pid == previous_golfer)
   {
@@ -1030,8 +1039,7 @@ void NetPlayClient::OnPlayerPingData(sf::Packet& packet)
 
   {
     std::lock_guard lkp(m_crit.players);
-    Netplay::Core::Player& player = m_players[pid];
-    packet >> player.ping;
+    packet >> (m_players.GetActivePlayer(pid)->ping);
   }
 
   DisplayPlayersPing();
@@ -1055,9 +1063,11 @@ void NetPlayClient::OnDesyncDetected(sf::Packet& packet)
   std::string player = "??";
   std::lock_guard lkp(m_crit.players);
   {
-    const auto it = m_players.find(pid_to_blame);
+    /*const auto it = m_players.find(pid_to_blame);
     if (it != m_players.end())
-      player = it->second.displayName;
+      player = it->second.displayName;*/
+    if (Netplay::Core::Player* p = m_players.GetActivePlayer(pid_to_blame))
+      player = p->displayName;
   }
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) desynced!", player, pid_to_blame);
@@ -1600,13 +1610,13 @@ void NetPlayClient::DisplayPlayersPing()
                        OSD::Duration::SHORT, OSD::Color::CYAN);
 }
 
-u32 NetPlayClient::GetPlayersMaxPing() const
-{
-  return std::max_element(
-             m_players.begin(), m_players.end(),
-             [](const auto& a, const auto& b) { return a.second.ping < b.second.ping; })
-      ->second.ping;
-}
+//u32 NetPlayClient::GetPlayersMaxPing() const
+//{
+//  return std::max_element(
+//             m_players.begin(), m_players.end(),
+//             [](const auto& a, const auto& b) { return a.second.ping < b.second.ping; })
+//      ->second.ping;
+//}
 
 void NetPlayClient::Disconnect()
 {
@@ -1734,18 +1744,18 @@ void NetPlayClient::ThreadFunc()
   return;
 }
 
-// called from ---GUI--- thread
-std::vector<const Netplay::Core::Player*> NetPlayClient::GetPlayers()
-{
-  std::lock_guard lkp(m_crit.players);
-  std::vector<const Netplay::Core::Player*> players;
-  players.reserve(4);
-
-  for (const auto& pair : m_players)
-    players.emplace_back(&pair.second);
-
-  return players;
-}
+//// called from ---GUI--- thread
+//std::vector<const Netplay::Core::Player*> NetPlayClient::GetPlayers()
+//{
+//  std::lock_guard lkp(m_crit.players);
+//  std::vector<const Netplay::Core::Player*> players;
+//  players.reserve(4);
+//
+//  for (const auto& pair : m_players)
+//    players.emplace_back(&pair.second);
+//
+//  return players;
+//}
 
 const NetSettings& NetPlayClient::GetNetSettings() const
 {
@@ -2465,14 +2475,16 @@ void NetPlayClient::RequestGolfControl()
   RequestGolfControl(m_local_player->pid);
 }
 
-// called from ---GUI--- thread
-std::string NetPlayClient::GetCurrentGolfer()
-{
-  std::lock_guard lkp(m_crit.players);
-  if (m_players.count(m_current_golfer))
-    return m_players[m_current_golfer].displayName;
-  return "";
-}
+//// called from ---GUI--- thread
+//std::string NetPlayClient::GetCurrentGolfer()
+//{
+// /* std::lock_guard lkp(m_crit.players);
+//  if (m_players.count(m_current_golfer))
+//    return m_players[m_current_golfer].displayName;
+//  return "";*/
+//
+//  return ""; //we don't golf here
+//}
 
 // called from ---GUI--- thread
 bool NetPlayClient::LocalPlayerHasControllerMapped() const
@@ -2809,10 +2821,10 @@ PadDetails GetPadDetails(int pad_num)
   if (pad_map[pad_num] <= 0)
     return res;
 
-  for (auto player : netplay_client->GetPlayers())
+  for (auto player : netplay_client->GetPlayers()->players)
   {
-    if (player->pid == pad_map[pad_num])
-      res.player_name = player->displayName;
+    if (player.pid == pad_map[pad_num])
+      res.player_name = player.displayName;
   }
 
   int local_pad = 0;

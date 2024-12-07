@@ -50,14 +50,14 @@ void NetPlayGolfUI::Display()
       client->RequestGolfControl();
     }
 
-    for (auto player : client->GetPlayers())
+    for (auto player : client->GetPlayers()->players)
     {
-      if (client->IsLocalPlayer(player->pid) || !client->PlayerHasControllerMapped(player->pid))
+      if (client->IsLocalPlayer(player.pid) || !client->PlayerHasControllerMapped(player.pid))
         continue;
 
-      if (ImGui::Button(fmt::format("Give Control to {}", player->displayName).c_str()))
+      if (ImGui::Button(fmt::format("Give Control to {}", player.displayName).c_str()))
       {
-        client->RequestGolfControl(player->pid);
+        client->RequestGolfControl(player.pid);
       }
     }
   }

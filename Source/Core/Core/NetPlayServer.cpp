@@ -444,14 +444,20 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   if (m_players.size() >= 255)
     return ConnectionError::ServerFull;
 
+  //if name is too long
+  if (StringUTF8CodePointCount(packet.account.displayName) > MAX_NAME_LENGTH)
+    return ConnectionError::NameTooLong;
+
+  //checks what kind of player they are and if we are full on active players
+
   //do they have the desired game
 
+  //generates a new Player
   Client new_player{};
   new_player.player.pid = GiveFirstAvailableIDTo(incoming_connection);
   new_player.socket = incoming_connection;
-  new_player.player.displayName = "fdsfsf";
-  if (StringUTF8CodePointCount(new_player.player.displayName) > MAX_NAME_LENGTH)
-    return ConnectionError::NameTooLong;
+  new_player.player.displayName = packet.account.displayName;
+  
 
   // Update time in milliseconds of no acknoledgment of
   // sent packets before a connection is deemed disconnected

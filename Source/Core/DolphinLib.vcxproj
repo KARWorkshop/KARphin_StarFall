@@ -80,6 +80,7 @@
     <ClInclude Include="Core\KAR\Mods\ModPacks.hpp" />
     <ClInclude Include="Core\KAR\Mods\ModPack.hpp" />
     <ClInclude Include="Core\KAR\Mods\Specs\GeckkoMod.hpp" />
+    <ClInclude Include="Core\KAR\Netplay\NetplayConnection.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\ConnectPacket.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\NetworkSerilizeAccount.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\OnPlayerJoinPacket.hpp" />

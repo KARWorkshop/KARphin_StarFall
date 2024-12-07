@@ -649,10 +649,10 @@ void NetPlayDialog::UpdateGUI()
   // Update Player List
   const auto players = client->GetPlayers();
 
-  if (static_cast<int>(players.size()) != m_player_count && m_player_count != 0)
+  if (static_cast<int>(players->players.size()) != m_player_count && m_player_count != 0)
     QApplication::alert(this);
 
-  m_player_count = static_cast<int>(players.size());
+  m_player_count = static_cast<int>(players->players.size());
 
   int selection_pid = m_players_list->currentItem() ?
                           m_players_list->currentItem()->data(Qt::UserRole).toInt() :  -1;
@@ -666,14 +666,14 @@ void NetPlayDialog::UpdateGUI()
 
   for (int i = 0; i < m_player_count; i++)
   {
-    const auto* p = players[i];
+   const auto& p = players->players[i];
 
     //checks for their icon, if it doesn't exist we download it
-    if (icons.find(p->customIconURL) == icons.end())
-      icons[p->customIconURL] = QIcon(StartPlayerIconDownload(p->customIconURL, i));
+    if (icons.find(p.customIconURL) == icons.end())
+      icons[p.customIconURL] = QIcon(StartPlayerIconDownload(p.customIconURL, i));
 
-    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->displayName));
-    name_item->setIcon(icons.at(p->customIconURL));
+    auto* name_item = new QTableWidgetItem(QString::fromStdString(p.displayName));
+    name_item->setIcon(icons.at(p.customIconURL));
     name_item->setToolTip(name_item->text());
 
     const auto& rank_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRankStr(WarpRelay::Rank::StarDust)));
@@ -682,18 +682,18 @@ void NetPlayDialog::UpdateGUI()
     const auto& region_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRegionLongStr(WarpRelay::Region::NA)));
     region_item->setToolTip(region_item->text());
 
-    auto* ping_item = new QTableWidgetItem(QStringLiteral("%1 ms").arg(p->ping));
+    auto* ping_item = new QTableWidgetItem(QStringLiteral("%1 ms").arg(p.ping));
     ping_item->setToolTip(ping_item->text());
 
     auto* mapping_item =
         new QTableWidgetItem(QString::fromStdString(NetPlay::GetPlayerMappingString(
-            p->pid, client->GetPadMapping(), client->GetGBAConfig(), client->GetWiimoteMapping())));
+            p.pid, client->GetPadMapping(), client->GetGBAConfig(), client->GetWiimoteMapping())));
     mapping_item->setToolTip(mapping_item->text());
 
    for (auto* item : {name_item, rank_item, region_item, ping_item, mapping_item})
    {
      item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-     item->setData(Qt::UserRole, static_cast<int>(p->pid));
+     item->setData(Qt::UserRole, static_cast<int>(p.pid));
    }
 
     m_players_list->setItem(i, 0, name_item);
@@ -702,7 +702,7 @@ void NetPlayDialog::UpdateGUI()
     m_players_list->setItem(i, 3, ping_item);
     m_players_list->setItem(i, 4, mapping_item);
 
-    if (p->pid == selection_pid)
+    if (p.pid == selection_pid)
       m_players_list->selectRow(i);
   }
 

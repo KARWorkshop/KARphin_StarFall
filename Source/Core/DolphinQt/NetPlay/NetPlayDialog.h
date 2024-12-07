@@ -117,6 +117,9 @@ public:
   //when the user attempts to join but doesn't have the game
   void OnNoGameForLobby() override { DisplayMessage(tr("You can't join the lobby since you lack the game. Add it to your ROMs folder first."), "Red");}
 
+  //gets a new player's icon URL that we need to parse
+  //void OnPlayerIconStartDownload() override {}
+
 signals:
   void Stop();
 

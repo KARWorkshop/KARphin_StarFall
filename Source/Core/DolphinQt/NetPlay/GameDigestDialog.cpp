@@ -25,11 +25,11 @@ static QString GetPlayerNameFromPID(int pid)
   if (!client)
     return player_name;
 
-  for (const auto* player : client->GetPlayers())
+  for (const auto& player : client->GetPlayers()->players)
   {
-    if (player->pid == pid)
+    if (player.pid == pid)
     {
-      player_name = QString::fromStdString(player->displayName);
+      player_name = QString::fromStdString(player.displayName);
       break;
     }
   }
@@ -106,13 +106,13 @@ void GameDigestDialog::show(const QString& title)
     close_button->setDefault(false);
   }
 
-  for (const auto* player : client->GetPlayers())
+  for (const auto& player : client->GetPlayers()->players)
   {
-    m_progress_bars[player->pid] = new QProgressBar;
-    m_status_labels[player->pid] = new QLabel;
+    m_progress_bars[player.pid] = new QProgressBar;
+    m_status_labels[player.pid] = new QLabel;
 
-    m_progress_layout->addWidget(m_progress_bars[player->pid]);
-    m_progress_layout->addWidget(m_status_labels[player->pid]);
+    m_progress_layout->addWidget(m_progress_bars[player.pid]);
+    m_progress_layout->addWidget(m_status_labels[player.pid]);
   }
 
   QDialog::show();
@@ -143,7 +143,7 @@ void GameDigestDialog::SetResult(int pid, const std::string& result)
   m_results.push_back(result);
 
   auto client = Settings::Instance().GetNetPlayClient();
-  if (client && m_results.size() >= client->GetPlayers().size())
+  if (client && m_results.size() >= client->GetPlayers()->players.size())
   {
     if (std::adjacent_find(m_results.begin(), m_results.end(), std::not_equal_to<>()) ==
         m_results.end())
