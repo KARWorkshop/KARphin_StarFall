@@ -80,11 +80,11 @@
     <ClInclude Include="Core\KAR\Mods\ModPacks.hpp" />
     <ClInclude Include="Core\KAR\Mods\ModPack.hpp" />
     <ClInclude Include="Core\KAR\Mods\Specs\GeckkoMod.hpp" />
-    <ClInclude Include="Core\KAR\Netplay\NetplayConnection.hpp" />
+    <ClInclude Include="Core\KAR\Netplay\NetStructs\NetplayConnection.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\ConnectPacket.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\NetworkSerilizeAccount.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\OnPlayerJoinPacket.hpp" />
-    <ClInclude Include="Core\KAR\Netplay\Player.hpp" />
+    <ClInclude Include="Core\KAR\Netplay\NetStructs\Player.hpp" />
     <ClInclude Include="Core\KAR\Netplay\WarpRelayUserAccount.hpp" />
     <ClInclude Include="Core\KAR\Versioning.hpp" />
     <ClInclude Include="UICommon\KAR\ModPack.hpp" />

@@ -456,6 +456,10 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   Client new_player{};
   new_player.player.pid = GiveFirstAvailableIDTo(incoming_connection);
   new_player.socket = incoming_connection;
+  bool isGuest = false;
+  received_packet >> isGuest;
+  received_packet >> new_player.player.displayName;
+
  // new_player.player.displayName = packet.account.displayName;
   
 

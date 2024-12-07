@@ -26,6 +26,7 @@
 #include "Core/System.h"
 
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+#include <Core/KAR/GameIDs.hpp>
 
 #endif
 
@@ -64,7 +65,8 @@ void HandleDiscordJoin(const char* join_secret)
   /*if (Config::Get(Config::NETPLAY_NICKNAME) == Config::NETPLAY_NICKNAME.GetDefaultValue())
     Config::SetCurrent(Config::NETPLAY_NICKNAME, username);*/
   //sets the discord name to the nickname
-  WarpRelay::GetLoggedInAccount()->displayName = username;
+  if (WarpRelay::GetLoggedInAccount()->isGuestAccount)
+    WarpRelay::GetLoggedInAccount()->displayName = username;
 
   std::string secret(join_secret);
 
@@ -105,12 +107,12 @@ void HandleDiscordJoin(const char* join_secret)
 
 std::string ArtworkForGameId()
 {
-  const DiscIO::Region region = SConfig::GetInstance().m_region;
-  const bool is_wii = Core::System::GetInstance().IsWii();
-  const std::string region_code = SConfig::GetInstance().GetGameTDBImageRegionCode(is_wii, region);
+  //gets the image based on the ROM
+  if (SConfig::GetInstance().GetGameID() == KAR::GameData::GetGameID_BS())
+    return "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-discord/backside.png";
 
-  static constexpr char cover_url[] = "https://discord.dolphin-emu.org/cover-art/{}/{}.png";
-  return fmt::format(cover_url, region_code, SConfig::GetInstance().GetGameTDBID());
+  //default image
+  return "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-discord/FormulaChad.png";
 }
 
 }  // namespace
@@ -140,7 +142,7 @@ void UpdateClientID(const std::string& new_client)
   if (!Config::Get(Config::MAIN_USE_DISCORD_PRESENCE))
     return;
 
-  s_using_custom_client = new_client.empty() || new_client.compare(DEFAULT_CLIENT_ID) != 0;
+  s_using_custom_client = true;
 
   Shutdown();
   if (s_using_custom_client)
@@ -222,15 +224,15 @@ void UpdateDiscordPresence(int party_size, SecretType type, const std::string& s
   DiscordRichPresence discord_presence = {};
   if (game_artwork.empty())
   {
-    discord_presence.largeImageKey = "dolphin_logo";
-    discord_presence.largeImageText = "Dolphin is an emulator for the GameCube and the Wii.";
+    discord_presence.largeImageKey = "KARphin_logo";
+    discord_presence.largeImageText = "KARphin is an emulator for KAR Netplay.";
   }
   else
   {
     discord_presence.largeImageKey = game_artwork.c_str();
     discord_presence.largeImageText = title.c_str();
-    discord_presence.smallImageKey = "dolphin_logo";
-    discord_presence.smallImageText = "Dolphin is an emulator for the GameCube and the Wii.";
+    discord_presence.smallImageKey = "KARphin_logo";
+    discord_presence.smallImageText = "KARphin is an emulator for KAR Netplay.";
   }
   discord_presence.details = title.empty() ? "Not in-game" : title.c_str();
   if (reset_timer)

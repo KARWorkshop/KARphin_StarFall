@@ -27,7 +27,7 @@
 #include "KAR/Netplay/Packets/ConnectPacket.hpp"
 #include "KAR/Netplay/Packets/OnPlayerJoinPacket.hpp"
 
-#include "KAR/Netplay/Player.hpp"
+#include "KAR/Netplay/NetStructs/Player.hpp"
 
 class BootSessionData;
 

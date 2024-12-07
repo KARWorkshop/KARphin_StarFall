@@ -89,7 +89,7 @@ using namespace WiimoteCommon;
 
 static std::mutex crit_netplay_client;
 static NetPlayClient* netplay_client = nullptr;
-static bool s_si_poll_batching = false;
+static bool s_si_poll_batching = true;
 
 // called from ---GUI--- thread
 NetPlayClient::~NetPlayClient()
@@ -253,9 +253,16 @@ bool NetPlayClient::Connect()
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
   //constructs and sends a connect packet
+  sf::Packet packet;
+  packet << KAR_VERSION_MAJOR;
+  packet << KAR_VERSION_MINOR;
+  packet << KAR_VERSION_HOT_FIX;
+  packet << true;
+  packet << "OwO";
+
   //WarpRelay::WarpRelayAccount account = *WarpRelay::GetLoggedInAccount();
   //account.displayName = "OWO!";
-  Send(Netplay::Packet::GeneratePacket_Connect());
+  Send(packet);
   enet_host_flush(m_client);
 
 

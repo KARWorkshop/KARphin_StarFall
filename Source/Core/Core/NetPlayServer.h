@@ -30,7 +30,7 @@
 #include <Core/KAR/Netplay/Packets/OnPlayerJoinPacket.hpp>
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 
-#include "KAR/Netplay/Player.hpp"
+#include "KAR/Netplay/NetStructs/Player.hpp"
 
 namespace NetPlay
 {
