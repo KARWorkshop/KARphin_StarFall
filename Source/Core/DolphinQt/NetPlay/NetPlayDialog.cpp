@@ -672,7 +672,7 @@ void NetPlayDialog::UpdateGUI()
     if (icons.find(p.customIconURL) == icons.end())
       icons[p.customIconURL] = QIcon(StartPlayerIconDownload(p.customIconURL, i));
 
-    auto* name_item = new QTableWidgetItem(QString::fromStdString("Owo this is a test string"));
+    auto* name_item = new QTableWidgetItem(QString::fromStdString(p.displayName));
     name_item->setIcon(icons.at(p.customIconURL));
     name_item->setToolTip(name_item->text());
 

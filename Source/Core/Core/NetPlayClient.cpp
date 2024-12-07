@@ -260,8 +260,6 @@ bool NetPlayClient::Connect()
   packet << true;
   packet << "OwO";
 
-  //WarpRelay::WarpRelayAccount account = *WarpRelay::GetLoggedInAccount();
-  //account.displayName = "OWO!";
   Send(packet);
   enet_host_flush(m_client);
 
