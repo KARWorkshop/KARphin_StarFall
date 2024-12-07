@@ -7,7 +7,7 @@
 #include <Core/GeckoCodeConfig.h>
 #include <Core/Config/MainSettings.h>
 
-#include <Core/KAR/Mods/Specs/GeckkoMod.hpp>
+#include <Core/KAR/Mods/ModDirs.hpp>
 
 namespace KAR::Mod::BuiltIn::NA::FS
 {
@@ -45,49 +45,49 @@ inline Gecko::GeckoCode GetFSCode(FullScreenCodeIndex index)
   {
 
   case FullScreenCodeIndex::Port1:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port2:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port2.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port2.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port3:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port3.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port3.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port4:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port4.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port4.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port1_Port2:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port1_2.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1_2.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port3_Port4:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port3_4.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port3_4.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port1_2_3:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port1_2_3.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1_2_3.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;
 
   case FullScreenCodeIndex::Port2_3_4:
-    f.Load(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port2_3_4.ini", false);
+    f.Load(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port2_3_4.ini", false);
     code = Gecko::LoadCodes(f, Common::IniFile())[0];
     code.enabled = true;
     break;

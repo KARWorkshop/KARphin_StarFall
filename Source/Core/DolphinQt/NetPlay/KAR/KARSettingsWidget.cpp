@@ -58,7 +58,7 @@ KAR::Core::KARSettingsWidget::KARSettingsWidget(std::string game_id)
 KAR::Core::KARSettingsWidget::~KARSettingsWidget()
 {
   // valide the gecko codes exist
-  if (!File::Exists(Mod::ASM::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini"))
+  if (!File::Exists(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini"))
   {
     ModalMessageBox::critical(
         this, tr("Out of date deps"),
