@@ -176,9 +176,7 @@ namespace WarpRelay
     std::string str = "";
     if (!File::Exists(accountFP) ||
         !File::ReadFileToString(accountFP, str))
-    {
       return WarpRelayAccount(); //return a NULL file here
-    }
 
 		//parse out the file data
     WarpRelayAccount account;
@@ -223,8 +221,8 @@ namespace WarpRelay
       return false;
 
     //sets the index, if we need to, fall back to a latest account in case our index is out of range
-    accountIndex =
-        (index > static_cast<uint32_t>(count) - 1 ? static_cast<uint32_t>(count) - 1 : index);
+    const size_t lastIndex = (count == 1 ? 0 : static_cast<uint32_t>(count) - 1); //do a quick check for underflow
+    accountIndex = (index > lastIndex ? lastIndex : index);
     loggedInAccount = &accounts[accountIndex];
     return true;
   }

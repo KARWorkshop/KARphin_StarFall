@@ -82,7 +82,7 @@ int PadMappingDialog::exec()
   for (const auto& player : m_players)
   {
     players.append(QStringLiteral("%1 (%2)")
-                       .arg(QString::fromStdString(player->account.displayName))
+                       .arg(QString::fromStdString(player->displayName))
                        .arg(player->pid));
   }
 

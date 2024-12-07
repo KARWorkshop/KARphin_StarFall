@@ -30,6 +30,8 @@
 #include <Core/KAR/Netplay/Packets/OnPlayerJoinPacket.hpp>
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 
+#include "KAR/Netplay/Player.hpp"
+
 namespace NetPlay
 {
 class NetPlayUI;
@@ -87,21 +89,17 @@ private:
   {
   public:
 
-    WarpRelay::WarpRelayAccount account;
+    Netplay::Core::Player player;
 
-    PlayerId pid{};
-    SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
     bool has_ipl_dump = false;
     bool has_hardware_fma = false;
 
     ENetPeer* socket = nullptr;
-    u32 ping = 0;
     u32 current_game = 0;
 
     Common::QoSSession qos_session;
 
     bool operator==(const Client& other) const { return this == &other; }
-    bool IsHost() const { return pid == 1; }
   };
 
   enum class TargetMode
@@ -171,8 +169,8 @@ private:
   inline void SendNewPlayerToAllClients(const Client& newPlayer)
   {
     Netplay::Packet::OnPlayerJoinPacket packet;
-    packet.PID = newPlayer.pid;
-    packet.account = newPlayer.account;
+    packet.PID = newPlayer.player.pid;
+    packet.account.displayName = newPlayer.player.displayName;
 
     SendToClients(Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
@@ -181,23 +179,23 @@ private:
   inline void TellNewPlayerTheyConnected(const Client& newPlayer)
   {
     // tell new client they connected and their ID
-    SendResponseToPlayer(newPlayer, MessageID::ConnectionSuccessful, newPlayer.pid);
+    SendResponseToPlayer(newPlayer, MessageID::ConnectionSuccessful, newPlayer.player.pid);
   }
 
   // sends a specific client data about a new player
   inline void SendSpecificClient_NewPlayerInfo(const Client& targetClient, const Client& player)
   {
     Netplay::Packet::OnPlayerJoinPacket packet;
-    packet.PID = player.pid;
-    packet.account = player.account;
+    packet.PID = player.player.pid;
+    packet.account.displayName = player.player.displayName;
     Send(targetClient.socket, Netplay::Packet::GeneratePacket_OnPlayerJoin(packet));
   }
 
   // sends a specific client, data about the game status of a player
   inline void SendSpecificClient_GameStatusInfo(const Client& targetClient, const Client& player)
   {
-    SendResponseToPlayer(targetClient, MessageID::GameStatus, player.pid,
-                         static_cast<u8>(player.game_status));
+    SendResponseToPlayer(targetClient, MessageID::GameStatus, player.player.pid,
+                         static_cast<u8>(0));
   }
 
   NetSettings m_settings;

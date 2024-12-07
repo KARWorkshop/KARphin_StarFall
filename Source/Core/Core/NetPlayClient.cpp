@@ -253,7 +253,9 @@ bool NetPlayClient::Connect()
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
   //constructs and sends a connect packet
-  Send(Netplay::Packet::GeneratePacket_Connect(*WarpRelay::GetLoggedInAccount()));
+  WarpRelay::WarpRelayAccount account = *WarpRelay::GetLoggedInAccount();
+  account.displayName = "OWO!";
+  Send(Netplay::Packet::GeneratePacket_Connect(account));
   enet_host_flush(m_client);
   sf::Packet rpac;
   // TODO: make this not hang
@@ -307,13 +309,11 @@ bool NetPlayClient::Connect()
   {
     rpac >> m_pid;
 
-    Player player;
-    player.account = *WarpRelay::GetLoggedInAccount();
-    player.pid = m_pid;
-
     // add self to player list
-    m_players[m_pid] = player;
+    m_players[m_pid] = Netplay::Core::Player();
     m_local_player = &m_players[m_pid];
+    m_local_player->displayName = WarpRelay::GetLoggedInAccount()->displayName;
+    m_local_player->pid = m_pid;
 
     m_dialog->Update();
 
@@ -489,18 +489,18 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
 
   Netplay::Packet::OnPlayerJoinPacket data = Netplay::Packet::ParsePacket_OnPlayerJoin(packet);
 
-   Player player{};
-  player.pid = data.PID;
-   player.account = data.account;
+   Netplay::Core::Player player{};
+   player.pid = data.PID;
+   player.displayName = std::move(data.account.displayName);
 
-  INFO_LOG_FMT(NETPLAY, "Player {} ({}) joined", player.account.displayName, player.pid);
+  INFO_LOG_FMT(NETPLAY, "Player {} ({}) joined", player.displayName, player.pid);
 
   {
     std::lock_guard lkp(m_crit.players);
-    m_players[player.pid] = player;
+    m_players[player.pid] = std::move(player);
   }
 
-  m_dialog->OnPlayerConnect(player.account.displayName);
+  m_dialog->OnPlayerConnect(player.displayName);
 
   m_dialog->Update();
 }
@@ -517,8 +517,8 @@ void NetPlayClient::OnPlayerLeave(sf::Packet& packet)
       return;
 
     const auto& player = it->second;
-    INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", player.account.displayName, pid);
-    m_dialog->OnPlayerDisconnect(player.account.displayName);
+    INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", player.displayName, pid);
+    m_dialog->OnPlayerDisconnect(player.displayName);
     m_players.erase(m_players.find(pid));
   }
 
@@ -533,12 +533,12 @@ void NetPlayClient::OnChatMessage(sf::Packet& packet)
   packet >> msg;
 
   // don't need lock to read in this thread
-  const Player& player = m_players[pid];
+  const Netplay::Core::Player& player = m_players[pid];
 
-  INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player.account.displayName, player.pid, msg);
+  INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player.displayName, player.pid, msg);
 
   // add to gui
-  m_dialog->AppendChat(fmt::format("{}[{}]: {}", player.account.displayName, pid, msg));
+  m_dialog->AppendChat(fmt::format("{}[{}]: {}", player.displayName, pid, msg));
 }
 
 void NetPlayClient::OnChunkedDataStart(sf::Packet& packet)
@@ -777,7 +777,7 @@ void NetPlayClient::OnGolfSwitch(sf::Packet& packet)
   const PlayerId previous_golfer = m_current_golfer;
   m_current_golfer = pid;
   m_dialog->OnGolferChanged(m_local_player->pid == pid,
-                            pid != 0 ? m_players[pid].account.displayName : "");
+                            pid != 0 ? m_players[pid].displayName : "");
 
   if (m_local_player->pid == previous_golfer)
   {
@@ -887,10 +887,10 @@ void NetPlayClient::OnGameStatus(sf::Packet& packet)
   PlayerId pid;
   packet >> pid;
 
-  {
-    std::lock_guard lkp(m_crit.players);
-    packet >> m_players[pid].game_status;
-  }
+  //{
+  //  std::lock_guard lkp(m_crit.players);
+  //  packet >> m_players[pid].game_status;
+  //}
 
   m_dialog->Update();
 }
@@ -1030,7 +1030,7 @@ void NetPlayClient::OnPlayerPingData(sf::Packet& packet)
 
   {
     std::lock_guard lkp(m_crit.players);
-    Player& player = m_players[pid];
+    Netplay::Core::Player& player = m_players[pid];
     packet >> player.ping;
   }
 
@@ -1057,7 +1057,7 @@ void NetPlayClient::OnDesyncDetected(sf::Packet& packet)
   {
     const auto it = m_players.find(pid_to_blame);
     if (it != m_players.end())
-      player = it->second.account.displayName;
+      player = it->second.displayName;
   }
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) desynced!", player, pid_to_blame);
@@ -1735,13 +1735,14 @@ void NetPlayClient::ThreadFunc()
 }
 
 // called from ---GUI--- thread
-std::vector<const Player*> NetPlayClient::GetPlayers()
+std::vector<const Netplay::Core::Player*> NetPlayClient::GetPlayers()
 {
   std::lock_guard lkp(m_crit.players);
-  std::vector<const Player*> players;
+  std::vector<const Netplay::Core::Player*> players;
+  players.reserve(4);
 
   for (const auto& pair : m_players)
-    players.push_back(&pair.second);
+    players.emplace_back(&pair.second);
 
   return players;
 }
@@ -2469,7 +2470,7 @@ std::string NetPlayClient::GetCurrentGolfer()
 {
   std::lock_guard lkp(m_crit.players);
   if (m_players.count(m_current_golfer))
-    return m_players[m_current_golfer].account.displayName;
+    return m_players[m_current_golfer].displayName;
   return "";
 }
 
@@ -2619,11 +2620,13 @@ void NetPlayClient::SendTimeBase()
 
 bool NetPlayClient::DoAllPlayersHaveGame()
 {
-  std::lock_guard lkp(m_crit.players);
+  //std::lock_guard lkp(m_crit.players);
 
-  return std::all_of(std::begin(m_players), std::end(m_players), [](auto entry) {
+ /* return std::all_of(std::begin(m_players), std::end(m_players), [](auto entry) {
     return entry.second.game_status == SyncIdentifierComparison::SameGame;
-  });
+  });*/
+
+  return true; //always return true since we don't allow them in the lobby if they don't have the game
 }
 
 static std::string SHA1Sum(const std::string& file_path, std::function<bool(int)> report_progress)
@@ -2809,7 +2812,7 @@ PadDetails GetPadDetails(int pad_num)
   for (auto player : netplay_client->GetPlayers())
   {
     if (player->pid == pad_map[pad_num])
-      res.player_name = player->account.displayName;
+      res.player_name = player->displayName;
   }
 
   int local_pad = 0;

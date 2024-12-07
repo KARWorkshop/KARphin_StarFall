@@ -344,7 +344,7 @@ void NetPlayServer::ThreadFunc()
           Client& client = it->second;
           if (OnData(rpac, client) != 0)
           {
-            INFO_LOG_FMT(NETPLAY, "Invalid packet from client {}, disconnecting.", client.pid);
+            INFO_LOG_FMT(NETPLAY, "Invalid packet from client {}, disconnecting.", client.player.pid);
 
             // if a bad packet is received, disconnect the client
             std::lock_guard lkg(m_crit.game);
@@ -354,7 +354,7 @@ void NetPlayServer::ThreadFunc()
           }
           else
           {
-            INFO_LOG_FMT(NETPLAY, "successfully handled packet from client {}", client.pid);
+            INFO_LOG_FMT(NETPLAY, "successfully handled packet from client {}", client.player.pid);
           }
         }
         enet_packet_destroy(netEvent.packet);
@@ -375,7 +375,7 @@ void NetPlayServer::ThreadFunc()
         if (it != m_players.end())
         {
           Client& client = it->second;
-          INFO_LOG_FMT(NETPLAY, "Disconnecting client {}.", client.pid);
+          INFO_LOG_FMT(NETPLAY, "Disconnecting client {}.", client.player.pid);
           OnDisconnect(client);
 
           ClearPeerPlayerId(netEvent.peer);
@@ -447,10 +447,10 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   //do they have the desired game
 
   Client new_player{};
-  new_player.pid = GiveFirstAvailableIDTo(incoming_connection);
+  new_player.player.pid = GiveFirstAvailableIDTo(incoming_connection);
   new_player.socket = incoming_connection;
-  new_player.account = packet.account;
-  if (StringUTF8CodePointCount(new_player.account.displayName) > MAX_NAME_LENGTH)
+  new_player.player.displayName = "fdsfsf";
+  if (StringUTF8CodePointCount(new_player.player.displayName) > MAX_NAME_LENGTH)
     return ConnectionError::NameTooLong;
 
   // Update time in milliseconds of no acknoledgment of
@@ -509,7 +509,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
 // called from ---NETPLAY--- thread
 unsigned int NetPlayServer::OnDisconnect(const Client& player)
 {
-  const PlayerId pid = player.pid;
+  const PlayerId pid = player.player.pid;
 
   if (m_is_running)
   {
@@ -543,7 +543,7 @@ unsigned int NetPlayServer::OnDisconnect(const Client& player)
   enet_peer_disconnect(player.socket, 0);
 
   std::lock_guard lkp(m_crit.players);
-  auto it = m_players.find(player.pid);
+  auto it = m_players.find(player.player.pid);
   if (it != m_players.end())
     m_players.erase(it);
 
@@ -746,7 +746,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
   packet >> mid;
 
   INFO_LOG_FMT(NETPLAY, "Got client message: {:x} from client {}", static_cast<u8>(mid),
-               player.pid);
+               player.player.pid);
 
   // don't need lock because this is the only thread that modifies the players
   // only need locks for writes to m_players in this thread
@@ -779,10 +779,10 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     // send msg to other clients
     sf::Packet spac;
     spac << MessageID::ChatMessage;
-    spac << player.pid;
+    spac << player.player.pid;
     spac << msg;
 
-    SendToClients(spac, player.pid);
+    SendToClients(spac, player.player.pid);
   }
   break;
 
@@ -792,7 +792,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     packet >> cid;
     u64 progress = Common::PacketReadU64(packet);
 
-    m_dialog->SetChunkedProgress(player.pid, progress);
+    m_dialog->SetChunkedProgress(player.player.pid, progress);
   }
   break;
 
@@ -825,7 +825,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
       // If the data is not from the correct player,
       // then disconnect them.
-      if (m_pad_map.at(map) != player.pid)
+      if (m_pad_map.at(map) != player.player.pid)
       {
         return 1;
       }
@@ -851,7 +851,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     }
     else
     {
-      SendToClients(spac, player.pid);
+      SendToClients(spac, player.player.pid);
     }
   }
   break;
@@ -859,7 +859,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
   case MessageID::PadHostData:
   {
     // Kick player if they're not the golfer.
-    if (m_current_golfer != 0 && player.pid != m_current_golfer)
+    if (m_current_golfer != 0 && player.player.pid != m_current_golfer)
       return 1;
 
     sf::Packet spac;
@@ -883,7 +883,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
       }
     }
 
-    SendToClients(spac, player.pid);
+    SendToClients(spac, player.player.pid);
   }
   break;
 
@@ -903,7 +903,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
       // If the data is not from the correct player,
       // then disconnect them.
-      if (m_wiimote_map.at(map) != player.pid)
+      if (m_wiimote_map.at(map) != player.player.pid)
       {
         return 1;
       }
@@ -921,7 +921,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
         spac << pad.data[i];
     }
 
-    SendToClients(spac, player.pid);
+    SendToClients(spac, player.player.pid);
   }
   break;
 
@@ -931,7 +931,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     packet >> pid;
 
     // Check if player ID is valid and sender isn't a spectator
-    if (!m_players.count(pid) || !PlayerHasControllerMapped(player.pid))
+    if (!m_players.count(pid) || !PlayerHasControllerMapped(player.player.pid))
       break;
 
     if (m_host_input_authority && m_settings.golf_mode && m_pending_golfer == 0 &&
@@ -991,13 +991,13 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     if (m_ping_key == ping_key)
     {
-      player.ping = ping;
+      player.player.ping = ping;
     }
 
     sf::Packet spac;
     spac << MessageID::PlayerPingData;
-    spac << player.pid;
-    spac << player.ping;
+    spac << player.player.pid;
+    spac << player.player.ping;
 
     SendToClients(spac);
   }
@@ -1030,12 +1030,12 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     SyncIdentifierComparison status;
     packet >> status;
 
-    m_players[player.pid].game_status = status;
+   // m_players[player.player.pid].game_status = status;
 
     // send msg to other clients
     sf::Packet spac;
     spac << MessageID::GameStatus;
-    spac << player.pid;
+    spac << player.player.pid;
     spac << status;
 
     SendToClients(spac);
@@ -1044,8 +1044,8 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
   case MessageID::ClientCapabilities:
   {
-    packet >> m_players[player.pid].has_ipl_dump;
-    packet >> m_players[player.pid].has_hardware_fma;
+    packet >> m_players[player.player.pid].has_ipl_dump;
+    packet >> m_players[player.player.pid].has_hardware_fma;
   }
   break;
 
@@ -1053,7 +1053,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
   {
     sf::Packet spac;
     spac << MessageID::PowerButton;
-    SendToClients(spac, player.pid);
+    SendToClients(spac, player.player.pid);
   }
   break;
 
@@ -1067,7 +1067,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
       break;
 
     std::vector<std::pair<PlayerId, u64>>& timebases = m_timebase_by_frame[frame];
-    timebases.emplace_back(player.pid, timebase);
+    timebases.emplace_back(player.player.pid, timebase);
     if (timebases.size() >= m_players.size())
     {
       // we have all records for this frame
@@ -1109,7 +1109,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     sf::Packet spac;
     spac << MessageID::GameDigestProgress;
-    spac << player.pid;
+    spac << player.player.pid;
     spac << progress;
 
     SendToClients(spac);
@@ -1123,7 +1123,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     sf::Packet spac;
     spac << MessageID::GameDigestResult;
-    spac << player.pid;
+    spac << player.player.pid;
     spac << result;
 
     SendToClients(spac);
@@ -1137,7 +1137,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     sf::Packet spac;
     spac << MessageID::GameDigestError;
-    spac << player.pid;
+    spac << player.player.pid;
     spac << error;
 
     SendToClients(spac);
@@ -1150,7 +1150,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     packet >> sub_id;
 
     INFO_LOG_FMT(NETPLAY, "Got client SyncSaveData message: {:x} from client {}", u8(sub_id),
-                 player.pid);
+                 player.player.pid);
 
     switch (sub_id)
     {
@@ -1185,7 +1185,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     case SyncSaveDataID::Failure:
     {
       m_dialog->AppendChat(
-          Common::FmtFormatT("{0} failed to synchronize.", player.account.displayName));
+          Common::FmtFormatT("{0} failed to synchronize.", player.player.displayName));
       m_dialog->OnGameStartAborted();
       ChunkedDataAbort();
       m_start_pending = false;
@@ -1195,7 +1195,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     default:
       PanicAlertFmtT(
           "Unknown SYNC_SAVE_DATA message with id:{0} received from player:{1} Kicking player!",
-          static_cast<u8>(sub_id), player.pid);
+          static_cast<u8>(sub_id), player.player.pid);
       return 1;
     }
   }
@@ -1208,7 +1208,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     packet >> sub_id;
 
     INFO_LOG_FMT(NETPLAY, "Got client SyncCodes message: {:x} from client {}", u8(sub_id),
-                 player.pid);
+                 player.player.pid);
 
     // Check If Code Sync was successful or not
     switch (sub_id)
@@ -1243,7 +1243,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
     case SyncCodeID::Failure:
     {
-      m_dialog->AppendChat(Common::FmtFormatT("{0} failed to synchronize codes.", player.account.displayName));
+      m_dialog->AppendChat(Common::FmtFormatT("{0} failed to synchronize codes.", player.player.displayName));
       m_dialog->OnGameStartAborted();
       m_start_pending = false;
     }
@@ -1252,7 +1252,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     default:
       PanicAlertFmtT(
           "Unknown SYNC_GECKO_CODES message with id:{0} received from player:{1} Kicking player!",
-          static_cast<u8>(sub_id), player.pid);
+          static_cast<u8>(sub_id), player.player.pid);
       return 1;
     }
   }
@@ -1260,7 +1260,7 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
 
   default:
     PanicAlertFmtT("Unknown message with id:{0} received from player:{1} Kicking player!",
-                   static_cast<u8>(mid), player.pid);
+                   static_cast<u8>(mid), player.player.pid);
     // unknown message, kick the client
     return 1;
   }
@@ -2216,7 +2216,7 @@ void NetPlayServer::SendToClients(const sf::Packet& packet, const PlayerId skip_
 {
   for (auto& p : m_players)
   {
-    if (p.second.pid && p.second.pid != skip_pid)
+    if (p.second.player.pid && p.second.player.pid != skip_pid)
     {
       Send(p.second.socket, packet, channel_id);
     }
@@ -2232,7 +2232,7 @@ void NetPlayServer::KickPlayer(PlayerId player)
 {
   for (auto& current_player : m_players)
   {
-    if (current_player.second.pid == player)
+    if (current_player.second.player.pid == player)
     {
       enet_peer_disconnect(current_player.second.socket, 0);
       return;
@@ -2255,7 +2255,7 @@ void NetPlayServer::AssignNewUserAPad(const Client& player)
     // 0 means unmapped
     if (mapping == 0)
     {
-      mapping = player.pid;
+      mapping = player.player.pid;
       break;
     }
   }
@@ -2266,7 +2266,7 @@ PlayerId NetPlayServer::GiveFirstAvailableIDTo(ENetPeer* player)
   PlayerId pid = 1;
   for (auto i = m_players.begin(); i != m_players.end(); ++i)
   {
-    if (i->second.pid == pid)
+    if (i->second.player.pid == pid)
     {
       pid++;
       i = m_players.begin();
@@ -2408,8 +2408,8 @@ void NetPlayServer::ChunkedDataThreadFunc()
         {
           for (auto& pl : m_players)
           {
-            if (pl.second.pid != e.target_pid)
-              players.push_back(pl.second.pid);
+            if (pl.second.player.pid != e.target_pid)
+              players.push_back(pl.second.player.pid);
           }
         }
         player_count = players.size();

@@ -669,20 +669,17 @@ void NetPlayDialog::UpdateGUI()
     const auto* p = players[i];
 
     //checks for their icon, if it doesn't exist we download it
-    if (icons.find(p->account.customIconURL) == icons.end())
-    {
-      icons[p->account.customIconURL] = QIcon(StartPlayerIconDownload(p->account.customIconURL, i));
-      //icons[URL].actualSize({80, 80}, QIcon::Mode::Active, QIcon::State::On);
-    }
+    if (icons.find(p->customIconURL) == icons.end())
+      icons[p->customIconURL] = QIcon(StartPlayerIconDownload(p->customIconURL, i));
 
-    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName), 1000);
-    name_item->setIcon(icons.at(p->account.customIconURL));
+    auto* name_item = new QTableWidgetItem(QString::fromStdString(p->displayName));
+    name_item->setIcon(icons.at(p->customIconURL));
     name_item->setToolTip(name_item->text());
 
-    const auto& rank_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRankStr(p->account.rank)));
+    const auto& rank_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRankStr(WarpRelay::Rank::StarDust)));
     rank_item->setToolTip(rank_item->text());
 
-    const auto& region_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRegionLongStr(p->account.region)));
+    const auto& region_item = new QTableWidgetItem(QString::fromStdString(WarpRelay::GetRegionLongStr(WarpRelay::Region::NA)));
     region_item->setToolTip(region_item->text());
 
     auto* ping_item = new QTableWidgetItem(QStringLiteral("%1 ms").arg(p->ping));

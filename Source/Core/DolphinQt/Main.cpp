@@ -203,6 +203,7 @@ int main(int argc, char* argv[])
 
   //loads all the accounts
   WarpRelay::LoadAllAccounts();
+  WarpRelay::GetLoggedInAccount();
 
   // Whenever the event loop is about to go to sleep, dispatch the jobs
   // queued in the Core first.

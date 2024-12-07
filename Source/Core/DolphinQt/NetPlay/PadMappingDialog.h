@@ -6,16 +6,12 @@
 #include <QDialog>
 
 #include "Core/NetPlayProto.h"
+#include "Core/KAR/Netplay/Player.hpp"
 
 class QCheckBox;
 class QGridLayout;
 class QComboBox;
 class QDialogButtonBox;
-
-namespace NetPlay
-{
-class Player;
-}
 
 class PadMappingDialog : public QDialog
 {
@@ -43,6 +39,6 @@ private:
   std::array<QComboBox*, 4> m_gc_boxes;
   std::array<QCheckBox*, 4> m_gba_boxes;
   std::array<QComboBox*, 4> m_wii_boxes;
-  std::vector<const NetPlay::Player*> m_players;
+  std::vector<const Netplay::Core::Player*> m_players;
   QDialogButtonBox* m_button_box;
 };

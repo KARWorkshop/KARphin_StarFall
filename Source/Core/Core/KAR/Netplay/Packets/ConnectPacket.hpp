@@ -4,6 +4,7 @@
 
 #include <SFML/Network/Packet.hpp>
 
+#include <Core/KAR/Netplay/Packets/NetworkSerilizeAccount.hpp>
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 #include <Core/KAR/Versioning.hpp>
 
@@ -29,12 +30,7 @@ struct ConnectPacket
     packet << KAR_VERSION_MINOR;
     packet << KAR_VERSION_HOT_FIX;
 
-    packet << account.displayName;
-    packet << account.customIconURL;
-
-    packet << (uint8_t)account.platform;
-    packet << (uint8_t)account.rank;
-    packet << (uint8_t)account.region;
+    Serilize::SerilizeIntoPacket_AccountData(&account, packet);
 
     return packet;
   }
@@ -48,16 +44,7 @@ struct ConnectPacket
     packet >> connect.minorBuild;
     packet >> connect.hotfix;
 
-    packet >> connect.account.displayName;
-    packet >> connect.account.customIconURL;
-
-    uint8_t d = 0;
-    packet >> d;
-    connect.account.platform = (WarpRelay::Platform)d;
-    packet >> d;
-    connect.account.rank = (WarpRelay::Rank)d;
-    packet >> d;
-    connect.account.region = (WarpRelay::Region)d;
+    Serilize::DeserilizeFromPacket_AccountData(&connect.account, packet);
 
     return connect;
   }

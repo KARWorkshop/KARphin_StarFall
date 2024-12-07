@@ -27,6 +27,8 @@
 #include "KAR/Netplay/Packets/ConnectPacket.hpp"
 #include "KAR/Netplay/Packets/OnPlayerJoinPacket.hpp"
 
+#include "KAR/Netplay/Player.hpp"
+
 class BootSessionData;
 
 namespace IOS::HLE::FS
@@ -108,18 +110,7 @@ public:
   virtual void OnNoGameForLobby() = 0;
 };
 
-class Player
-{
-public:
 
-  WarpRelay::WarpRelayAccount account;
-
-  PlayerId pid{};
-  u32 ping = 0;
-  SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
-
-  bool IsHost() const { return pid == 1; }
-};
 
 class NetPlayClient : public Common::TraversalClientClient
 {
@@ -131,7 +122,7 @@ public:
                 const std::string& name, const NetTraversalConfig& traversal_config);
   ~NetPlayClient();
 
-  std::vector<const Player*> GetPlayers();
+  std::vector<const Netplay::Core::Player*> GetPlayers();
   const NetSettings& GetNetSettings() const;
 
   // Called from the GUI thread.
@@ -242,7 +233,7 @@ protected:
   bool m_wait_on_input;
   bool m_wait_on_input_received;
 
-  Player* m_local_player = nullptr;
+  Netplay::Core::Player* m_local_player = nullptr;
 
   u32 m_current_game = 0;
 
@@ -336,7 +327,7 @@ private:
 
   PlayerId m_pid = 0;
   NetSettings m_net_settings{};
-  std::map<PlayerId, Player> m_players;
+  std::map<PlayerId, Netplay::Core::Player> m_players;
   std::string m_host_spec;
   std::string m_player_name;
   bool m_connecting = false;

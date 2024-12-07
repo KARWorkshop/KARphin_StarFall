@@ -288,6 +288,8 @@ void NetPlaySetupDialog::OnConnectionTypeChanged(int index)
                            std::string(index == 0 ? "direct" : "traversal"));
 }
 
+#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+
 void NetPlaySetupDialog::show()
 {
   PopulateGameList();

@@ -5,6 +5,7 @@
 #include <SFML/Network/Packet.hpp>
 #include <Core/NetPlayProto.h>
 
+#include <Core/KAR/Netplay/Packets/NetworkSerilizeAccount.hpp>
 #include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
 #include <Core/KAR/Versioning.hpp>
 
@@ -13,9 +14,9 @@ namespace Netplay::Packet
 	//defines a packet for on player join data
 	struct OnPlayerJoinPacket
 	{
-    WarpRelay::WarpRelayAccount account; //the account of the player
+    uint8_t PID = 0;
 
-		uint8_t PID = 0;
+    WarpRelay::WarpRelayAccount account; //the account of the player
 	};
 
 	//packages a player join packet
@@ -26,12 +27,7 @@ namespace Netplay::Packet
 
 		p << data.PID;
 
-		p << data.account.displayName;
-    p << data.account.customIconURL;
-
-		p << (uint8_t)data.account.rank;
-    p << (uint8_t)data.account.region;
-    p << (uint8_t)data.account.platform;
+		Serilize::SerilizeIntoPacket_AccountData(&data.account, p);
 
 		return p;
   }
@@ -43,16 +39,7 @@ namespace Netplay::Packet
 
 		packet >> data.PID;
 
-    packet >> data.account.displayName;
-    packet >> data.account.customIconURL;
-
-		uint8_t d = 0;
-    packet >> d;
-    data.account.rank = (WarpRelay::Rank)d;
-    packet >> d;
-    data.account.region = (WarpRelay::Region)d;
-    packet >> d;
-    data.account.platform = (WarpRelay::Platform)d;
+   Serilize::DeserilizeFromPacket_AccountData(&data.account, packet);
 
     return data;
 	}

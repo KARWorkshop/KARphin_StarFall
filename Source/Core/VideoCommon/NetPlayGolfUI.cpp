@@ -55,7 +55,7 @@ void NetPlayGolfUI::Display()
       if (client->IsLocalPlayer(player->pid) || !client->PlayerHasControllerMapped(player->pid))
         continue;
 
-      if (ImGui::Button(fmt::format("Give Control to {}", player->account.displayName).c_str()))
+      if (ImGui::Button(fmt::format("Give Control to {}", player->displayName).c_str()))
       {
         client->RequestGolfControl(player->pid);
       }
