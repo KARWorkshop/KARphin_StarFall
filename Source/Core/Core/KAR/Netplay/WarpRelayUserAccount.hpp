@@ -11,9 +11,13 @@ namespace KAR::WarpRelay
 #define WARP_RELAY_USER_ACCOUNT_API_VERSION "1.0.0"
 
 	//returns the path to the folder containing all the Warp Relay Accounts
-	static inline std::string GetFolderContainingAllWarpRelayAccountFiles()
+	static inline std::string GetAccountsDir()
 	{
-    return File::GetExeDirectory() + "/../Accounts/";
+    const std::string p = File::GetExeDirectory() + "/../Accounts/";
+    if (!File::Exists(p))
+      File::CreateDir(p);
+
+    return p;
 	}
 
 	//returns the file extention for a warp relay account file
@@ -139,11 +143,7 @@ namespace KAR::WarpRelay
   //writes it to disc
   static inline void WriteWarpRelayAccount(const WarpRelayAccount& account)
   {
-    const std::string accountPath = GetFolderContainingAllWarpRelayAccountFiles() + "Default" + GetWarpRelayAccountFileExtension();
-
-    //creates the accounts folder if it doesn't exist
-    if (!File::IsDirectory(GetFolderContainingAllWarpRelayAccountFiles()))
-      File::CreateDir(GetFolderContainingAllWarpRelayAccountFiles());
+    const std::string accountPath = GetAccountsDir() + "Default" + GetWarpRelayAccountFileExtension();
 
     nlohmann::json j;
     j["version"] = WARP_RELAY_USER_ACCOUNT_API_VERSION;
@@ -189,8 +189,7 @@ namespace KAR::WarpRelay
   //loads a default guest account file
   static inline WarpRelayAccount LoadDefaultGuestAccount()
   {
-    return KAR::WarpRelay::LoadWarpRelayAccount(
-        KAR::WarpRelay::GetFolderContainingAllWarpRelayAccountFiles() + "Default" +
+    return KAR::WarpRelay::LoadWarpRelayAccount(GetAccountsDir() + "Default" +
         KAR::WarpRelay::GetWarpRelayAccountFileExtension());
   }
 

@@ -136,8 +136,7 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
 void KAR::WarpRelay::AccountInfoDialog::show()
 {
   //load the account file
-  account = KAR::WarpRelay::LoadWarpRelayAccount(
-      KAR::WarpRelay::GetFolderContainingAllWarpRelayAccountFiles() + "Default" +
+  account = KAR::WarpRelay::LoadWarpRelayAccount(KAR::WarpRelay::GetAccountsDir() + "Default" +
       KAR::WarpRelay::GetWarpRelayAccountFileExtension());
 
   QDialog::show();
