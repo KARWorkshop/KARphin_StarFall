@@ -16,6 +16,7 @@ namespace KAR::Netplay::Packet
     KAR::WarpRelay::Region region = KAR::WarpRelay::Region::Count;
 
     std::string displayName = "",  // the name of the user to display
+    customIconURL = "", //defines the URL for a custom URL icon, only useable by non-guest accounts
 
 			//build data
 			majorBuild = KAR_VERSION_MAJOR, minorBuild = KAR_VERSION_MINOR,
@@ -32,6 +33,7 @@ namespace KAR::Netplay::Packet
     packet << data.hotfix;
 
 		packet << data.displayName;
+    packet << data.customIconURL;
 
 		packet << (uint8_t)data.rank;
     packet << (uint8_t)data.region;
@@ -49,6 +51,7 @@ namespace KAR::Netplay::Packet
     packet >> connect.hotfix;
 
     packet >> connect.displayName;
+    packet >> connect.customIconURL;
 
     uint8_t d = 0;
     packet >> d;
