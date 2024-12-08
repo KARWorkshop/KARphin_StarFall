@@ -650,6 +650,9 @@ static inline QPixmap StartPlayerIconDownload(const std::string URL, const uint8
   return pixmap;
 }
 
+ // stores a map of Icon byte data to arrays to their URLs
+std::unordered_map<std::string, QIcon> icons;
+
 void NetPlayDialog::UpdateGUI()
 {
   auto client = Settings::Instance().GetNetPlayClient();
@@ -679,9 +682,12 @@ void NetPlayDialog::UpdateGUI()
   {
     const auto* p = players[i];
 
-    //downloads a icon and caches it
+    // checks for their icon, if it doesn't exist we download it
+    if (icons.find(p->account.customIconURL) == icons.end())
+      icons[p->account.customIconURL] = QIcon(StartPlayerIconDownload(p->account.customIconURL, i));
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
+    name_item->setIcon(icons.at(p->account.customIconURL));  // sets the icon
     name_item->setToolTip(name_item->text());
 
     const auto& rank_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
