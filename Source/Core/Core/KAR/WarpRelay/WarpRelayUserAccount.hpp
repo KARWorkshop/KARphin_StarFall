@@ -5,6 +5,7 @@
 #include <Core/KAR/json.hpp>
 
 #include <Common/FileUtil.h>
+#include <Common/FileSearch.h>
 
 namespace KAR::WarpRelay
 {
@@ -24,6 +25,12 @@ namespace KAR::WarpRelay
   static inline std::string GetWarpRelayAccountFileExtension()
   {
     return ".wra";
+  }
+
+  // gets every account file
+  static inline std::vector<std::string> GetAllAccountFiles()
+  {
+    return Common::DoFileSearch({GetAccountsDir()}, {GetWarpRelayAccountFileExtension()});
   }
 
 	//defines the region
@@ -134,7 +141,7 @@ namespace KAR::WarpRelay
 
     std::string displayName = "Kirby",  // the display name used online
       customIconURL = "",  // the URL/local path to the custom icon if they have one
-
+      username = "Guest", //the user name, used for loading the file
         discordAccountLinkHash = "",  // the hash we use to validate they have a linked discord account
         googleAccountLinkHash = "",// the hash we use to validate they have a linked google account
         warpRelayAccountHash = "";  // the hash we use to validate they have a Warp Relay account and aren't just a guest
@@ -143,7 +150,7 @@ namespace KAR::WarpRelay
   //writes it to disc
   static inline void WriteWarpRelayAccount(const WarpRelayAccount& account)
   {
-    const std::string accountPath = GetAccountsDir() + "Default" + GetWarpRelayAccountFileExtension();
+    const std::string accountPath = GetAccountsDir() + account.username + GetWarpRelayAccountFileExtension();
 
     nlohmann::json j;
     j["version"] = WARP_RELAY_USER_ACCOUNT_API_VERSION;
@@ -185,12 +192,5 @@ namespace KAR::WarpRelay
 
     return account;
 	}
-
-  //loads a default guest account file
-  static inline WarpRelayAccount LoadDefaultGuestAccount()
-  {
-    return KAR::WarpRelay::LoadWarpRelayAccount(GetAccountsDir() + "Default" +
-        KAR::WarpRelay::GetWarpRelayAccountFileExtension());
-  }
 
   }

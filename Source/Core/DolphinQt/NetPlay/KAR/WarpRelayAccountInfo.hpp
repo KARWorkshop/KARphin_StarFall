@@ -4,7 +4,7 @@
 
 #include <QDialog>
 
-#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+#include <Core/KAR/WarpRelay\WarpRelayAccountManager.hpp>
 
 //class QCheckBox;
 //class QComboBox;
@@ -28,8 +28,7 @@ public:
   explicit AccountInfoDialog(QWidget* parent);
 
   void closeEvent(QCloseEvent* event) override;
-  void show();
-
+ 
 //signals:
  // bool Join();
  // bool Host(const UICommon::GameFile& game);

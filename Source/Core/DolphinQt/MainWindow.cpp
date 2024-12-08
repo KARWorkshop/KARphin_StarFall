@@ -140,6 +140,8 @@
 #include "VideoCommon/NetPlayChatUI.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <Core/KAR/WarpRelay/WarpRelayAccountManager.hpp>
+
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
 // This #define within X11/X.h conflicts with our WiimoteSource enum.
@@ -305,7 +307,8 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
   // shouldn't be so we have to reapply all our rules afterwards.
   Settings::Instance().RefreshWidgetVisibility();
 
-  //loads the Accounts
+  //loads all the Accounts
+  KAR::WarpRelay::WarpRelayAccountManager::LoadAllAccounts();
 
   //loads the mods
 
@@ -1390,7 +1393,7 @@ void MainWindow::ShowNetPlaySetupDialog()
 
 void MainWindow::ShowWarpRelayAccountInfo()
 {
-  //if (!KAR_WarpRelay_Account_dialog)
+  if (!KAR_WarpRelay_Account_dialog)
     KAR_WarpRelay_Account_dialog = new KAR::WarpRelay::AccountInfoDialog(this);
 
   KAR_WarpRelay_Account_dialog->setAttribute(Qt::WA_DeleteOnClose, true);

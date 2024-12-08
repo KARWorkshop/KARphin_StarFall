@@ -26,16 +26,14 @@
 #include "UICommon/GameFile.h"
 #include "UICommon/NetPlayIndex.h"
 
-#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
-
 KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
     : QDialog(parent)
 {
   setWindowTitle(tr("Warp Relay Account"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-  //loads the account data
-  account = KAR::WarpRelay::LoadDefaultGuestAccount();
+  //loads all accounts
+  KAR::WarpRelay::WarpRelayAccountManager::LoadAllAccounts();
 
   //creates the layout
    m_main_layout = new QGridLayout;
@@ -131,15 +129,6 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
     // Ignore the close event
     event->ignore();
   }
-}
-
-void KAR::WarpRelay::AccountInfoDialog::show()
-{
-  //load the account file
-  account = KAR::WarpRelay::LoadWarpRelayAccount(KAR::WarpRelay::GetAccountsDir() + "Default" +
-      KAR::WarpRelay::GetWarpRelayAccountFileExtension());
-
-  QDialog::show();
 }
 
 //void KAR::WarpRelay::AccountInfoDialog::accept()
