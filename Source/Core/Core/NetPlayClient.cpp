@@ -80,7 +80,7 @@
 
 #include <Core/KAR/Netplay/Packets/ConnectPacket.hpp>
 
-#include <Core/KAR/Mods/BuiltIn/KARBuiltInSettings.hpp>
+#include <Core/KAR/KARBootData.hpp>
 #include <Core/KAR/Mods/MemoryCards/MemoryCardAutoGen.hpp>
 
 namespace NetPlay
@@ -835,7 +835,7 @@ void NetPlayClient::OnChangeGame(sf::Packet& packet)
   //updates the global mod KAR settings
   std::string d = "";
   bool e = false;
-  KAR::Mod::BuiltIn::KARSettings settings = KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, d);
+  KAR::Boot::KARSettings settings = KAR::Boot::LoadKARSettingsFromDisc(e, d);
   settings.gameID = m_selected_game.game_id;
 
   ////changes the memory card if it's set to default gen

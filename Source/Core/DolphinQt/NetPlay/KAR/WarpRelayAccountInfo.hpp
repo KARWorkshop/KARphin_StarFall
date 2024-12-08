@@ -34,6 +34,10 @@ public:
  // bool Host(const UICommon::GameFile& game);
 
 private:
+
+  //when the Account is changed
+  void OnAccountChanged(int index);
+
   //void CreateMainLayout();
   //void ConnectWidgets();
   //void PopulateGameList();
@@ -48,13 +52,15 @@ private:
   //QComboBox* m_connection_type;
   //QLineEdit* m_nickname_edit;
 
-  QGridLayout* m_main_layout;
+  QVBoxLayout* m_main_layout;
 
+  //common
   QComboBox* accounts_Dropdown;
 
-  //info tab
+  //info
   QLabel* displayName_Label;
   QLineEdit* displayName_EditFeild;
+  QLabel* guestNotfication_Label;
 
   //network tab
 

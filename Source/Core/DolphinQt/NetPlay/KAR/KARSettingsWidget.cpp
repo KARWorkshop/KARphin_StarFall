@@ -97,7 +97,7 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
   {
     bool e = false;
     std::string m = "";
-    settings = KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, m);
+    settings = KAR::Boot::LoadKARSettingsFromDisc(e, m);
 
     // the FS screen code to use
     m_FS_type = new QComboBox();
@@ -229,7 +229,7 @@ void KAR::Core::KARSettingsWidget::OnDropDownChanged()
   //sets the custom memory card
 
   //saves to file
-  KAR::Mod::BuiltIn::WriteKARBuiltInModSettingsToDisc(settings);
+  KAR::Boot::WriteKARSettingsToDisc(settings);
 }
 
 //

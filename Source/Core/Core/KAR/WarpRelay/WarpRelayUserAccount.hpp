@@ -154,9 +154,11 @@ namespace KAR::WarpRelay
 
     nlohmann::json j;
     j["version"] = WARP_RELAY_USER_ACCOUNT_API_VERSION;
+    j["isGuest"] = account.isGuestAccount;
     j["displayName"] = account.displayName;
     j["warpRelayHash"] = account.warpRelayAccountHash;
     j["customIcon"] = account.customIconURL;
+    j["username"] = account.username;
 
     File::CreateEmptyFile(accountPath);
     File::WriteStringToFile(accountPath, j.dump());
@@ -176,19 +178,19 @@ namespace KAR::WarpRelay
     WarpRelayAccount account;
     nlohmann::json j = nlohmann::json::parse(str);
 
-    if (j["version"] != WARP_RELAY_USER_ACCOUNT_API_VERSION)
+    if (!j.contains("version") || j["version"] != WARP_RELAY_USER_ACCOUNT_API_VERSION)
     {
       account.displayName = "DATA_IS_OUTOFDATE_API";
       return account;
     }
 
+    account.isGuestAccount = (j.contains("isGuest") ? j["isGuest"].get<bool>() : true);
+    account.displayName = (j.contains("displayName") ? j["displayName"] : "Kirby");
+    account.warpRelayAccountHash = (j.contains("warpRelayHash") ? j["warpRelayHash"] : "");
+    account.customIconURL = (j.contains("customIcon") ? j["customIcon"] : "");
+    account.username = (j.contains("username") ? j["username"] : "Guest");
 
-    account.displayName = j["displayName"];
-    account.warpRelayAccountHash = j["warpRelayHash"];
-    account.customIconURL = j["customIcon"];
-
-    //make a call to validate if they're a guest || for now we force everyone to be a guest
-    account.isGuestAccount = true;
+    //make a call to validate if they're a guest || for now we don't, we assume till VPS is up
 
     return account;
 	}

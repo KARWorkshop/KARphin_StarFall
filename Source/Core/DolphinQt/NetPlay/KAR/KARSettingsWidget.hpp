@@ -4,7 +4,7 @@
 
 #include <QDialog>
 
-#include <Core/KAR/Mods/BuiltIn/KARBuiltInSettings.hpp>
+#include <Core/KAR/KARBootData.hpp>
 
 class QCheckBox;
  class QComboBox;
@@ -60,7 +60,7 @@ signals:
   //when one of the custom drop down changes
   void OnDropDownChanged();
 
-  KAR::Mod::BuiltIn::KARSettings settings;
+  KAR::Boot::KARSettings settings;
 
   std::string m_game_id;
   QComboBox* m_FS_type;

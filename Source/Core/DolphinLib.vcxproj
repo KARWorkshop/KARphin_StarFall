@@ -74,8 +74,8 @@
   <ItemGroup>
     <ClInclude Include="Core\KAR\GameIDs.hpp" />
     <ClInclude Include="Core\KAR\json.hpp" />
+    <ClInclude Include="Core\KAR\KARBootData.hpp" />
     <ClInclude Include="Core\KAR\Mods\BuiltIn\FSCodes.hpp" />
-    <ClInclude Include="Core\KAR\Mods\BuiltIn\KARBuiltInSettings.hpp" />
     <ClInclude Include="Core\KAR\Mods\MemoryCards\MemoryCardAutoGen.hpp" />
     <ClInclude Include="Core\KAR\Mods\ModDirs.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\ConnectPacket.hpp" />
