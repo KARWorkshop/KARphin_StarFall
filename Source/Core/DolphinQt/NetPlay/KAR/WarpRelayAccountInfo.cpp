@@ -43,7 +43,8 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    displayName_Label->setToolTip(tr("This is the name you will show to the public."));
    m_main_layout->addWidget(displayName_Label, 0, 0);
    displayName_EditFeild = new QLineEdit;
-   displayName_EditFeild->setText(QString::fromStdString(account.displayName));
+   displayName_EditFeild->setText(QString::fromStdString(
+       KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->displayName));
    displayName_EditFeild->setToolTip(tr("This is the name you will show to the public."));
    displayName_EditFeild->setValidator(
        new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
@@ -118,8 +119,10 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
   if (res == QMessageBox::Yes)
   {
     //saves the data to the file
-    account.displayName = displayName_EditFeild->text().toStdString();
-    KAR::WarpRelay::WriteWarpRelayAccount(account);
+    KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->displayName =
+        displayName_EditFeild->text().toStdString();
+    KAR::WarpRelay::WriteWarpRelayAccount(
+        *KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount());
 
     // Accept the close event
     event->accept();

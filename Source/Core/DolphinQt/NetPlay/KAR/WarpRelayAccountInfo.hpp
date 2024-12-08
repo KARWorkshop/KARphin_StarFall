@@ -28,7 +28,7 @@ public:
   explicit AccountInfoDialog(QWidget* parent);
 
   void closeEvent(QCloseEvent* event) override;
- 
+
 //signals:
  // bool Join();
  // bool Host(const UICommon::GameFile& game);
@@ -48,9 +48,9 @@ private:
   //QComboBox* m_connection_type;
   //QLineEdit* m_nickname_edit;
 
-  KAR::WarpRelay::WarpRelayAccount account;  // stores data about the Warp Relay account logged in as
-
   QGridLayout* m_main_layout;
+
+  QComboBox* accounts_Dropdown;
 
   //info tab
   QLabel* displayName_Label;

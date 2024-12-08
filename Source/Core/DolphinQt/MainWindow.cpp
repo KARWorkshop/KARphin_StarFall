@@ -1393,12 +1393,10 @@ void MainWindow::ShowNetPlaySetupDialog()
 
 void MainWindow::ShowWarpRelayAccountInfo()
 {
-  if (!KAR_WarpRelay_Account_dialog)
-    KAR_WarpRelay_Account_dialog = new KAR::WarpRelay::AccountInfoDialog(this);
-
+   KAR_WarpRelay_Account_dialog = new KAR::WarpRelay::AccountInfoDialog(this);
   KAR_WarpRelay_Account_dialog->setAttribute(Qt::WA_DeleteOnClose, true);
   SetQWidgetWindowDecorations(KAR_WarpRelay_Account_dialog);
-  KAR_WarpRelay_Account_dialog->show();
+  KAR_WarpRelay_Account_dialog->exec();
 }
 
 void MainWindow::ShowNetPlayBrowser()
@@ -1619,7 +1617,8 @@ bool MainWindow::NetPlayJoin()
     host_port = Config::Get(Config::NETPLAY_CONNECT_PORT);
   }
 
-  KAR::WarpRelay::WarpRelayAccount account = KAR::WarpRelay::LoadDefaultGuestAccount();
+  KAR::WarpRelay::WarpRelayAccount* account =
+      KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
 
   const std::string traversal_host = Config::Get(Config::NETPLAY_TRAVERSAL_SERVER);
   const u16 traversal_port = Config::Get(Config::NETPLAY_TRAVERSAL_PORT);
@@ -1636,7 +1635,7 @@ bool MainWindow::NetPlayJoin()
   // Create Client
   const bool is_hosting_netplay = server != nullptr;
   Settings::Instance().ResetNetPlayClient(new NetPlay::NetPlayClient(
-      host_ip, host_port, m_netplay_dialog, account.displayName,
+      host_ip, host_port, m_netplay_dialog, account->displayName,
       NetPlay::NetTraversalConfig{is_hosting_netplay ? false : is_traversal, traversal_host,
                                   traversal_port}));
 
@@ -1647,7 +1646,7 @@ bool MainWindow::NetPlayJoin()
   }
 
   m_netplay_setup_dialog->close();
-  m_netplay_dialog->show(account.displayName, is_traversal);
+  m_netplay_dialog->show(account->displayName, is_traversal);
 
   return true;
 }

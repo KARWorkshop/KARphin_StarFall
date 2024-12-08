@@ -193,6 +193,8 @@ static void ClearPeerPlayerId(ENetPeer* peer)
   }
 }
 
+#include <Core/KAR/WarpRelay/WarpRelayUserAccount.hpp>
+
 void NetPlayServer::SetupIndex()
 {
   if (!Config::Get(Config::NETPLAY_USE_INDEX) || Config::Get(Config::NETPLAY_INDEX_NAME).empty())
@@ -201,10 +203,10 @@ void NetPlayServer::SetupIndex()
   }
 
   NetPlaySession session;
-  KAR::WarpRelay::WarpRelayAccount account = KAR::WarpRelay::LoadDefaultGuestAccount();
+  KAR::WarpRelay::WarpRelayAccount* account = KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
 
   session.name = Config::Get(Config::NETPLAY_INDEX_NAME);
-  session.region = KAR::WarpRelay::GetRegionStr(account.region);
+  session.region = KAR::WarpRelay::GetRegionStr(account->region);
   session.has_password = !Config::Get(Config::NETPLAY_INDEX_PASSWORD).empty();
   session.method = m_traversal_client ? "traversal" : "direct";
   session.game_id = m_selected_game_name.empty() ? "UNKNOWN" : m_selected_game_name;
@@ -433,10 +435,13 @@ static void SendSyncIdentifier(sf::Packet& spac, const SyncIdentifier& sync_iden
     spac << x;
 }
 
+#include <Core/KAR/Netplay/Packets/ConnectPacket.hpp>
+
 // called from ---NETPLAY--- thread
 ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Packet& received_packet)
 {
   KAR::Netplay::Packet::ConnectPacket packet = KAR::Netplay::Packet::ParsePacket_Connect(received_packet);
+ 
 
   if (packet.majorBuild != KAR_VERSION_MAJOR)
     return ConnectionError::VersionMismatch;

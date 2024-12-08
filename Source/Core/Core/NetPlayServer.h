@@ -26,8 +26,6 @@
 #include "InputCommon/GCPadStatus.h"
 #include "UICommon/NetPlayIndex.h"
 
-#include "KAR/Netplay/WarpRelayUserAccount.hpp"
-
 #include "KAR/Netplay/Packets/ConnectPacket.hpp"
 #include "KAR/Netplay/Packets/OnPlayerJoinPacket.hpp"
 

@@ -5,7 +5,7 @@
 #include <SFML/Network/Packet.hpp>
 #include <Core/NetPlayProto.h>
 
-#include <Core/KAR/Netplay/WarpRelayUserAccount.hpp>
+#include <Core/KAR/WarpRelay/WarpRelayAccountManager.hpp>
 #include <Core/KAR/Versioning.hpp>
 
 namespace KAR::Netplay::Packet
