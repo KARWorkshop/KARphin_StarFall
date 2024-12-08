@@ -612,6 +612,44 @@ void NetPlayDialog::UpdateDiscordPresence()
 #endif
 }
 
+// starts a download of a icon
+static inline QPixmap StartPlayerIconDownload(const std::string URL, const uint8_t playerIndex)
+{
+  QPixmap pixmap;
+
+  // gets the image
+  // std::string endpoint{URL};
+  Common::HttpRequest http;
+
+  // The server always redirects once to the same location.
+  http.FollowRedirects(1);
+
+  const Common::HttpRequest::Response response = http.Get(URL);
+  std::string FP = "";
+  if (response.has_value())  // writes the image to cache
+  {
+    // net cache
+    const std::string netCacheDir = File::GetExeDirectory() + "/NetCache/";
+    if (!File::Exists(netCacheDir))
+      File::CreateDir(netCacheDir);
+
+    // packs data
+    const std::vector<uint8_t> data = response.value();
+    FP = netCacheDir + "Data" + std::to_string(playerIndex) + ".png";
+    File::CreateEmptyFile(FP);
+    std::ofstream outFile(FP, std::ios::binary);
+    outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+    outFile.close();
+  }
+  else  // if we failed, fallback
+    FP = File::GetExeDirectory() + "/Sys/NetIconFallback.png";
+
+  // loads data
+  pixmap.load(QString::fromStdString(FP));
+
+  return pixmap;
+}
+
 void NetPlayDialog::UpdateGUI()
 {
   auto client = Settings::Instance().GetNetPlayClient();
@@ -632,6 +670,7 @@ void NetPlayDialog::UpdateGUI()
                           -1;
 
   m_players_list->clear();
+  m_players_list->setIconSize(QSize(80, 80)); //sets the icon size for rendering
   m_players_list->setHorizontalHeaderLabels(
       {tr("Player"), tr("Rank"), tr("Region"), tr("Ping"), tr("Mapping")});
   m_players_list->setRowCount(m_player_count);
@@ -639,6 +678,8 @@ void NetPlayDialog::UpdateGUI()
   for (int i = 0; i < m_player_count; i++)
   {
     const auto* p = players[i];
+
+    //downloads a icon and caches it
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
     name_item->setToolTip(name_item->text());
@@ -844,9 +885,6 @@ void NetPlayDialog::SetOptionsEnabled(bool enabled)
     m_sync_codes_action->setEnabled(enabled);
     m_assign_ports_button->setEnabled(enabled);
     m_strict_settings_sync_action->setEnabled(enabled);
-    //m_host_input_authority_action->setEnabled(enabled);
-    //m_golf_mode_action->setEnabled(enabled);
-    //m_fixed_delay_action->setEnabled(enabled);
   }
 
   m_record_input_action->setEnabled(enabled);
