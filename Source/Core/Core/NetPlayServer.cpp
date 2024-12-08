@@ -460,6 +460,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   new_player.account.displayName = packet.displayName;
   new_player.account.rank = packet.rank;
   new_player.account.region = packet.region;
+  new_player.account.customIconURL = packet.customIconURL;
 
   if (StringUTF8CodePointCount(new_player.account.displayName) > MAX_NAME_LENGTH)
     return ConnectionError::NameTooLong;

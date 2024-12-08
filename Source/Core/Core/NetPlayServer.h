@@ -172,6 +172,7 @@ private:
     KAR::Netplay::Packet::OnPlayerJoinPacket packet;
     packet.displayName = newPlayer.account.displayName;
     packet.PID = newPlayer.pid;
+    packet.customIconURL = newPlayer.account.customIconURL;
 
     packet.rank = newPlayer.account.rank;
     packet.region = newPlayer.account.region;
@@ -192,6 +193,7 @@ private:
     KAR::Netplay::Packet::OnPlayerJoinPacket packet;
     packet.displayName = player.account.displayName;
     packet.PID = player.pid;
+    packet.customIconURL = player.account.customIconURL;
 
     packet.rank = player.account.rank;
     packet.region = player.account.region;

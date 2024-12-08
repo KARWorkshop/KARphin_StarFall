@@ -259,6 +259,7 @@ bool NetPlayClient::Connect()
   connectPacket.displayName = account->displayName;
   connectPacket.rank = account->rank;
   connectPacket.region = account->region;
+  connectPacket.customIconURL = account->customIconURL;
   Send(KAR::Netplay::Packet::GeneratePacket_Connect(connectPacket));
   enet_host_flush(m_client);
   sf::Packet rpac;
@@ -314,7 +315,7 @@ bool NetPlayClient::Connect()
     rpac >> m_pid;
 
     Player player;
-    player.account = *KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
+    player.account = *account;
     player.pid = m_pid;
 
     // add self to player list
@@ -500,6 +501,7 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
    player.account.displayName = data.displayName;
   player.account.rank = data.rank;
    player.account.region = data.region;
+  player.account.customIconURL = data.customIconURL;
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) joined", player.account.displayName, player.pid);
 

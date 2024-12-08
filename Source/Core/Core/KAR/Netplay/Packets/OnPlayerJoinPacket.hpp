@@ -18,7 +18,7 @@ namespace KAR::Netplay::Packet
 
 		uint8_t PID = 0;
 
-    std::string displayName = "";
+    std::string displayName = "", customIconURL = "";
 	};
 
 	//packages a player join packet
@@ -28,6 +28,7 @@ namespace KAR::Netplay::Packet
     p << (uint8_t)NetPlay::MessageID::PlayerJoin;
 
 		p << data.displayName;
+    p << data.customIconURL;
 
 		p << (uint8_t)data.rank;
     p << (uint8_t)data.region;
@@ -43,6 +44,7 @@ namespace KAR::Netplay::Packet
     OnPlayerJoinPacket data;
 
 		packet >> data.displayName;
+    packet >> data.customIconURL;
 
 		uint8_t d = 0;
     packet >> d;
