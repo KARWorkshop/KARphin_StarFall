@@ -141,6 +141,7 @@
 #include "VideoCommon/VideoConfig.h"
 
 #include <Core/KAR/WarpRelay/WarpRelayAccountManager.hpp>
+#include <Core/KAR/KARBootData.hpp>
 
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
@@ -307,8 +308,12 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
   // shouldn't be so we have to reapply all our rules afterwards.
   Settings::Instance().RefreshWidgetVisibility();
 
-  //loads all the Accounts
+  //loads all the Accounts and sets the account to the last used one
+  std::string e = "";
+  bool er = false;
   KAR::WarpRelay::WarpRelayAccountManager::LoadAllAccounts();
+  KAR::WarpRelay::WarpRelayAccountManager::SetLoggedInAccount(
+      KAR::Boot::LoadKARSettingsFromDisc(er, e).warpRelayAccountIndex);
 
   //loads the mods
 
