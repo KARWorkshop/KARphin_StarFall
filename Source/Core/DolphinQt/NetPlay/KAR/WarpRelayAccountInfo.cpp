@@ -69,6 +69,10 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
        new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
    m_main_layout->addWidget(displayName_EditFeild);
 
+   //the icon for this profile
+   
+   //the size and offset cropping for the image
+
    //m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
    
    //m_main_layout->addWidget(new QLabel(tr("Backend:")), 4, 0);

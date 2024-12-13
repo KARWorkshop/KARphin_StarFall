@@ -28,6 +28,8 @@
 #include "UICommon/GameFile.h"
 #include "UICommon/NetPlayIndex.h"
 
+#include <Core/KAR/KARBootData.hpp>
+
 NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWidget* parent)
     : QDialog(parent), m_game_list_model(game_list_model)
 {
@@ -80,6 +82,20 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   OnConnectionTypeChanged(m_connection_type->currentIndex());
 
   ConnectWidgets();
+
+   // valide the gecko codes exist
+  if (!File::Exists(KAR::Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini"))
+  {
+    ModalMessageBox::critical(
+        this, tr("Out of date deps"),
+        tr("Your KARphin may be updated but it's missing sys files needed for netplay "
+           "functionality. "
+           "You should reset your client data via the launcher, or delete your Client Data and "
+           "re-run "
+           "the Luncher. KARphin had a soft reset so it is best to treat this like a 3.0 and fresh "
+           "install. If this error still persists even after doing a reset. Notify the Support "
+           "channel in the discord. A full reinstall may be needed for KARphin."));
+  }
 }
 
 void NetPlaySetupDialog::CreateMainLayout()
