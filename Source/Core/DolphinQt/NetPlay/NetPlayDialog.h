@@ -15,6 +15,8 @@
 #include "DolphinQt/GameList/GameListModel.h"
 #include "VideoCommon/OnScreenDisplay.h"
 
+#include <Core/KAR/KARBootData.hpp>
+
 class BootSessionData;
 class ChunkedProgressDialog;
 class GameDigestDialog;
@@ -129,6 +131,16 @@ private:
                       int duration = OSD::Duration::NORMAL);
 
   void SendMessage(const std::string& message);
+
+  //KAR data
+  KAR::Boot::KARSettings KARSettings;
+
+  //menu for selecting the FS code
+  QComboBox* m_FS_type;
+
+  //menu for selecting the boot screen
+
+  //menu for selecting if you want music
 
   // Chat
   QGroupBox* m_chat_box;

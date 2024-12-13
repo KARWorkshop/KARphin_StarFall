@@ -115,6 +115,11 @@ NetPlayDialog::NetPlayDialog(const GameListModel& game_list_model,
 
   restoreGeometry(settings.value(QStringLiteral("netplaydialog/geometry")).toByteArray());
   m_splitter->restoreState(settings.value(QStringLiteral("netplaydialog/splitter")).toByteArray());
+
+  //loads the setting file
+  bool e = false;
+  std::string m = "";
+  KARSettings = KAR::Boot::LoadKARSettingsFromDisc(e, m);
 }
 
 NetPlayDialog::~NetPlayDialog()
@@ -123,7 +128,24 @@ NetPlayDialog::~NetPlayDialog()
 
   settings.setValue(QStringLiteral("netplaydialog/geometry"), saveGeometry());
   settings.setValue(QStringLiteral("netplaydialog/splitter"), m_splitter->saveState());
+
+  // saves to file
+  KAR::Boot::WriteKARSettingsToDisc(KARSettings);
 }
+
+// forward defines the names of each of the items
+#define FS_MOD_DROP_DOWN_NAME_STR_COUNT 10
+static const char* FS_MOD_DROP_DOWN_NAME_STRS[FS_MOD_DROP_DOWN_NAME_STR_COUNT] = {
+    "Auto",
+    "None",
+    "Single: Port 1",
+    "Single: Port 2",
+    "Single: Port 3",
+    "Single: Port 4",
+    "Multi-Screen: Port 1 and 2",
+    "Multi-Screen: Port 3 and 4",
+    "Multi-Screen: Port 1, 2, and 3",
+    "Multi-Screen: Port 2, 3, and 4"};
 
 void NetPlayDialog::CreateMainLayout()
 {
@@ -234,6 +256,54 @@ void NetPlayDialog::CreateMainLayout()
  //m_hide_remote_gbas_action = m_other_menu->addAction(tr("Hide Remote GBAs"));
  //m_hide_remote_gbas_action->setCheckable(true);
 
+  //creates the FS dropdown
+  //  the FS screen code to use
+  m_FS_type = new QComboBox();
+
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[0]));  // auto
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[1]));  // sets no screen code
+
+  // core single person screen
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[2]));
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[3]));
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[4]));
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[5]));
+
+  // shows multiable screens screen
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[6]));
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[7]));
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[8]));
+  m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[9]));
+  m_FS_type->setCurrentIndex(
+      (uint8_t)KARSettings.FSCode);
+
+  m_FS_type->setToolTip(tr(
+      "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
+      "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
+      "This must match the port you are set as in Netplay. You can check this under your GC "
+      "Mapping or have your port manually set via the "
+      "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
+      "the drop down. That way you only see yourself and none of the split screen.\n\n"
+      "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
+      "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
+      "None tells KARphin to not use any screen codes. This will result in a normal split "
+      "screen.\n\n"));
+
+  QLabel* FSLable = new QLabel(tr("Screen Code"));
+  FSLable->setToolTip(tr(
+      "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
+      "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
+      "This must match the port you are set as in Netplay. You can check this under your GC "
+      "Mapping or have your port manually set via the "
+      "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
+      "the drop down. That way you only see yourself and none of the split screen.\n\n"
+      "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
+      "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
+      "None tells KARphin to not use any screen codes. This will result in a normal split "
+      "screen.\n\n"));
+
+  //loads a custom memory card
+
   m_game_button->setDefault(false);
   m_game_button->setAutoDefault(false);
 
@@ -253,8 +323,10 @@ void NetPlayDialog::CreateMainLayout()
   options_widget->addWidget(m_start_button, 0, 0, Qt::AlignVCenter);
   options_widget->addWidget(m_buffer_label, 0, 1, Qt::AlignVCenter);
   options_widget->addWidget(m_buffer_size_box, 0, 2, Qt::AlignVCenter);
-  options_widget->addWidget(m_quit_button, 0, 3, Qt::AlignVCenter | Qt::AlignRight);
-  options_widget->setColumnStretch(3, 1000);
+  options_widget->addWidget(FSLable, 0, 3, Qt::AlignVCenter);
+  options_widget->addWidget(m_FS_type, 0, 4, Qt::AlignVCenter);
+  options_widget->addWidget(m_quit_button, 0, 5, Qt::AlignVCenter | Qt::AlignRight);
+  options_widget->setColumnStretch(5, 1000);
 
   m_main_layout->addLayout(options_widget, 2, 0, 1, -1, Qt::AlignRight);
   m_main_layout->setRowStretch(1, 1000);
