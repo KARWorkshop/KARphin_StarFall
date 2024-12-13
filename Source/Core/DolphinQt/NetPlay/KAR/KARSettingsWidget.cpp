@@ -57,36 +57,36 @@ KAR::Core::KARSettingsWidget::KARSettingsWidget(std::string game_id)
 
 KAR::Core::KARSettingsWidget::~KARSettingsWidget()
 {
-  // valide the gecko codes exist
-  if (!File::Exists(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini"))
-  {
-    ModalMessageBox::critical(
-        this, tr("Out of date deps"),
-        tr("Your KARphin may be updated but it's missing sys files needed for netplay "
-           "functionality. "
-           "You should reset your client data via the launcher, or delete your Client Data and "
-           "re-run "
-           "the Luncher. KARphin had a soft reset so it is best to true this like a 3.0 and fresh "
-           "install. If this error still persists even after doing a reset. Notify the Support "
-           "channel in the discord. A full reinstall may be needed for KARphin."));
-  }
+  //// valide the gecko codes exist
+  //if (!File::Exists(Mod::IO::GetPermaBuiltInGeckoCodePath() + "FS/Port1.ini"))
+  //{
+  //  ModalMessageBox::critical(
+  //      this, tr("Out of date deps"),
+  //      tr("Your KARphin may be updated but it's missing sys files needed for netplay "
+  //         "functionality. "
+  //         "You should reset your client data via the launcher, or delete your Client Data and "
+  //         "re-run "
+  //         "the Luncher. KARphin had a soft reset so it is best to true this like a 3.0 and fresh "
+  //         "install. If this error still persists even after doing a reset. Notify the Support "
+  //         "channel in the discord. A full reinstall may be needed for KARphin."));
+  //}
 }
 
 #include <Core/KAR/GameIDs.hpp>
 
-//forward defines the names of each of the items
-#define FS_MOD_DROP_DOWN_NAME_STR_COUNT 10
-static const char* FS_MOD_DROP_DOWN_NAME_STRS[FS_MOD_DROP_DOWN_NAME_STR_COUNT] = {
-    "Auto",
-                                                   "None",
-                                                   "Single: Port 1",
-                                                   "Single: Port 2",
-                                                   "Single: Port 3",
-                                                   "Single: Port 4",
-                                                   "Multi-Screen: Port 1 and 2",
-                                                   "Multi-Screen: Port 3 and 4",
-                                                   "Multi-Screen: Port 1, 2, and 3",
-                                                   "Multi-Screen: Port 2, 3, and 4"};
+////forward defines the names of each of the items
+//#define FS_MOD_DROP_DOWN_NAME_STR_COUNT 10
+//static const char* FS_MOD_DROP_DOWN_NAME_STRS[FS_MOD_DROP_DOWN_NAME_STR_COUNT] = {
+//    "Auto",
+//                                                   "None",
+//                                                   "Single: Port 1",
+//                                                   "Single: Port 2",
+//                                                   "Single: Port 3",
+//                                                   "Single: Port 4",
+//                                                   "Multi-Screen: Port 1 and 2",
+//                                                   "Multi-Screen: Port 3 and 4",
+//                                                   "Multi-Screen: Port 1, 2, and 3",
+//                                                   "Multi-Screen: Port 2, 3, and 4"};
 
 void KAR::Core::KARSettingsWidget::CreateWidgets()
 {
@@ -99,53 +99,53 @@ void KAR::Core::KARSettingsWidget::CreateWidgets()
     std::string m = "";
     settings = KAR::Boot::LoadKARSettingsFromDisc(e, m);
 
-    // the FS screen code to use
-    m_FS_type = new QComboBox();
+    //// the FS screen code to use
+    //m_FS_type = new QComboBox();
 
-     m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[0])); //auto
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[1]));  // sets no screen code
+    // m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[0])); //auto
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[1]));  // sets no screen code
 
-    // core single person screen
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[2]));
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[3]));
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[4]));
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[5]));
+    //// core single person screen
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[2]));
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[3]));
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[4]));
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[5]));
 
-    // shows multiable screens screen
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[6]));
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[7]));
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[8]));
-    m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[9]));
-    m_FS_type->setCurrentIndex(
-        (uint8_t)settings.FSCode);  //(((uint8_t)settings.FSCode > 0 ? (uint8_t)settings.FSCode - 1
-                                    //: (uint8_t)settings.FSCode))); //temp subtract till auto is in
+    //// shows multiable screens screen
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[6]));
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[7]));
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[8]));
+    //m_FS_type->addItem(tr(FS_MOD_DROP_DOWN_NAME_STRS[9]));
+    //m_FS_type->setCurrentIndex(
+    //    (uint8_t)settings.FSCode);  //(((uint8_t)settings.FSCode > 0 ? (uint8_t)settings.FSCode - 1
+    //                                //: (uint8_t)settings.FSCode))); //temp subtract till auto is in
 
-    m_FS_type->setToolTip(tr(
-        "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
-        "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
-        "This must match the port you are set as in Netplay. You can check this under your GC "
-        "Mapping or have your port manually set via the "
-        "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
-        "the drop down. That way you only see yourself and none of the split screen.\n\n"
-        "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
-        "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
-        "None tells KARphin to not use any screen codes. This will result in a normal split "
-        "screen.\n\n"));
+    //m_FS_type->setToolTip(tr(
+    //    "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
+    //    "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
+    //    "This must match the port you are set as in Netplay. You can check this under your GC "
+    //    "Mapping or have your port manually set via the "
+    //    "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
+    //    "the drop down. That way you only see yourself and none of the split screen.\n\n"
+    //    "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
+    //    "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
+    //    "None tells KARphin to not use any screen codes. This will result in a normal split "
+    //    "screen.\n\n"));
 
-    QLabel* FSLable = new QLabel(tr("Screen Code"));
-    FSLable->setToolTip(tr(
-        "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
-        "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
-        "This must match the port you are set as in Netplay. You can check this under your GC "
-        "Mapping or have your port manually set via the "
-        "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
-        "the drop down. That way you only see yourself and none of the split screen.\n\n"
-        "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
-        "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
-        "None tells KARphin to not use any screen codes. This will result in a normal split "
-        "screen.\n\n"));
-    layout->addWidget(FSLable, 0, 0);
-    layout->addWidget(m_FS_type, 0, 1);
+    //QLabel* FSLable = new QLabel(tr("Screen Code"));
+    //FSLable->setToolTip(tr(
+    //    "<dolphin_emphasis>CLIENT SIDE ONLY</dolphin_emphasis><br><br>"
+    //    "Sets the Fullscreen code\n\nPort 1-4 are for seeing one perspective for the full screen. "
+    //    "This must match the port you are set as in Netplay. You can check this under your GC "
+    //    "Mapping or have your port manually set via the "
+    //    "Assign Controller Ports. If for example you are set to Port 4, you would select Port 4 in "
+    //    "the drop down. That way you only see yourself and none of the split screen.\n\n"
+    //    "The Multi-Screen codes show several ports at once. Theses are mainly used for local play "
+    //    "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
+    //    "None tells KARphin to not use any screen codes. This will result in a normal split "
+    //    "screen.\n\n"));
+    //layout->addWidget(FSLable, 0, 0);
+    //layout->addWidget(m_FS_type, 0, 1);
 
     // sets the default boot screen
     //m_defaultBootScreen_type = new QComboBox();
@@ -187,8 +187,8 @@ void KAR::Core::KARSettingsWidget::ConnectWidgets()
 {
   if (KAR::GameData::IsNA_OrModdedVariant(m_game_id))
   {
-    connect(m_FS_type, &QComboBox::currentIndexChanged, this,
-            &KARSettingsWidget::OnDropDownChanged);
+   // connect(m_FS_type, &QComboBox::currentIndexChanged, this,
+   //         &KARSettingsWidget::OnDropDownChanged);
   }
 
 //  connect(m_warning, &CheatWarningWidget::OpenCheatEnableSettings, this,
@@ -213,16 +213,16 @@ void KAR::Core::KARSettingsWidget::ConnectWidgets()
 // when one of the custom drop down changes
 void KAR::Core::KARSettingsWidget::OnDropDownChanged()
 {
-  //parses the fs code set
-  const std::string fs = m_FS_type->currentText().toStdString();
-  for (size_t i = 0; i < FS_MOD_DROP_DOWN_NAME_STR_COUNT; ++i)
-  {
-    if (fs == FS_MOD_DROP_DOWN_NAME_STRS[i])
-    {
-      settings.FSCode = (KAR::Mod::BuiltIn::NA::FS::FullScreenCodeIndex)i;
-      break;
-    }
-  }
+  ////parses the fs code set
+  //const std::string fs = m_FS_type->currentText().toStdString();
+  //for (size_t i = 0; i < FS_MOD_DROP_DOWN_NAME_STR_COUNT; ++i)
+  //{
+  //  if (fs == FS_MOD_DROP_DOWN_NAME_STRS[i])
+  //  {
+  //    settings.FSCode = (KAR::Mod::BuiltIn::NA::FS::FullScreenCodeIndex)i;
+  //    break;
+  //  }
+  //}
 
   //parses what menu we boot into
 

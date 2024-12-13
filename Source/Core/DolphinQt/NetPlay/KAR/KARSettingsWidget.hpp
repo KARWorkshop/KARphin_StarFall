@@ -63,7 +63,7 @@ signals:
   KAR::Boot::KARSettings settings;
 
   std::string m_game_id;
-  QComboBox* m_FS_type;
+  //QComboBox* m_FS_type;
   QComboBox* m_defaultBootScreen_type;
   //QCheckBox* m_shouldMemCardAutoChange_checkbox;
   //  u16 m_game_revision;
