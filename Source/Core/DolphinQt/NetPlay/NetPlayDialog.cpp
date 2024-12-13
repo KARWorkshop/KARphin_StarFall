@@ -95,6 +95,11 @@ NetPlayDialog::NetPlayDialog(const GameListModel& game_list_model,
     : QDialog(parent), m_game_list_model(game_list_model),
       m_start_game_callback(std::move(start_game_callback))
 {
+  // loads the setting file
+  bool e = false;
+  std::string m = "";
+  KARSettings = KAR::Boot::LoadKARSettingsFromDisc(e, m);
+
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   setWindowTitle(tr("NetPlay"));
@@ -115,11 +120,6 @@ NetPlayDialog::NetPlayDialog(const GameListModel& game_list_model,
 
   restoreGeometry(settings.value(QStringLiteral("netplaydialog/geometry")).toByteArray());
   m_splitter->restoreState(settings.value(QStringLiteral("netplaydialog/splitter")).toByteArray());
-
-  //loads the setting file
-  bool e = false;
-  std::string m = "";
-  KARSettings = KAR::Boot::LoadKARSettingsFromDisc(e, m);
 }
 
 NetPlayDialog::~NetPlayDialog()
@@ -301,6 +301,9 @@ void NetPlayDialog::CreateMainLayout()
       "or netplay, while having two or more of thoses 3+ players on the same machine.\n\n"
       "None tells KARphin to not use any screen codes. This will result in a normal split "
       "screen.\n\n"));
+  connect(m_FS_type, &QComboBox::currentIndexChanged, this,
+           &NetPlayDialog::OnFSDropDownChanged);
+
 
   //loads a custom memory card
 
@@ -332,6 +335,24 @@ void NetPlayDialog::CreateMainLayout()
   m_main_layout->setRowStretch(1, 1000);
 
   setLayout(m_main_layout);
+}
+
+ // when the FS code changes
+void NetPlayDialog::OnFSDropDownChanged(int index)
+{
+  //parses the fs code set
+   const std::string fs = m_FS_type->currentText().toStdString();
+   for (size_t i = 0; i < FS_MOD_DROP_DOWN_NAME_STR_COUNT; ++i)
+  {
+     if (fs == FS_MOD_DROP_DOWN_NAME_STRS[i])
+     {
+       KARSettings.FSCode = (KAR::Mod::BuiltIn::NA::FS::FullScreenCodeIndex)i;
+       break;
+     }
+   }
+
+   // saves to file
+   KAR::Boot::WriteKARSettingsToDisc(KARSettings);
 }
 
 void NetPlayDialog::CreateChatLayout()

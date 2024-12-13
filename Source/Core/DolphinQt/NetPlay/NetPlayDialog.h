@@ -112,6 +112,9 @@ public:
 
   }
 
+  //when the FS code changes
+  void OnFSDropDownChanged(int index);
+
 signals:
   void Stop();
 
