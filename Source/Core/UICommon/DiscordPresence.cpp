@@ -7,6 +7,8 @@
 #include "Core/Config/UISettings.h"
 #include "Core/ConfigManager.h"
 
+#include <Core/KAR/GameIDs.hpp>
+
 #ifdef USE_DISCORD_PRESENCE
 
 #include <algorithm>
@@ -101,12 +103,14 @@ void HandleDiscordJoin(const char* join_secret)
 
 std::string ArtworkForGameId()
 {
-  const DiscIO::Region region = SConfig::GetInstance().m_region;
-  const bool is_wii = Core::System::GetInstance().IsWii();
-  const std::string region_code = SConfig::GetInstance().GetGameTDBImageRegionCode(is_wii, region);
+  const std::string gameID = SConfig::GetInstance().GetGameID();
 
-  static constexpr char cover_url[] = "https://discord.dolphin-emu.org/cover-art/{}/{}.png";
-  return fmt::format(cover_url, region_code, SConfig::GetInstance().GetGameTDBID());
+  //if backside
+  if (gameID == KAR::GameData::GetGameID_BS())
+    return "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-discord/BS.png";
+
+  //if anything else
+  return "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-discord/Mic.png";
 }
 
 }  // namespace
