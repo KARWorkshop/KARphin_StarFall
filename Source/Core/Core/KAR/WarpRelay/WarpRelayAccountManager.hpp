@@ -21,13 +21,19 @@ struct WarpRelayAccountManager
   // gets all Account files and loads them
   static inline void LoadAllAccounts()
   {
-    const size_t count = accounts.size();
+    size_t count = accounts.size();
     accounts.clear();
     accounts.reserve(count);
 
+    //load all files
     const std::vector<std::string> FPs = GetAllAccountFiles();
-    for (size_t i = 0; i < FPs.size(); ++i)
+    count = FPs.size();
+    for (size_t i = 0; i < count; ++i)
       accounts.emplace_back(LoadWarpRelayAccount(FPs[i]));
+
+    //if none are found we generate a Guest Account
+    if (!count)
+      accounts.emplace_back(WarpRelayAccount());
   }
 
   // sets the currently logged in account

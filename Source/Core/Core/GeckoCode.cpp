@@ -21,7 +21,7 @@
 #include "Core/PowerPC/PowerPC.h"
 #include "Core/System.h"
 
-#include <Core/KAR/Mods/BuiltIn/KARBuiltInSettings.hpp>
+#include <Core/KAR/KARBootData.hpp>
 #include <Core/KAR/GameIDs.hpp>
 
 namespace Gecko
@@ -129,8 +129,8 @@ static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
   // adds the FS code for this user
    std::string t = "";
    bool e = false;
-   KAR::Mod::BuiltIn::KARSettings settings =
-       KAR::Mod::BuiltIn::LoadKARBuiltInModSettingsFromDisc(e, t);
+   KAR::Boot::KARSettings settings =
+       KAR::Boot::LoadKARSettingsFromDisc(e, t);
   // if (KAR::GameData::IsNA_OrModdedVariant(settings.gameID))
  // {
      GeckoCode fs = KAR::Mod::BuiltIn::NA::FS::GetFSCode(settings.FSCode);
