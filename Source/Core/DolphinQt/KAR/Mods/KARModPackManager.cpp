@@ -17,9 +17,6 @@
 #include "DolphinQt/QtUtils/SetWindowDecorations.h"
 #include "UICommon/ResourcePack/Manager.h"
 
-#include <Core/KAR/Mods/ModPack.hpp>
-#include <Core/KAR/Mods/ModPacks.hpp>
-
 KARModPackManager::KARModPackManager(QWidget* widget) : QDialog(widget)
 {
   CreateWidgets();
@@ -83,7 +80,7 @@ void KARModPackManager::ConnectWidgets()
 void KARModPackManager::OpenResourcePackDir()
 {
   //opens mods folder
-  QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(KAR::Mod::Pack::GetModsDirectory())));
+  QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(KAR::Mod::IO::GetModsDirectory())));
 }
 
 void KARModPackManager::RepopulateTable()
@@ -306,8 +303,8 @@ void KARModPackManager::PriorityUp()
 
 void KARModPackManager::Refresh()
 {
-  //ResourcePack::Init();
-  KAR::Mod::Pack::LoadMods(); //loads the mods
+
+  //KAR::Mod::Pack::LoadMods(); //loads the mods
   RepopulateTable();
 }
 

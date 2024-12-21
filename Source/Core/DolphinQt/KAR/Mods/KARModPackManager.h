@@ -7,6 +7,8 @@
 
 #include <QDialog>
 
+#include <Core/KAR/Mods/ModDirs.hpp>
+
 class QPushButton;
 class QTableWidget;
 class QTableWidgetItem;
