@@ -60,7 +60,7 @@ const Info<AudioCommon::DPL2Quality> MAIN_DPL2_QUALITY{{System::Main, "Core", "D
 const Info<int> MAIN_AUDIO_LATENCY{{System::Main, "Core", "AudioLatency"}, 20};
 const Info<bool> MAIN_AUDIO_STRETCH{{System::Main, "Core", "AudioStretch"}, false};
 const Info<int> MAIN_AUDIO_STRETCH_LATENCY{{System::Main, "Core", "AudioStretchMaxLatency"}, 80};
-const Info<std::string> MAIN_MEMCARD_A_PATH{{System::Main, "Core", "MemcardAPath"}, ""};
+const Info<std::string> MAIN_MEMCARD_A_PATH{{System::Main, "Core", "MemcardAPath"}, "../MemoryCards/StandardRuleSet.USA.raw"};
 const Info<std::string> MAIN_MEMCARD_B_PATH{{System::Main, "Core", "MemcardBPath"}, ""};
 const Info<std::string>& GetInfoForMemcardPath(ExpansionInterface::Slot slot)
 {
@@ -113,9 +113,7 @@ const Info<std::string>& GetInfoForGCIPathOverride(ExpansionInterface::Slot slot
 
 const Info<int> MAIN_MEMORY_CARD_SIZE{{System::Main, "Core", "MemoryCardSize"}, -1};
 
-const Info<ExpansionInterface::EXIDeviceType> MAIN_SLOT_A{
-    {System::Main, "Core", "SlotA"},
-    ExpansionInterface::EXIDeviceType::None};
+const Info<ExpansionInterface::EXIDeviceType> MAIN_SLOT_A{{System::Main, "Core", "SlotA"},ExpansionInterface::EXIDeviceType::MemoryCard};
 const Info<ExpansionInterface::EXIDeviceType> MAIN_SLOT_B{{System::Main, "Core", "SlotB"},
                                                           ExpansionInterface::EXIDeviceType::None};
 const Info<ExpansionInterface::EXIDeviceType> MAIN_SERIAL_PORT_1{
