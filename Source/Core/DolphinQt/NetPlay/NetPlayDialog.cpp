@@ -65,6 +65,8 @@
 #include "VideoCommon/NetPlayGolfUI.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <Core/KAR/GameIDs.hpp>
+
 namespace
 {
 QString InetAddressToString(const Common::TraversalInetAddress& addr)
@@ -899,6 +901,31 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
     UpdateDiscordPresence();
   });
   DisplayMessage(tr("Game changed to \"%1\"").arg(qname), "magenta");
+
+  //if the game is the Hack Pack or backside B2 set to standard ruleset and make it load the memory cards
+  if (sync_identifier.game_id == KAR::GameData::GetGameID_HP() ||
+      sync_identifier.game_id == KAR::GameData::GetGameID_BS())
+  {
+    PrintSystemCommand(
+        std::string("\"") + qname.toStdString() +
+        "\" has been set to use \"Standard Ruleset\". "
+        "Custom memory card presets are not supported in this build currently. If the "
+        "standard ruleset is what you desire. "
+        "You can always boot directly into the Main Menu by changing the Boot Code in "
+        "the Gecko Codes.");
+
+    Config::SetBaseOrCurrent(Config::NETPLAY_SAVEDATA_LOAD, true);
+  }
+
+  //otherwise, we don't load any memory cards
+  else
+  {
+    PrintSystemCommand(
+        std::string("\"") + qname.toStdString() +
+        "\" has been set to use no Memory Cards are rulesets, as this ROM is not supported for this feature. Use either the Hack Pack or Backside, or one of our support ROMs.");
+
+    Config::SetBaseOrCurrent(Config::NETPLAY_SAVEDATA_LOAD, false);
+  }
 }
 
 void NetPlayDialog::OnMsgChangeGBARom(int pad, const NetPlay::GBAConfig& config)

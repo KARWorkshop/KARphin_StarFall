@@ -42,6 +42,7 @@ namespace KAR
 	KAR_VERSION_HOT_FIX \
 	"-----\n" \
 	/*"* KARphin itself can now auto-update\n"*/ \
+	"* Preconfigured Memory Card for Hack Pack and Backside standard rule set.\n" \
 	"* Default boot into Debug/Settings Menu \n" \
 	"* Auto FS if \"Auto\" is selected in the Full Screen Code Dropdown, this is default.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
