@@ -219,14 +219,14 @@ void UpdateDiscordPresence(int party_size, SecretType type, const std::string& s
   if (game_artwork.empty())
   {
     discord_presence.largeImageKey = "dolphin_logo";
-    discord_presence.largeImageText = "Dolphin is an emulator for the GameCube and the Wii.";
+    discord_presence.largeImageText = "KARphin is an emulator for Kirby Air Ride Netplay.";
   }
   else
   {
     discord_presence.largeImageKey = game_artwork.c_str();
     discord_presence.largeImageText = title.c_str();
     discord_presence.smallImageKey = "dolphin_logo";
-    discord_presence.smallImageText = "Dolphin is an emulator for the GameCube and the Wii.";
+    discord_presence.smallImageText = "KARphin is an emulator for Kirby Air Ride Netplay.";
   }
   discord_presence.details = title.empty() ? "Not in-game" : title.c_str();
   if (reset_timer)
