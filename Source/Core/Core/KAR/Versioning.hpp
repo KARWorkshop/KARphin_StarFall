@@ -28,11 +28,8 @@ namespace KAR
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
 #define KAR_CHANGE_LOG_BLURB_INFO_TEXT "Q: Why is KARphin Updating, hasen't it had enough?\n" \
   "\nA: Yes, it has. But this isn't a normal update. This is a restart for KARphin, taking the notes I learned from the previous builds and taking another shot. " \
-  "The auto fullscreen codes, replays, and other larger changes that caused instability have been removed. " \
+  "The replays, and other larger changes that caused instability have been removed. " \
 	"Minor tweaks have been kept and some improvements have been made from refactoring the emulator have been kept. \n\n" \
-	"Q: Without the auto-FS, what's the point? Why keep the emulator?\n" \
-	"\nA: The feature set is removed for now. They will be coming back eventually. For now this gives us a stable KARphin build. " \
-	"Updates will come out.\n\n" \
 	"Q: Why don't you just modified the R10/Legacy build?\n" \
 	"\nA: People have a fondness for R10/Legacy and it's the common stable build. " \
 	"If I released a modified R10 build, it would cause more confusion, and KARphin has already caused enough. " \
@@ -46,7 +43,6 @@ namespace KAR
 	"-----\n" \
 	/*"* KARphin itself can now auto-update\n"*/ \
 	"* Default boot into Debug/Settings Menu \n" \
-	"* FS Codes have been moved into a selectable drop down when using a supported ROM\n" \
 	"* Auto FS if \"Auto\" is selected in the Full Screen Code Dropdown, this is default.\n" \
 	"* fair input delay and sync codes forced. Replays have been disabled\n" \
 	"* players are notified if they lack the game, when joining the Lobby\n" \
