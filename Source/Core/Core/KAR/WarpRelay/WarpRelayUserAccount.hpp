@@ -139,6 +139,9 @@ namespace KAR::WarpRelay
     Rank rank = Rank::StarDust; //defines the temp latter rank of the user
     Region region = Region::NA;  // the geo-region to use
 
+    //the sizing and offset of the image
+    size_t imageWidth = 40, imageHeight = 40;
+
     std::string displayName = "Kirby",  // the display name used online
       customIconURL = "",  // the URL/local path to the custom icon if they have one
       username = "Guest", //the user name, used for loading the file

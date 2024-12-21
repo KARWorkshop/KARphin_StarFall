@@ -14,13 +14,13 @@ static constexpr u16 DEFAULT_LISTEN_PORT = 2626;
 // Main.NetPlay
 
 const Info<std::string> NETPLAY_TRAVERSAL_SERVER{{System::Main, "NetPlay", "TraversalServer"},
-                                                 "stun.dolphin-emu.org"};
+                                                 "stun.dolphin-emu.org"}; //"stun.karworkshop.com"};
 const Info<u16> NETPLAY_TRAVERSAL_PORT{{System::Main, "NetPlay", "TraversalPort"}, 6262};
 const Info<u16> NETPLAY_TRAVERSAL_PORT_ALT{{System::Main, "NetPlay", "TraversalPortAlt"}, 6226};
 const Info<std::string> NETPLAY_TRAVERSAL_CHOICE{{System::Main, "NetPlay", "TraversalChoice"},
                                                  "traversal"};
 const Info<std::string> NETPLAY_INDEX_URL{{System::Main, "NetPlay", "IndexServer"},
-                                          "https://lobby.dolphin-emu.org"};
+                                          "https://lobby.dolphin-emu.org"}; //"https://lobby.karworkshop.com"};
 
 const Info<bool> NETPLAY_USE_INDEX{{System::Main, "NetPlay", "UseIndex"}, false};
 const Info<std::string> NETPLAY_INDEX_NAME{{System::Main, "NetPlay", "IndexName"}, ""};

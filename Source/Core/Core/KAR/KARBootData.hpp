@@ -50,7 +50,7 @@ static inline void WriteKARSettingsToDisc(const KARSettings& settings)
   File::CreateEmptyFile(p);
 
   nlohmann::json j;
-  j["majorVer"] = KAR_VERSION_MAJOR;
+  j["ver_major"] = KAR_VERSION_MAJOR;
 
   j["bootState"] = (uint8_t)settings.bootState;
   j["warpRelayAccount"] = settings.warpRelayAccountIndex;
@@ -80,7 +80,7 @@ static inline KARSettings LoadKARSettingsFromDisc(bool& error, std::string& erro
   nlohmann::json j = nlohmann::json::parse(d);
 
   // throw a error if versions conflict
-  const std::string ver = (j.contains("majorVer") ? j["majorVer"] : "NOPE");
+  const std::string ver = (j.contains("ver_major") ? j["ver_major"] : "NOPE");
   if (ver != KAR_VERSION_MAJOR)
   {
     error = true;
