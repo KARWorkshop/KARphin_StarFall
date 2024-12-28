@@ -44,6 +44,7 @@
 #include "UICommon/UICommon.h"
 
 #include "Core/KAR/Versioning.hpp"
+#include <Core/KAR/KARBootData.hpp>
 
 static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no,
                               Common::MsgType style)
@@ -112,6 +113,8 @@ static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no
   return false;
 }
 
+#include <QProcess>
+
 #ifdef _WIN32
 #define main app_main
 #endif
@@ -119,24 +122,25 @@ static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no
 int main(int argc, char* argv[])
 {
   //loads the current data
-  KAR::Core::BuildData buildData = KAR::Core::LoadBuildVersionDataFromFile();
+  bool b = false;
+  std::string s = "";
+  KAR::Boot::KARSettings settings = KAR::Boot::LoadKARSettingsFromDisc(b, s);
 
-  //don't check if we're in a development build
-  //if (KAR_VERSION_STABILITY != KAR_VERSION_DEV_STR)
-  //{
-  //  // checks the version data and updates as needed
-  //  KAR::Core::BuildData v = KAR::Core::LoadBuildVersionDataFromFile();
-  //  if (/*v.build != KAR_VERSION_BUILD || */ v.majorVer != KAR_VERSION_MAJOR ||
-  //      v.minorVer != KAR_VERSION_MINOR || v.hotfix != KAR_VERSION_HOT_FIX)
-  //  {
-  //    //
-  //
-  //    return 0;
-  //  }
-  //  else
-  //    KAR::Core::WriteBuildVersionDataToFile(false);
-  //}
-  KAR::Core::WriteBuildVersionDataToFile((buildData.hasSeenChangeLog));
+  //checks for update
+  if (settings.updateMode != KAR::Boot::UpdateMode::NoUpdate)
+  {
+    //attempts a update
+    const std::string KWRoot = File::GetExeDirectory() + "/..";
+    QProcess::startDetached(QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
+        {
+      QString::fromStdString("-ver"),
+          QString::fromStdString(std::string(std::string(KAR_VERSION_MAJOR) + "_" +
+                                             KAR_VERSION_MINOR + "_" + KAR_VERSION_HOT_FIX)),
+          QString::fromStdString("-installDir"), QString::fromStdString(KWRoot),
+          QString::fromStdString("-KARphin"), QString::fromStdString("-boot")},
+                            QString::fromStdString(KWRoot + "/Tools"));
+
+  }
 
 #ifdef _WIN32
   const bool console_attached = AttachConsole(ATTACH_PARENT_PROCESS) != FALSE;
@@ -285,7 +289,7 @@ int main(int argc, char* argv[])
 #endif
 
     //show the user the change log
-    if(!KAR::Core::LoadBuildVersionDataFromFile().hasSeenChangeLog)
+    if(!settings.hasSeenChangeLog)
     {
       ModalMessageBox analytics_prompt(&win);
 
@@ -300,15 +304,9 @@ int main(int argc, char* argv[])
       SetQWidgetWindowDecorations(&analytics_prompt);
       analytics_prompt.exec();
 
-      KAR::Core::WriteBuildVersionDataToFile(true);
+      settings.hasSeenChangeLog = true;
+      KAR::Boot::WriteKARSettingsToDisc(settings);
     }
-
-    //if (!Settings::Instance().IsBatchModeEnabled())
-    //{
-    //  auto* updater = new Updater(&win, Config::Get(Config::MAIN_AUTOUPDATE_UPDATE_TRACK),
-    //                              Config::Get(Config::MAIN_AUTOUPDATE_HASH_OVERRIDE));
-    //  updater->start();
-    //}
 
     retval = app.exec();
   }

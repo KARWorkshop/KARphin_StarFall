@@ -23,6 +23,10 @@ inline std::string GetModsDirectory()
 }
 
 //gets the ROMs directory, this is for standard ROMs
+static inline std::string GetROMsDirectory()
+{
+  return File::GetExeDirectory() + "/../ROMs";
+}
 
 //gets the runtime ROMs directory, this is for the extracted variants we mod
 

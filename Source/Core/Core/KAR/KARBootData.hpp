@@ -9,14 +9,12 @@
 
 namespace KAR::Boot
 {
-  //defines what menu of KARphin we are booting into
-  enum class KARphinBootState : uint8_t
+  //defines the update mode
+  enum class UpdateMode : uint8_t
   {
-    Main = 0, //the default menu, no netplay or anything
-
-    Host, //we boot into the host menu
-
-    LobbyList, //we boot into the lobby list
+    NoUpdate = 0, //we don't update
+    AutoUpdate, //we are auto updating
+    AutoUpdate_Dev, //we are auto updating on the dev build
 
     Count
   };
@@ -26,16 +24,15 @@ struct KARSettings
 {
   //---general user
 
-  KARphinBootState bootState = KARphinBootState::Main;  // are we booting into KARphin Netplay menus
-
   uint32_t warpRelayAccountIndex = 0; //the Warp Relay account index
+  UpdateMode updateMode = UpdateMode::AutoUpdate; //auto update
+
+  bool hasSeenChangeLog = false; //have we seen the change log
 
   //---game settings
 
   Mod::BuiltIn::NA::FS::FullScreenCodeIndex FSCode =
       Mod::BuiltIn::NA::FS::FullScreenCodeIndex::Auto;  // what FS code are we using
-
-  // are we booting into the main menu or the debug menu
 
   bool useDefaultAutoGenMemoryCard =
       true;  // are we using the default memory card or loading whatever is there
@@ -50,10 +47,10 @@ static inline void WriteKARSettingsToDisc(const KARSettings& settings)
   File::CreateEmptyFile(p);
 
   nlohmann::json j;
-  j["ver_major"] = KAR_VERSION_MAJOR;
 
-  j["bootState"] = (uint8_t)settings.bootState;
+  j["updateMode"] = (uint8_t)settings.updateMode;
   j["warpRelayAccount"] = settings.warpRelayAccountIndex;
+  j["hasSeenChangeLog"] = settings.hasSeenChangeLog;
 
   j["gameID"] = settings.gameID;
 
@@ -79,23 +76,11 @@ static inline KARSettings LoadKARSettingsFromDisc(bool& error, std::string& erro
   File::ReadFileToString(p, d);
   nlohmann::json j = nlohmann::json::parse(d);
 
-  // throw a error if versions conflict
-  const std::string ver = (j.contains("ver_major") ? j["ver_major"] : "NOPE");
-  if (ver != KAR_VERSION_MAJOR)
-  {
-    error = true;
-    errorMessage =
-        std::string("Version conflict, your version, \"" + std::string(KAR_VERSION_MAJOR) +
-                    "\" is not the same as the one that made the file. \"" + ver + "\"");
-    return settings;
-  }
-
+  settings.updateMode = (UpdateMode)(j.contains("updateMode") ? j["updateMode"].get<uint8_t>() : 1);
    settings.warpRelayAccountIndex =
       (j.contains("warpRelayAccount") ? j["warpRelayAccount"].get<uint32_t>() : 0);
-
-   settings.bootState =
-       (j.contains("bootState") ? (KARphinBootState)(j["bootState"].get<uint8_t>()) :
-                                  KARphinBootState::Main);
+  settings.hasSeenChangeLog =
+      (j.contains("hasSeenChangeLog") ? j["hasSeenChangeLog"].get<bool>() : false);
 
   settings.gameID = (j.contains("gameID") ? j["gameID"] : "");
 

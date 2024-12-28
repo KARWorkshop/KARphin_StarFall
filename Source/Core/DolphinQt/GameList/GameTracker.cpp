@@ -204,6 +204,7 @@ void GameTracker::RefreshAll()
 {
   m_processing_halted = true;
   m_load_thread.Cancel();
+
   m_load_thread.EmplaceItem(Command{CommandType::ResumeProcessing, {}});
 
   if (m_needs_purge)

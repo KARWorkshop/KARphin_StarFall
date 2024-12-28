@@ -345,15 +345,21 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
     m_pending_boot.reset();
   }
 
-  //sets the ROM paths if it's missing
+  //generates the ROMs directory if missing
+  if (!File::Exists(KAR::Mod::IO::GetROMsDirectory()))
+    File::CreateDir(KAR::Mod::IO::GetROMsDirectory());
+
+  //sets the ROMs directory since that's the only directory we should be loading ROMs from
   QStringList p = Settings::Instance().GetPaths();
-  if (p.isEmpty() || p[0].toStdString() != File::GetExeDirectory() + "/../ROMs")
+  if (p.isEmpty() || p[0].toStdString() != KAR::Mod::IO::GetROMsDirectory())
   {
     for (auto r : p)
       Settings::Instance().RemovePath(r);
 
-    Settings::Instance().AddPath(QString::fromStdString(File::GetExeDirectory() + "/../ROMs"));
+    Settings::Instance().AddPath(QString::fromStdString(KAR::Mod::IO::GetROMsDirectory()));
   }
+
+  //picks which menu we boot into and refresh the game list
 }
 
 MainWindow::~MainWindow()
