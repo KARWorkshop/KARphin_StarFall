@@ -50,7 +50,7 @@ static inline void WriteKARSettingsToDisc(const KARSettings& settings)
 
   j["updateMode"] = (uint8_t)settings.updateMode;
   j["warpRelayAccount"] = settings.warpRelayAccountIndex;
-  j["hasSeenChangeLog"] = settings.hasSeenChangeLog;
+  j["hasSeenChangeLog"] = true;
 
   j["gameID"] = settings.gameID;
 
@@ -79,8 +79,7 @@ static inline KARSettings LoadKARSettingsFromDisc(bool& error, std::string& erro
   settings.updateMode = (UpdateMode)(j.contains("updateMode") ? j["updateMode"].get<uint8_t>() : 1);
    settings.warpRelayAccountIndex =
       (j.contains("warpRelayAccount") ? j["warpRelayAccount"].get<uint32_t>() : 0);
-  settings.hasSeenChangeLog =
-      (j.contains("hasSeenChangeLog") ? j["hasSeenChangeLog"].get<bool>() : false);
+  settings.hasSeenChangeLog = (j.contains("hasSeenChangeLog") ? j["hasSeenChangeLog"].get<bool>() : false);
 
   settings.gameID = (j.contains("gameID") ? j["gameID"] : "");
 

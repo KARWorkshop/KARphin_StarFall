@@ -360,6 +360,23 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
   }
 
   //picks which menu we boot into and refresh the game list
+  const std::string bootStateFP = File::GetExeDirectory() + "/Boot.state";
+  if (File::Exists(bootStateFP))
+  {
+    RefreshGameList(); //refresh the list of games
+
+    //gets the state
+    std::string state = "";
+    File::ReadFileToString(bootStateFP, state);
+
+    //if Lobby
+    if (state == "Lobby")
+      ShowNetPlayBrowser();
+
+    // if Host
+    else if (state == "Host")
+      ShowNetPlaySetupDialog();
+  }
 }
 
 MainWindow::~MainWindow()

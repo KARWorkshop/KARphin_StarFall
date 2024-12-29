@@ -16,7 +16,7 @@ namespace Core
 // client data
 #define KAR_VERSION_MAJOR "3"
 #define KAR_VERSION_MINOR "0"
-#define KAR_VERSION_HOT_FIX "1"
+#define KAR_VERSION_HOT_FIX "3"
 #define KAR_VERSION_BUILD "Star Dust"
 
 // the change log info

@@ -719,7 +719,7 @@ void NetPlayDialog::UpdateGUI()
   m_players_list->clear();
   m_players_list->setIconSize(QSize(80, 80)); //sets the icon size for rendering
   m_players_list->setHorizontalHeaderLabels(
-      {tr("Player"), tr("Rank"), tr("Region"), tr("Ping"), tr("Mapping")});
+      {tr("Player"), /*tr("Rank"),*/ tr("Region"), tr("Ping"), tr("Mapping")});
   m_players_list->setRowCount(m_player_count);
 
   for (int i = 0; i < m_player_count; i++)
@@ -734,8 +734,8 @@ void NetPlayDialog::UpdateGUI()
     name_item->setIcon(icons.at(p->account.customIconURL));  // sets the icon
     name_item->setToolTip(name_item->text());
 
-    const auto& rank_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
-    rank_item->setToolTip(rank_item->text());
+   // const auto& rank_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));
+   // rank_item->setToolTip(rank_item->text());
 
     const auto& region_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRegionLongStr(p->account.region)));
     region_item->setToolTip(region_item->text());
@@ -748,17 +748,24 @@ void NetPlayDialog::UpdateGUI()
             p->pid, client->GetPadMapping(), client->GetGBAConfig(), client->GetWiimoteMapping())));
     mapping_item->setToolTip(mapping_item->text());
 
-    for (auto* item : {name_item, rank_item, region_item, ping_item, mapping_item})
+    for (auto* item : {name_item, /*rank_item,*/ region_item, ping_item, mapping_item})
     {
       item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
       item->setData(Qt::UserRole, static_cast<int>(p->pid));
     }
 
+    //when we have ranked set up
+    //m_players_list->setItem(i, 0, name_item);
+    //m_players_list->setItem(i, 1, rank_item);
+    //m_players_list->setItem(i, 2, region_item);
+    //m_players_list->setItem(i, 3, ping_item);
+    //m_players_list->setItem(i, 4, mapping_item);
+
+    //for now cuz we don't
     m_players_list->setItem(i, 0, name_item);
-    m_players_list->setItem(i, 1, rank_item);
-    m_players_list->setItem(i, 2, region_item);
-    m_players_list->setItem(i, 3, ping_item);
-    m_players_list->setItem(i, 4, mapping_item);
+    m_players_list->setItem(i, 1, region_item);
+    m_players_list->setItem(i, 2, ping_item);
+    m_players_list->setItem(i, 3, mapping_item);
 
     if (p->pid == selection_pid)
       m_players_list->selectRow(i);
