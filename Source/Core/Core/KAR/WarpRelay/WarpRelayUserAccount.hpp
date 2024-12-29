@@ -143,8 +143,6 @@ namespace KAR::WarpRelay
     Brown,
     White,
 
-    Joxxy,
-
     Count
   };
 
