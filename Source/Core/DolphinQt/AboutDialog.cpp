@@ -79,7 +79,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
           .replace(QStringLiteral("%GAMES_YOU_OWN%"),
                    tr("Always patch your Hack Pack, Backside, ect, from ROMs you ripped yourself :3."))
           .replace(QStringLiteral("%FRIENDS_OF_JAS%"),
-              tr("Main Programmer and Lead: Jas<br/>KAR Decomp Work: Jinxy<br/>Extra Icons: Taco<br/>Launcher: RiskiVR<br/><br/>Discord Icon by icons8(https://icons8.com)"))
+              tr("Main Programmer and Lead: Jas<br/>KAR Decomp Work: Jinxy<br/>Extra Icons: Taco and Plantt<br/>Launcher: RiskiVR<br/><br/>Discord Icon by icons8(https://icons8.com)"))
           .replace(QStringLiteral("%LICENSE%"), tr("License"))
           .replace(QStringLiteral("%AUTHORS%"), tr("Authors"))
           .replace(QStringLiteral("%SUPPORT%"), tr("Support"));

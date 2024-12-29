@@ -44,7 +44,8 @@ void KAR::WarpRelay::AccountInfoDialog::OnGUIChange_GuestAccount()
 
   displayName_EditFeild->setText(QString::fromStdString(account->displayName));
 
-  //sets our preset icon
+  //updates the preset icon
+  presetIcon_Dropdown->setCurrentIndex((int)account->presetIcon);
 }
 
 // changes all the GUI to be what we use for a non-guest account
