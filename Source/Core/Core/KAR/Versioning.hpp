@@ -34,22 +34,23 @@ namespace Core
   "caused enough. "                                                                                \
   "R10/Legacy will stay as it is, I won't be releasing custom R10 builds.\n\n"                     \
   "-----CHANGE LOG " KAR_VERSION_MAJOR "-" KAR_VERSION_MINOR "-" KAR_VERSION_HOT_FIX "-----\n"     \
-  "* Warp Relay Accounts now display icons in the Lobby\n"                                         \
-  "* Warp Relay Guest Account stock icons thanks to Plantt\n"                                      \
-  "* KARphin itself can now auto-update\n"                                                         \
+  "* Warp Relay Accounts now display icons in the Lobby.\n"                                         \
+  "* Warp Relay Guest Account stock icons thanks to Plantt.\n"                                      \
+  "* Warp Relay Non-Guest Accounts can set their own icons.\n"                                     \
+  "* KARphin itself can now auto-update.\n"                                                         \
   "* Preconfigured Memory Card for Hack Pack and Backside standard rule set.\n"                    \
-  "* Default boot into Debug/Settings Menu \n"                                                     \
+  "* Default boot into Debug/Settings Menu.\n"                                                     \
   "* Auto FS if \"Auto\" is selected in the Full Screen Code Dropdown, this is default.\n"         \
-  "* fair input delay and sync codes forced. Replays have been disabled\n"                         \
-  "* players are notified if they lack the game, when joining the Lobby\n"                         \
-  "* hide CT FS desync messages\n"                                                                 \
-  "* gecko codes are downloadable from inside KARphin\n"                                           \
-  "* Netplay Account, Host, and Browser buttons have been added with Taco's custom icons\n"        \
+  "* fair input delay and sync codes forced. Replays have been disabled.\n"                         \
+  "* players are notified if they lack the game, when joining the Lobby.\n"                         \
+  "* hide CT FS desync messages.\n"                                                                 \
+  "* gecko codes are downloadable from inside KARphin.\n"                                           \
+  "* Netplay Account, Host, and Browser buttons have been added with Taco's custom icons.\n"        \
   "* User Settings is forced into local mode and folder is renamed to "                            \
-  "\"StarDust_Player_Settings\"\n"                                                                 \
-  "* ROMs can only be loaded via the ROMs folder\n"                                                \
+  "\"StarDust_Player_Settings\".\n"                                                                 \
+  "* ROMs can only be loaded via the ROMs folder.\n"                                                \
   "* Controller Profiles are loaded from the Profiles folder in the Accounts folder.\n"            \
-  "* Minor tweaks\n"                                                                               \
+  "* Minor tweaks.\n"                                                                               \
   "\n\nFor a full list of changes check out the " KAR_VERSION_BUILD                                \
   " branch on the github: \"https://github.com/KARWorkshop/KARphin_StarFall\""
 }  // namespace Core

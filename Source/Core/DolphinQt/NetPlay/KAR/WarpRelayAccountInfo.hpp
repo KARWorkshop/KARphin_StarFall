@@ -50,20 +50,6 @@ private:
   //updates the image we render
   void UpdateAccountIcon();
 
-  //void CreateMainLayout();
-  //void ConnectWidgets();
-  //void PopulateGameList();
-  //void ResetTraversalHost();
-  //
-  //void SaveSettings();
-  //
-  //void OnConnectionTypeChanged(int index);
-  //
-  //// Main Widget
-  //QDialogButtonBox* m_close_button;
-  //QComboBox* m_connection_type;
-  //QLineEdit* m_nickname_edit;
-
   QVBoxLayout* m_main_layout;
 
   //common
@@ -77,42 +63,18 @@ private:
 
   //account image preview
   QLabel* icon_Label;
-  QLabel* icon_storage;
+  QLabel* icon_storage; //stores our icon
 
   //secondary dropdown for guests to change their default icon
   QComboBox* presetIcon_Dropdown;
 
-
-  //custom url label for non-guest accounts
-  //custom url input field for non-guest accounts
+  //custom url for none-guests
+  QLabel* customURL_Label;
+  QLineEdit* customURL_EditFeild;
 
   //network tab
 
   //linked accounts tab
-
-  //QTabWidget* m_tab_widget;
-  //QPushButton* m_reset_traversal_button;
-  //
-  //// Connection Widget
-  //QLabel* m_ip_label;
-  //QLineEdit* m_ip_edit;
-  //QLabel* m_connect_port_label;
-  //QSpinBox* m_connect_port_box;
-  //QPushButton* m_connect_button;
-  //
-  //// Host Widget
-  //QLabel* m_host_port_label;
-  //QSpinBox* m_host_port_box;
-  //QListWidget* m_host_games;
-  //QPushButton* m_host_button;
-  //QCheckBox* m_host_force_port_check;
-  //QSpinBox* m_host_force_port_box;
-  //QCheckBox* m_host_chunked_upload_limit_check;
-  //QSpinBox* m_host_chunked_upload_limit_box;
-  //QCheckBox* m_host_server_browser;
-  //QLineEdit* m_host_server_name;
-  //QLineEdit* m_host_server_password;
-  //QComboBox* m_host_server_region;
 
 };
 

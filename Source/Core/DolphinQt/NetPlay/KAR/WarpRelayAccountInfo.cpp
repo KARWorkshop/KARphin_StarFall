@@ -45,7 +45,12 @@ void KAR::WarpRelay::AccountInfoDialog::OnGUIChange_GuestAccount()
   displayName_EditFeild->setText(QString::fromStdString(account->displayName));
 
   //updates the preset icon
+  presetIcon_Dropdown->setVisible(true);
   presetIcon_Dropdown->setCurrentIndex((int)account->presetIcon);
+
+  //hides the URL input fields
+  customURL_EditFeild->setVisible(false);
+  customURL_Label->setVisible(false);
 }
 
 // changes all the GUI to be what we use for a non-guest account
@@ -59,6 +64,14 @@ void KAR::WarpRelay::AccountInfoDialog::OnGUIChange_WarpRelayAccount()
       "You can set a custom icon using the input field at the bottom.\nMake sure the image is 40 by 40 px for best result. You can use others but it may not show up as well."));
 
   displayName_EditFeild->setText(QString::fromStdString(account->displayName));
+
+  //hides the icon presets
+  presetIcon_Dropdown->setVisible(false);
+
+  //shows the url input feild
+  customURL_EditFeild->setVisible(true);
+  customURL_EditFeild->setText(QString::fromStdString(account->customIconURL));
+  customURL_Label->setVisible(true);
 }
 
 KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
@@ -113,7 +126,7 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
 
    //the dropdown for various pre-set icons
    presetIcon_Dropdown = new QComboBox();
-   presetIcon_Dropdown->setToolTip(tr("The presets for Guest accounts"));
+   presetIcon_Dropdown->setToolTip(tr("The presets for Guest accounts."));
    presetIcon_Dropdown->addItem(QString::fromStdString("Pink"));
    presetIcon_Dropdown->addItem(QString::fromStdString("Yellow"));
    presetIcon_Dropdown->addItem(QString::fromStdString("Blue"));
@@ -122,10 +135,23 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    presetIcon_Dropdown->addItem(QString::fromStdString("Red"));
    presetIcon_Dropdown->addItem(QString::fromStdString("Brown"));
    presetIcon_Dropdown->addItem(QString::fromStdString("White"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Joxxy"));
    presetIcon_Dropdown->setCurrentIndex((uint8_t)KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->presetIcon);
    m_main_layout->addWidget(presetIcon_Dropdown);
 
    //the input feild for a custom URL
+   customURL_Label = new QLabel(tr("Custom URL"));
+   customURL_Label->setToolTip(tr("The custom URL to the image you would like as your icon."));
+   customURL_EditFeild = new QLineEdit(); 
+   QObject::connect(
+       customURL_EditFeild, &QLineEdit::textChanged,
+                    [&](const QString& newText) {
+     KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->customIconURL =
+         newText.toStdString();
+     UpdateAccountIcon();
+   });
+   m_main_layout->addWidget(customURL_Label);
+   m_main_layout->addWidget(customURL_EditFeild);
 
    //m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
    
@@ -136,59 +162,22 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    //m_main_layout->addWidget(new QLabel(tr("Warp Relay Private Hash:")), 8, 0);
    //m_main_layout->addWidget(new QLabel(tr("Warp Relay Discord Link Hash:")), 9, 0);
 
-   setLayout(m_main_layout);
+   
 
    connect(accounts_Dropdown, &QComboBox::currentIndexChanged, this,
-           &AccountInfoDialog::OnAccountChanged);
+           &AccountInfoDialog::OnAccountChanged); //when the account drop down changes
    connect(presetIcon_Dropdown, &QComboBox::currentIndexChanged, this,
-           &AccountInfoDialog::OnPresetIconChanged);
+           &AccountInfoDialog::OnPresetIconChanged); //when the preset dropdown changes
 
-//  CreateMainLayout();
-//
-//  bool use_index = Config::Get(Config::NETPLAY_USE_INDEX);
-//  std::string index_region = Config::Get(Config::NETPLAY_INDEX_REGION);
-//  std::string index_name = Config::Get(Config::NETPLAY_INDEX_NAME);
-//  std::string index_password = Config::Get(Config::NETPLAY_INDEX_PASSWORD);
-//  std::string nickname = Config::Get(Config::NETPLAY_NICKNAME);
-//  std::string traversal_choice = Config::Get(Config::NETPLAY_TRAVERSAL_CHOICE);
-//  int connect_port = Config::Get(Config::NETPLAY_CONNECT_PORT);
-//  int host_port = Config::Get(Config::NETPLAY_HOST_PORT);
-//  int host_listen_port = Config::Get(Config::NETPLAY_LISTEN_PORT);
-//  bool enable_chunked_upload_limit = Config::Get(Config::NETPLAY_ENABLE_CHUNKED_UPLOAD_LIMIT);
-//  u32 chunked_upload_limit = Config::Get(Config::NETPLAY_CHUNKED_UPLOAD_LIMIT);
-//#ifdef USE_UPNP
-//  bool use_upnp = Config::Get(Config::NETPLAY_USE_UPNP);
-//
-//  m_host_upnp->setChecked(use_upnp);
-//#endif
-//
-//  m_nickname_edit->setText(QString::fromStdString(nickname));
-//  m_connection_type->setCurrentIndex(traversal_choice == "direct" ? 0 : 1);
-//  m_connect_port_box->setValue(connect_port);
-//  m_host_port_box->setValue(host_port);
-//
-//  m_host_force_port_box->setValue(host_listen_port);
-//  m_host_force_port_box->setEnabled(false);
-//
-//  m_host_server_browser->setChecked(use_index);
-//
-//  m_host_server_region->setEnabled(use_index);
-//  m_host_server_region->setCurrentIndex(
-//      m_host_server_region->findData(QString::fromStdString(index_region)));
-//
-//  m_host_server_name->setEnabled(use_index);
-//  m_host_server_name->setText(QString::fromStdString(index_name));
-//
-//  m_host_server_password->setEnabled(use_index);
-//  m_host_server_password->setText(QString::fromStdString(index_password));
-//
-//  m_host_chunked_upload_limit_check->setChecked(enable_chunked_upload_limit);
-//  m_host_chunked_upload_limit_box->setValue(chunked_upload_limit);
-//  m_host_chunked_upload_limit_box->setEnabled(enable_chunked_upload_limit);
-//
-//  OnConnectionTypeChanged(m_connection_type->currentIndex());
-//
-//  ConnectWidgets();
+   setLayout(m_main_layout);
+
+   // if we're no longer a guest account
+   if (!KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->isGuestAccount)
+     OnGUIChange_WarpRelayAccount();
+
+   // if we're a guest account
+   else
+     OnGUIChange_GuestAccount();
 }
 
 static bool weRevertedAChangedOfAccount = false; //this is a flag so we can not show the same text over and over again
@@ -248,12 +237,10 @@ void KAR::WarpRelay::AccountInfoDialog::OnAccountChanged(int index)
 // when the preset icon is changed
 void KAR::WarpRelay::AccountInfoDialog::OnPresetIconChanged(int index)
 {
-  //changes the image
+  // sets the custom icon url to the preset
   KAR::WarpRelay::WarpRelayAccount* account =
       KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
   account->presetIcon = (KAR::WarpRelay::PresetIcon)index;
-
-  //sets the custom icon url
   account->customIconURL = KAR::WarpRelay::GetPresetIconURL(account->presetIcon);
 
   //updates the image we render
@@ -301,37 +288,3 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
     event->ignore();
   }
 }
-
-//void KAR::WarpRelay::AccountInfoDialog::accept()
-//{
-//  /*SaveSettings();
-//  if (m_tab_widget->currentIndex() == 0)
-//  {
-//    emit Join();
-//  }
-//  else
-//  {
-//    auto items = m_host_games->selectedItems();
-//    if (items.empty())
-//    {
-//      ModalMessageBox::critical(this, tr("Error"), tr("You must select a game to host!"));
-//      return;
-//    }
-//
-//    if (m_host_server_browser->isChecked() && m_host_server_name->text().isEmpty())
-//    {
-//      ModalMessageBox::critical(this, tr("Error"), tr("You must provide a name for your session!"));
-//      return;
-//    }
-//
-//    if (m_host_server_browser->isChecked() &&
-//        m_host_server_region->currentData().toString().isEmpty())
-//    {
-//      ModalMessageBox::critical(this, tr("Error"),
-//                                tr("You must provide a region for your session!"));
-//      return;
-//    }
-//
-//    emit Host(*items[0]->data(Qt::UserRole).value<std::shared_ptr<const UICommon::GameFile>>());
-//  }*/
-//}
