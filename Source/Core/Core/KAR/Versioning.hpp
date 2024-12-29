@@ -16,7 +16,7 @@ namespace Core
 // client data
 #define KAR_VERSION_MAJOR "3"
 #define KAR_VERSION_MINOR "0"
-#define KAR_VERSION_HOT_FIX "3"
+#define KAR_VERSION_HOT_FIX "4"
 #define KAR_VERSION_BUILD "Star Dust"
 
 // the change log info
@@ -34,6 +34,7 @@ namespace Core
   "caused enough. "                                                                                \
   "R10/Legacy will stay as it is, I won't be releasing custom R10 builds.\n\n"                     \
   "-----CHANGE LOG " KAR_VERSION_MAJOR "-" KAR_VERSION_MINOR "-" KAR_VERSION_HOT_FIX "-----\n"     \
+  "* Warp Relay Accounts now display icons in the Lobby\n"                                         \
   "* KARphin itself can now auto-update\n"                                                         \
   "* Preconfigured Memory Card for Hack Pack and Backside standard rule set.\n"                    \
   "* Default boot into Debug/Settings Menu \n"                                                     \
