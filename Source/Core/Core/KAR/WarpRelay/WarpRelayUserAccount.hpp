@@ -131,6 +131,27 @@ namespace KAR::WarpRelay
     return "Star Dust";
   }
 
+  //defines the preset icon to use
+  enum class PresetIcon : uint8_t
+  {
+    Pink = 0,
+    Yellow,
+    Blue,
+    Green,
+    Purple,
+    Red,
+    Brown,
+    White,
+
+    Count
+  };
+
+  //maps a preset icon to it's data URL
+  static inline std::string GetPresetIconURL(const PresetIcon icon)
+  {
+    return (icon != PresetIcon::Count ? "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-account/kirb_" + std::to_string((uint8_t)icon) + ".png" : "");
+  }
+
 	//defines the data loaded from a warp relay file
 	struct WarpRelayAccount
 	{
@@ -139,8 +160,7 @@ namespace KAR::WarpRelay
     Rank rank = Rank::StarDust; //defines the temp latter rank of the user
     Region region = Region::NA;  // the geo-region to use
 
-    //the sizing and offset of the image
-    size_t imageWidth = 40, imageHeight = 40;
+    PresetIcon presetIcon = PresetIcon::Pink;  // marks a preset icon, used in non-guest accounts
 
     std::string displayName = "Kirby",  // the display name used online
       customIconURL = "",  // the URL/local path to the custom icon if they have one
@@ -162,6 +182,7 @@ namespace KAR::WarpRelay
     j["warpRelayHash"] = account.warpRelayAccountHash;
     j["customIcon"] = account.customIconURL;
     j["username"] = account.username;
+    j["presetIcon"] = account.presetIcon;
 
     File::CreateEmptyFile(accountPath);
     File::WriteStringToFile(accountPath, j.dump());
@@ -192,6 +213,7 @@ namespace KAR::WarpRelay
     account.warpRelayAccountHash = (j.contains("warpRelayHash") ? j["warpRelayHash"] : "");
     account.customIconURL = (j.contains("customIcon") ? j["customIcon"] : "");
     account.username = (j.contains("username") ? j["username"] : "Guest");
+    account.presetIcon = (PresetIcon)(j.contains("presetIcon") ? j["presetIcon"].get<uint8_t>() : 0);
 
     //make a call to validate if they're a guest || for now we don't, we assume till VPS is up
 

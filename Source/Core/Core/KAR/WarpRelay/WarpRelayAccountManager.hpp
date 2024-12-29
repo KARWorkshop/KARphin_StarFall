@@ -15,9 +15,6 @@ struct WarpRelayAccountManager
   static WarpRelayAccount* loggedInAccount;
   static uint32_t currentlyLoggedInAccountIndex;
 
-  //the downloaded custom icons, maps a URL to a FP of image
-  static std::map<std::string, std::string> iconFPs;
-
   // gets all Account files and loads them
   static inline void LoadAllAccounts()
   {
@@ -88,7 +85,5 @@ struct WarpRelayAccountManager
 
     return loggedInAccount;
   }
-
-  //gets a filepath of a icon based on URL, if not found, downloads it
 };
 }

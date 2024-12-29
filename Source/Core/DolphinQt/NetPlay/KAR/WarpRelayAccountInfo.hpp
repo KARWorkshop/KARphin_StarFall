@@ -38,6 +38,18 @@ private:
   //when the Account is changed
   void OnAccountChanged(int index);
 
+  //when the preset icon is changed
+  void OnPresetIconChanged(int index);
+
+  //changes all the GUI to be what we use for a guest account
+  void OnGUIChange_GuestAccount();
+
+  //changes all the GUI to be what we use for a non-guest account
+  void OnGUIChange_WarpRelayAccount();
+
+  //updates the image we render
+  void UpdateAccountIcon();
+
   //void CreateMainLayout();
   //void ConnectWidgets();
   //void PopulateGameList();
@@ -57,10 +69,22 @@ private:
   //common
   QComboBox* accounts_Dropdown;
 
-  //info
+  //notification how guest accounts work or if it's not, the size of the image
+  QLabel* guestNotfication_Label;
+
   QLabel* displayName_Label;
   QLineEdit* displayName_EditFeild;
-  QLabel* guestNotfication_Label;
+
+  //account image preview
+  QLabel* icon_Label;
+  QLabel* icon_storage;
+
+  //secondary dropdown for guests to change their default icon
+  QComboBox* presetIcon_Dropdown;
+
+
+  //custom url label for non-guest accounts
+  //custom url input field for non-guest accounts
 
   //network tab
 

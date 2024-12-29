@@ -67,6 +67,8 @@
 
 #include <Core/KAR/GameIDs.hpp>
 
+#include <KAR/WarpRelayImageLoader.hpp>
+
 namespace
 {
 QString InetAddressToString(const Common::TraversalInetAddress& addr)
@@ -133,6 +135,8 @@ NetPlayDialog::~NetPlayDialog()
 
   // saves to file
   KAR::Boot::WriteKARSettingsToDisc(KARSettings);
+
+  //clears the net cache
 }
 
 // forward defines the names of each of the items
@@ -656,47 +660,6 @@ void NetPlayDialog::UpdateDiscordPresence()
 #endif
 }
 
-// starts a download of a icon
-static inline QPixmap StartPlayerIconDownload(const std::string URL, const uint8_t playerIndex)
-{
-  QPixmap pixmap;
-
-  // gets the image
-  // std::string endpoint{URL};
-  Common::HttpRequest http;
-
-  // The server always redirects once to the same location.
-  http.FollowRedirects(1);
-
-  const Common::HttpRequest::Response response = http.Get(URL);
-  std::string FP = "";
-  if (response.has_value())  // writes the image to cache
-  {
-    // net cache
-    const std::string netCacheDir = File::GetExeDirectory() + "/NetCache/";
-    if (!File::Exists(netCacheDir))
-      File::CreateDir(netCacheDir);
-
-    // packs data
-    const std::vector<uint8_t> data = response.value();
-    FP = netCacheDir + "Data" + std::to_string(playerIndex) + ".png";
-    File::CreateEmptyFile(FP);
-    std::ofstream outFile(FP, std::ios::binary);
-    outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
-    outFile.close();
-  }
-  else  // if we failed, fallback
-    FP = File::GetExeDirectory() + "/Sys/NetIconFallback.png";
-
-  // loads data
-  pixmap.load(QString::fromStdString(FP));
-
-  return pixmap;
-}
-
- // stores a map of Icon byte data to arrays to their URLs
-std::unordered_map<std::string, QIcon> icons;
-
 void NetPlayDialog::UpdateGUI()
 {
   auto client = Settings::Instance().GetNetPlayClient();
@@ -727,11 +690,14 @@ void NetPlayDialog::UpdateGUI()
     const auto* p = players[i];
 
     // checks for their icon, if it doesn't exist we download it
-    if (icons.find(p->account.customIconURL) == icons.end())
-      icons[p->account.customIconURL] = QIcon(StartPlayerIconDownload(p->account.customIconURL, i));
+    if (KAR::WarpRelay::IconLoader::icons.find(p->account.customIconURL) ==
+        KAR::WarpRelay::IconLoader::icons.end())
+      KAR::WarpRelay::IconLoader::icons[p->account.customIconURL] =
+          QIcon(KAR::WarpRelay::IconLoader::DownloadIcon(p->account.customIconURL));
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->account.displayName));
-    name_item->setIcon(icons.at(p->account.customIconURL));  // sets the icon
+    name_item->setIcon(
+        KAR::WarpRelay::IconLoader::icons.at(p->account.customIconURL));  // sets the icon
     name_item->setToolTip(name_item->text());
 
    // const auto& rank_item = new QTableWidgetItem(QString::fromStdString(KAR::WarpRelay::GetRankStr(p->account.rank)));

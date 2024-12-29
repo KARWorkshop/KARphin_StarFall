@@ -185,6 +185,7 @@
     <ClCompile Include="NetPlay\GameListDialog.cpp" />
     <ClCompile Include="NetPlay\KAR\KARSettingsWidget.cpp" />
     <ClCompile Include="NetPlay\KAR\WarpRelayAccountInfo.cpp" />
+    <ClCompile Include="NetPlay\KAR\WarpRelayImageLoader.cpp" />
     <ClCompile Include="NetPlay\NetPlayBrowser.cpp" />
     <ClCompile Include="NetPlay\NetPlayDialog.cpp" />
     <ClCompile Include="NetPlay\NetPlaySetupDialog.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="KAR\Mods\KARModPackManager.h" />
     <ClInclude Include="NetPlay\KAR\KARSettingsWidget.hpp" />
     <ClInclude Include="NetPlay\KAR\WarpRelayAccountInfo.hpp" />
+    <ClInclude Include="NetPlay\KAR\WarpRelayImageLoader.hpp" />
     <ClInclude Include="QtUtils\ActionHelper.h" />
     <ClInclude Include="QtUtils\ClearLayoutRecursively.h" />
     <ClInclude Include="QtUtils\DolphinFileDialog.h" />

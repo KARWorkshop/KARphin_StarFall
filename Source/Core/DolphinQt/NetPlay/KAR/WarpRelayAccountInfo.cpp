@@ -28,6 +28,38 @@
 
 #include <Core/KAR/KARBootData.hpp>
 
+#include <KAR/WarpRelayImageLoader.hpp>
+
+// changes all the GUI to be what we use for a guest account
+void KAR::WarpRelay::AccountInfoDialog::OnGUIChange_GuestAccount()
+{
+  KAR::WarpRelay::WarpRelayAccount* account = KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
+
+  // if it's a guest account, we show the prompt about not having custom icons
+  guestNotfication_Label->setText(tr(
+      "This is a guest account, you can set your display name, but will be limited to stock "
+      "Icons.\nTo have custom Icons, you must have a Warp Relay Account. Currently only specific "
+      "beta testers/donators can have them.\nThis does not mean donating will get you a Warp "
+      "Relay Account. jas is working to set up a proper and secure system for Accounts."));
+
+  displayName_EditFeild->setText(QString::fromStdString(account->displayName));
+
+  //sets our preset icon
+}
+
+// changes all the GUI to be what we use for a non-guest account
+void KAR::WarpRelay::AccountInfoDialog::OnGUIChange_WarpRelayAccount()
+{
+  KAR::WarpRelay::WarpRelayAccount* account =
+      KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
+
+  // if it's a guest account, we show the prompt about not having custom icons
+  guestNotfication_Label->setText(tr(
+      "You can set a custom icon using the input field at the bottom.\nMake sure the image is 40 by 40 px for best result. You can use others but it may not show up as well."));
+
+  displayName_EditFeild->setText(QString::fromStdString(account->displayName));
+}
+
 KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
     : QDialog(parent)
 {
@@ -40,14 +72,13 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   //creates the layout
   m_main_layout = new QVBoxLayout();
 
-   // the tag about accounts
+   // the tag about accounts or image dimentions
    guestNotfication_Label = new QLabel(tr(
        "This is a guest account, you can set your display name, but will be limited to stock "
        "Icons.\nTo have custom Icons, you must have a Warp Relay Account. Currently only specific "
        "beta testers/donators can have them.\nThis does not mean donating will get you a Warp "
        "Relay Account. jas is working to set up a proper and secure system for Accounts."));
   m_main_layout->addWidget(guestNotfication_Label);
-
 
    //drop down of Accounts
    accounts_Dropdown = new QComboBox();
@@ -70,8 +101,30 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    m_main_layout->addWidget(displayName_EditFeild);
 
    //the icon for this profile
-   
-   //the size and offset cropping for the image
+   icon_Label = new QLabel(tr("Account Icon"));
+   icon_Label->setToolTip(tr("The icon you show to the public"));
+   m_main_layout->addWidget(icon_Label);
+   icon_storage = new QLabel();
+   icon_storage->setPixmap(
+       IconLoader::GetIcon(
+           KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->customIconURL).pixmap(80));
+   m_main_layout->addWidget(icon_storage);
+
+   //the dropdown for various pre-set icons
+   presetIcon_Dropdown = new QComboBox();
+   presetIcon_Dropdown->setToolTip(tr("The presets for Guest accounts"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Pink"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Yellow"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Blue"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Green"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Purple"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Red"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Brown"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("White"));
+   presetIcon_Dropdown->setCurrentIndex((uint8_t)KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->presetIcon);
+   m_main_layout->addWidget(presetIcon_Dropdown);
+
+   //the input feild for a custom URL
 
    //m_main_layout->addWidget(new QLabel(tr("Region:")), 1, 0);
    
@@ -86,6 +139,8 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
 
    connect(accounts_Dropdown, &QComboBox::currentIndexChanged, this,
            &AccountInfoDialog::OnAccountChanged);
+   connect(presetIcon_Dropdown, &QComboBox::currentIndexChanged, this,
+           &AccountInfoDialog::OnPresetIconChanged);
 
 //  CreateMainLayout();
 //
@@ -180,10 +235,37 @@ void KAR::WarpRelay::AccountInfoDialog::OnAccountChanged(int index)
   //sets the account
   KAR::WarpRelay::WarpRelayAccount* account = WarpRelayAccountManager::SetLoggedInAccount(static_cast<uint32_t>(index));
 
-  //if it's a guest account, we show the prompt about not having custom icons
-  guestNotfication_Label->setDisabled(!account->isGuestAccount);
+  //if we're no longer a guest account
+  if (!account->isGuestAccount)
+    OnGUIChange_WarpRelayAccount();
 
-  displayName_EditFeild->setText(QString::fromStdString(account->displayName));
+  // if we're a guest account
+  else
+    OnGUIChange_GuestAccount();
+}
+
+// when the preset icon is changed
+void KAR::WarpRelay::AccountInfoDialog::OnPresetIconChanged(int index)
+{
+  //changes the image
+  KAR::WarpRelay::WarpRelayAccount* account =
+      KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount();
+  account->presetIcon = (KAR::WarpRelay::PresetIcon)index;
+
+  //sets the custom icon url
+  account->customIconURL = KAR::WarpRelay::GetPresetIconURL(account->presetIcon);
+
+  //updates the image we render
+  UpdateAccountIcon();
+}
+
+ // updates the image we render
+void KAR::WarpRelay::AccountInfoDialog::UpdateAccountIcon()
+{
+  icon_storage->setPixmap(
+      IconLoader::GetIcon(
+          KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->customIconURL)
+          .pixmap(80));
 }
 
 void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
