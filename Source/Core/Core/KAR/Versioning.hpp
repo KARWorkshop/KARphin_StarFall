@@ -35,6 +35,7 @@ namespace Core
   "R10/Legacy will stay as it is, I won't be releasing custom R10 builds.\n\n"                     \
   "-----CHANGE LOG " KAR_VERSION_MAJOR "-" KAR_VERSION_MINOR "-" KAR_VERSION_HOT_FIX "-----\n"     \
   "* Warp Relay Accounts now display icons in the Lobby\n"                                         \
+  "* Warp Relay Guest Account stock icons thanks to Plantt\n"                                      \
   "* KARphin itself can now auto-update\n"                                                         \
   "* Preconfigured Memory Card for Hack Pack and Backside standard rule set.\n"                    \
   "* Default boot into Debug/Settings Menu \n"                                                     \
