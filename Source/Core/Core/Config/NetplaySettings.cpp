@@ -22,8 +22,8 @@ const Info<std::string> NETPLAY_TRAVERSAL_CHOICE{{System::Main, "NetPlay", "Trav
 const Info<std::string> NETPLAY_INDEX_URL{{System::Main, "NetPlay", "IndexServer"},
                                           "https://lobby.dolphin-emu.org"}; //"https://lobby.karworkshop.com"};
 
-const Info<bool> NETPLAY_USE_INDEX{{System::Main, "NetPlay", "UseIndex"}, false};
-const Info<std::string> NETPLAY_INDEX_NAME{{System::Main, "NetPlay", "IndexName"}, ""};
+const Info<bool> NETPLAY_USE_INDEX{{System::Main, "NetPlay", "UseIndex"}, true};
+const Info<std::string> NETPLAY_INDEX_NAME{{System::Main, "NetPlay", "IndexName"}, "KAR Lobby"};
 const Info<std::string> NETPLAY_INDEX_REGION{{System::Main, "NetPlay", "IndexRegion"}, ""};
 const Info<std::string> NETPLAY_INDEX_PASSWORD{{System::Main, "NetPlay", "IndexPassword"}, ""};
 

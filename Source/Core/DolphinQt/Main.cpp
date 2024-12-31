@@ -126,20 +126,32 @@ int main(int argc, char* argv[])
   std::string s = "";
   KAR::Boot::KARSettings settings = KAR::Boot::LoadKARSettingsFromDisc(b, s);
 
-  //checks for update
+  // checks for update
+  bool thereIsAUpdate = false;
   if (settings.updateMode != KAR::Boot::UpdateMode::NoUpdate)
   {
-    //attempts a update
+    // checks a update, if it has one, a update.kar file will exist
     const std::string KWRoot = File::GetExeDirectory() + "/..";
-    QProcess::startDetached(QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
+    QProcess prog;
+    prog.start(
+        QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
         {
-      QString::fromStdString("-ver"),
-          QString::fromStdString(std::string(std::string(KAR_VERSION_MAJOR) + "_" +
-                                             KAR_VERSION_MINOR + "_" + KAR_VERSION_HOT_FIX)),
-          QString::fromStdString("-installDir"), QString::fromStdString(KWRoot),
-          QString::fromStdString("-KARphin"), QString::fromStdString("-boot")},
-                            QString::fromStdString(KWRoot + "/Tools"));
+            QString::fromStdString("-checkUpdate"),
+            QString::fromStdString("-ver"),
+            QString::fromStdString(std::string(std::string(KAR_VERSION_MAJOR) + "_" +
+                                               KAR_VERSION_MINOR + "_" + KAR_VERSION_HOT_FIX)),
+        });
+    prog.waitForFinished();
 
+    thereIsAUpdate = File::Exists(File::GetExeDirectory() + "/update.kar");
+
+    // updates the build boot state so we don't cover the update is needed
+    if (thereIsAUpdate)
+    {
+      if (File::Exists(File::GetExeDirectory() + "/Boot.state"))
+        File::Delete(File::GetExeDirectory() + "/Boot.state");
+      File::Delete(File::GetExeDirectory() + "/update.kar");
+    }
   }
 
 #ifdef _WIN32
@@ -288,8 +300,32 @@ int main(int argc, char* argv[])
     DolphinAnalytics::Instance().ReloadConfig();
 #endif
 
-    //show the user the change log
-    if(!settings.hasSeenChangeLog)
+    //show the update menu and that we are going to update
+    if (thereIsAUpdate)
+    {
+     //display info there is a update
+      ModalMessageBox update_prompt(&win);
+
+      update_prompt.setIcon(QMessageBox::Information);
+      update_prompt.setStandardButtons(QMessageBox::Ok);
+      update_prompt.setWindowTitle(QObject::tr("There is a update"));
+      update_prompt.setInformativeText(QObject::tr(
+          "KARphin has a update, click ok to start it. KARphin will close itself, download, then reopen."));
+
+      SetQWidgetWindowDecorations(&update_prompt);
+      update_prompt.exec();
+
+      //performs the update
+        const std::string KWRoot = File::GetExeDirectory() + "/..";
+        QProcess::startDetached(
+        QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
+        {QString::fromStdString("-installDir"), QString::fromStdString(KWRoot),
+         QString::fromStdString("-KARphin"), QString::fromStdString("-boot")},
+        QString::fromStdString(KWRoot + "/Tools"));
+    }
+
+    //show the user the change log only if it's the latest update and they haven't seen it before
+    if (!settings.hasSeenChangeLog && !thereIsAUpdate)
     {
       ModalMessageBox analytics_prompt(&win);
 
