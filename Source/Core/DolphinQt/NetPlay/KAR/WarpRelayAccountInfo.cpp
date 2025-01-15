@@ -135,7 +135,15 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    presetIcon_Dropdown->addItem(QString::fromStdString("Red"));
    presetIcon_Dropdown->addItem(QString::fromStdString("Brown"));
    presetIcon_Dropdown->addItem(QString::fromStdString("White"));
-   presetIcon_Dropdown->addItem(QString::fromStdString("Joxxy"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Citrus"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Cherry"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Carbon"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Emerald"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Sapphire"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Orange"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Light Blue"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Lavender"));
+   presetIcon_Dropdown->addItem(QString::fromStdString("Ivory"));
    presetIcon_Dropdown->setCurrentIndex((uint8_t)KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->presetIcon);
    m_main_layout->addWidget(presetIcon_Dropdown);
 
