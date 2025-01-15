@@ -19,7 +19,7 @@ std::string packs_path;
 
 Common::IniFile GetPackConfig()
 {
-  packs_path = File::GetUserPath(D_RESOURCEPACK_IDX) + "/Packs.ini";
+  packs_path = File::GetExeDirectory() + "/../Mods" + "/Packs.ini";
 
   Common::IniFile file;
   file.Load(packs_path);
@@ -32,7 +32,7 @@ bool Init()
 {
   packs.clear();
   const std::vector<std::string> pack_list =
-      Common::DoFileSearch({File::GetUserPath(D_RESOURCEPACK_IDX)}, {".zip"});
+      Common::DoFileSearch({File::GetExeDirectory() + "/../Mods"}, {".zip"});
 
   Common::IniFile file = GetPackConfig();
 
