@@ -12,6 +12,8 @@
 
 #include "DolphinQt/Resources.h"
 
+#include <Core/KAR/Versioning.hpp>
+
 AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 {
   setWindowTitle(tr("About KARphin"));
@@ -61,7 +63,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 <a href='http://discord.gg/p3rGrcr'>%SUPPORT%</a>
 )")
           .replace(QStringLiteral("%VERSION_STRING%"),
-                   QString::fromUtf8(Common::GetScmDescStr().c_str()))
+                   QString::fromStdString(std::string(" ") + KAR_VERSION_MAJOR + "-" + KAR_VERSION_MINOR + "-" + KAR_VERSION_HOT_FIX))
           .replace(QStringLiteral("%BRANCH%"),
                    // i18n: "Branch" means the version control term, not a literal tree branch.
                    tr("Branch: %1").arg(branch_str))
