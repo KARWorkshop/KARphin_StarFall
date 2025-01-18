@@ -771,7 +771,7 @@ std::string GetExeDirectory()
 static std::string CreateSysDirectoryPath()
 {
 #if defined(_WIN32) || defined(LINUX_LOCAL_DEV)
-#define SYSDATA_DIR "KARphin_Sys"
+#define SYSDATA_DIR "Sys"
 #elif defined __APPLE__
 #define SYSDATA_DIR "Contents/Resources/Sys"
 #else
