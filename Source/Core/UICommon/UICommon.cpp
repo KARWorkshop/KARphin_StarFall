@@ -294,7 +294,7 @@ void SetUserDirectory(std::string custom_path)
   }
 
   //permanent settings path
-  std::string permatSettings = "StarDust_Player_Settings";
+  std::string permatSettings = "KARphin_Player_Settings";
   File::CreateFullPath(permatSettings + DIR_SEP);
   File::SetUserPath(D_USER_IDX, std::move(permatSettings));
   return;
