@@ -76,7 +76,6 @@
     <ClInclude Include="Core\KAR\json.hpp" />
     <ClInclude Include="Core\KAR\KARBootData.hpp" />
     <ClInclude Include="Core\KAR\Mods\BuiltIn\FSCodes.hpp" />
-    <ClInclude Include="Core\KAR\Mods\MemoryCards\MemoryCardAutoGen.hpp" />
     <ClInclude Include="Core\KAR\Mods\ModDirs.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\ConnectPacket.hpp" />
     <ClInclude Include="Core\KAR\Netplay\Packets\OnPlayerJoinPacket.hpp" />
@@ -85,9 +84,6 @@
     <ClInclude Include="Core\KAR\Versioning.hpp" />
     <ClInclude Include="UICommon\KAR\ModPack.hpp" />
     <ClInclude Include="UICommon\KAR\ModPackManager.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Core\KAR\Mods\MemoryCards\HPMemoryCard.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\KAR\WarpRelay\WarpRelayAccountManager.cpp" />

@@ -81,7 +81,6 @@
 #include <Core/KAR/Netplay/Packets/ConnectPacket.hpp>
 
 #include <Core/KAR/KARBootData.hpp>
-#include <Core/KAR/Mods/MemoryCards/MemoryCardAutoGen.hpp>
 
 namespace NetPlay
 {
