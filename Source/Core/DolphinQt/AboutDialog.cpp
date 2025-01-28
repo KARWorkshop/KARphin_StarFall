@@ -33,7 +33,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
       QStringLiteral(R"(
 <p style='font-size:38pt; font-weight:400;'>KARphin</p>
 
-<p style='font-size:18pt;'>%VERSION_STRING%</p>
+<p style='font-size:18pt;'>Version: %VERSION_STRING%</p>
 
 <p style='font-size: small;'>
 %BRANCH%<br>
@@ -63,7 +63,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 <a href='http://discord.gg/p3rGrcr'>%SUPPORT%</a>
 )")
           .replace(QStringLiteral("%VERSION_STRING%"),
-                   QString::fromStdString(std::string(" ") + KAR_VERSION_MAJOR + "-" + KAR_VERSION_MINOR + "-" + KAR_VERSION_HOT_FIX))
+                   QString::fromStdString(KAR_VERSION_FULL_STRING))
           .replace(QStringLiteral("%BRANCH%"),
                    // i18n: "Branch" means the version control term, not a literal tree branch.
                    tr("Branch: %1").arg(branch_str))

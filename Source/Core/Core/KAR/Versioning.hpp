@@ -16,17 +16,27 @@ namespace Core
 // client data
 #define KAR_VERSION_MAJOR "3"
 #define KAR_VERSION_MINOR "0"
-#define KAR_VERSION_HOT_FIX "12"
+#define KAR_VERSION_HOT_FIX "13"
 #define KAR_VERSION_BUILD "Star Dust"
+
+  //used in lobby string
+#define KAR_VERSION_STRING_LOBBY std::string(KAR_VERSION_MAJOR) + "." + KAR_VERSION_MINOR
+
+    //full version string
+#define KAR_VERSION_FULL_STRING std::string(KAR_VERSION_MAJOR) + "." + KAR_VERSION_MINOR + "." + KAR_VERSION_HOT_FIX
 
 // the change log info
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
 #define KAR_CHANGE_LOG_BLURB_INFO_TEXT \
-  "-----CHANGE LOG " KAR_VERSION_MAJOR "-" KAR_VERSION_MINOR "-" KAR_VERSION_HOT_FIX "-----\n"     \
+  "-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX "-----\n"     \
+  "* Fixed lobby version string, so long as major and minor are the same. You can finx the lobby.\n"   \
+  "* Merged netplay core codes into \"KARphin Core Netplay V1\".\n"   \
+  "* About section properly displays version string. \n"   \
+  "-----CHANGE LOG 3.0.12 -----\n"     \
   "* Added more Account stock icons, Backside themed, thanks Taco :3.\n"                                         \
-  "\n-----CHANGE LOG " KAR_VERSION_MAJOR "-" KAR_VERSION_MINOR "- 11 -----\n"     \
+  "\n-----CHANGE LOG 3.0.11 -----\n"     \
   "* KARphin now properly loads extracted ROMs.\n"                                         \
-  "\n-----CHANGE LOG " KAR_VERSION_MAJOR "-" KAR_VERSION_MINOR "- 10 -----\n"     \
+  "\n-----CHANGE LOG 3.0.10 -----\n"     \
   "* Warp Relay Accounts now display icons in the Lobby.\n"                                         \
   "* Warp Relay Guest Account stock icons thanks to Plantt.\n"                                      \
   "* Warp Relay Non-Guest Accounts can set their own icons.\n"                                     \

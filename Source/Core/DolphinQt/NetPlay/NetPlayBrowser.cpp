@@ -170,15 +170,12 @@ void NetPlayBrowser::ConnectWidgets()
           Qt::QueuedConnection);
 }
 
-static const std::string KAR_VERSION_LOBBY_STR =
-    std::string(KAR_VERSION_MAJOR) + "_" + KAR_VERSION_MINOR;
-
 void NetPlayBrowser::Refresh()
 {
   std::map<std::string, std::string> filters;
 
   if (m_check_hide_incompatible->isChecked())
-    filters["version"] = KAR_VERSION_LOBBY_STR;  // Common::GetScmDescStr();
+    filters["version"] = KAR_VERSION_STRING_LOBBY;  // Common::GetScmDescStr();
 
   if (!m_edit_name->text().isEmpty())
     filters["name"] = m_edit_name->text().toStdString();
@@ -266,8 +263,7 @@ void NetPlayBrowser::UpdateList()
     auto* player_count = new QTableWidgetItem(QStringLiteral("%1").arg(entry.player_count));
     auto* version = new QTableWidgetItem(QString::fromStdString(entry.version));
 
-    const bool enabled =
-        KAR_VERSION_LOBBY_STR == entry.version;  // Common::GetScmDescStr() == entry.version;
+    const bool enabled = KAR_VERSION_STRING_LOBBY == entry.version;  // Common::GetScmDescStr() == entry.version;
 
     for (const auto& item : {region, name, password, in_game, game_id, player_count, version})
       item->setFlags(enabled ? Qt::ItemIsEnabled | Qt::ItemIsSelectable : Qt::NoItemFlags);
