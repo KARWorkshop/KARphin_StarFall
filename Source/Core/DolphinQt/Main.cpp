@@ -136,7 +136,9 @@ int main(int argc, char* argv[])
     prog.start(
         QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
         {
-            QString::fromStdString("-checkUpdate"),
+            QString::fromStdString("--headless"),
+            QString::fromStdString("--silent"),
+            QString::fromStdString("-checkUpdate_KARphin"),
             QString::fromStdString("-ver"),
             QString::fromStdString(std::string(std::string(KAR_VERSION_MAJOR) + "_" +
                                                KAR_VERSION_MINOR + "_" + KAR_VERSION_HOT_FIX)),
@@ -319,7 +321,9 @@ int main(int argc, char* argv[])
         const std::string KWRoot = File::GetExeDirectory() + "/..";
         QProcess::startDetached(
         QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
-        {QString::fromStdString("-installDir"), QString::fromStdString(KWRoot),
+        {
+            QString::fromStdString("--headless"), QString::fromStdString("--silent"),
+         QString::fromStdString("-installDir"), QString::fromStdString(KWRoot),
          QString::fromStdString("-KARphin"), QString::fromStdString("-boot")},
         QString::fromStdString(KWRoot + "/Tools"));
     }
