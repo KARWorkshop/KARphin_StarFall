@@ -176,7 +176,6 @@
     <ClCompile Include="Host.cpp" />
     <ClCompile Include="HotkeyScheduler.cpp" />
     <ClCompile Include="InfinityBase/InfinityBaseWindow.cpp" />
-    <ClCompile Include="KAR\InputDevices\ShockCollarControllerWidget.cpp" />
     <ClCompile Include="KAR\Mods\KARModPackManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -258,7 +257,6 @@
     <QtMoc Include="Config\PatchesWidget.h" />
     <ClInclude Include="Debugger\RegisterColumn.h" />
     <ClInclude Include="GBAHost.h" />
-    <ClInclude Include="KAR\InputDevices\ShockCollarControllerWidget.hpp" />
     <ClInclude Include="KAR\Mods\KARModPackManager.h" />
     <ClInclude Include="NetPlay\KAR\KARSettingsWidget.hpp" />
     <ClInclude Include="NetPlay\KAR\WarpRelayAccountInfo.hpp" />

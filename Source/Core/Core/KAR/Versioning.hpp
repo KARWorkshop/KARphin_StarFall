@@ -16,7 +16,7 @@ namespace Core
 // client data
 #define KAR_VERSION_MAJOR "3"
 #define KAR_VERSION_MINOR "0"
-#define KAR_VERSION_HOT_FIX "14"
+#define KAR_VERSION_HOT_FIX "13"
 #define KAR_VERSION_BUILD "Star Dust"
 
   //used in lobby string
@@ -28,15 +28,11 @@ namespace Core
 // the change log info
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
 #define KAR_CHANGE_LOG_BLURB_INFO_TEXT \
-  "\n-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX "-----\n"   \
-  "* Players can join as Spectators.\n"                                                                                       \
-  "* Prelimary shock collar support.\n"                                \
-  "* Prelimary betting support. \n"   \
-  "\n-----CHANGE LOG 3.0.13 -----\n"     \
+  "-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX "-----\n"     \
   "* Fixed lobby version string, so if major and minor version are the same. You can join the lobby.\n"   \
   "* Merged netplay core codes into \"KARphin Core Netplay V1\".\n"   \
   "* About section properly displays version string. \n"   \
-  "\n-----CHANGE LOG 3.0.12 -----\n"     \
+  "-----CHANGE LOG 3.0.12 -----\n"     \
   "* Added more Account stock icons, Backside themed, thanks Taco :3.\n"                                         \
   "\n-----CHANGE LOG 3.0.11 -----\n"     \
   "* KARphin now properly loads extracted ROMs.\n"                                         \

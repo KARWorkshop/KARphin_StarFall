@@ -10,7 +10,6 @@ class GamecubeControllersWidget;
 class QDialogButtonBox;
 class QShowEvent;
 class WiimoteControllersWidget;
-class ShockCollarControllerWidget;
 
 class ControllersWindow final : public QDialog
 {
@@ -27,7 +26,6 @@ private:
 
   QDialogButtonBox* m_button_box;
   GamecubeControllersWidget* m_gamecube_controllers;
-  //WiimoteControllersWidget* m_wiimote_controllers;
-  ShockCollarControllerWidget* m_shockCollar_controllers;
+  WiimoteControllersWidget* m_wiimote_controllers;
   CommonControllersWidget* m_common;
 };

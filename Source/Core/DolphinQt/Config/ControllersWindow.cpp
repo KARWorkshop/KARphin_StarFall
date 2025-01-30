@@ -9,7 +9,6 @@
 #include "DolphinQt/Config/CommonControllersWidget.h"
 #include "DolphinQt/Config/GamecubeControllersWidget.h"
 #include "DolphinQt/Config/WiimoteControllersWidget.h"
-#include "DolphinQt/KAR/InputDevices/ShockCollarControllerWidget.hpp"
 #include "DolphinQt/QtUtils/WrapInScrollArea.h"
 
 ControllersWindow::ControllersWindow(QWidget* parent) : QDialog(parent)
@@ -18,8 +17,7 @@ ControllersWindow::ControllersWindow(QWidget* parent) : QDialog(parent)
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   m_gamecube_controllers = new GamecubeControllersWidget(this);
-  //m_wiimote_controllers = new WiimoteControllersWidget(this);
-  m_shockCollar_controllers = new ShockCollarControllerWidget(this);
+  m_wiimote_controllers = new WiimoteControllersWidget(this);
   m_common = new CommonControllersWidget(this);
   CreateMainLayout();
   ConnectWidgets();
@@ -28,7 +26,7 @@ ControllersWindow::ControllersWindow(QWidget* parent) : QDialog(parent)
 void ControllersWindow::showEvent(QShowEvent* event)
 {
   QDialog::showEvent(event);
-  m_shockCollar_controllers->UpdateBluetoothAvailableStatus();
+  m_wiimote_controllers->UpdateBluetoothAvailableStatus();
 }
 
 void ControllersWindow::CreateMainLayout()
@@ -37,7 +35,7 @@ void ControllersWindow::CreateMainLayout()
   m_button_box = new QDialogButtonBox(QDialogButtonBox::Close);
 
   layout->addWidget(m_gamecube_controllers);
-  layout->addWidget(m_shockCollar_controllers);
+  layout->addWidget(m_wiimote_controllers);
   layout->addWidget(m_common);
   layout->addStretch();
   layout->addWidget(m_button_box);
