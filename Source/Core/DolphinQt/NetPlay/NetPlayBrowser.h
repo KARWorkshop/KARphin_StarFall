@@ -60,8 +60,8 @@ private:
   QDialogButtonBox* m_button_box;
   QLineEdit* m_edit_name;
   QLineEdit* m_edit_game_id;
-  QCheckBox* m_check_hide_incompatible;
-  QCheckBox* m_check_hide_ingame;
+  //QCheckBox* m_check_hide_incompatible;
+  //QCheckBox* m_check_hide_ingame;
 
   QRadioButton* m_radio_all;
   QRadioButton* m_radio_private;

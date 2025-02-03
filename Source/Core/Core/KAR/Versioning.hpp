@@ -29,6 +29,9 @@ namespace Core
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
 #define KAR_CHANGE_LOG_BLURB_INFO_TEXT \
   "-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX "-----\n"     \
+  "* Added custom TURN server backend.\n" \
+  "* Added custom Lobby database backend.\n" \
+  "* Added Warp Relay Account database backend.\n" \
   "* Added Spector support to Lobbies.\n"                                                                                       \
   "* Added prilimary betting support.\n"                                \
   "* Added prilimary shock collar support.\n"   \
