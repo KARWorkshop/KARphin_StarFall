@@ -38,7 +38,7 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
 
   CreateMainLayout();
 
-  bool use_index = Config::Get(Config::NETPLAY_USE_INDEX);
+ // bool use_index = Config::Get(Config::NETPLAY_USE_INDEX);
  // std::string index_region = Config::Get(Config::NETPLAY_INDEX_REGION);
   std::string index_name = Config::Get(Config::NETPLAY_INDEX_NAME);
   std::string index_password = Config::Get(Config::NETPLAY_INDEX_PASSWORD);
@@ -63,16 +63,16 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   m_host_force_port_box->setValue(host_listen_port);
   m_host_force_port_box->setEnabled(false);
 
-  m_host_server_browser->setChecked(use_index);
+  m_host_server_browser->setChecked(true);
 
   //m_host_server_region->setEnabled(use_index);
   //m_host_server_region->setCurrentIndex(
   //    m_host_server_region->findData(QString::fromStdString(index_region)));
   //
-  m_host_server_name->setEnabled(use_index);
+  m_host_server_name->setEnabled(true);
   m_host_server_name->setText(QString::fromStdString(index_name));
 
-  m_host_server_password->setEnabled(use_index);
+  m_host_server_password->setEnabled(true);
   m_host_server_password->setText(QString::fromStdString(index_password));
 
   m_host_chunked_upload_limit_check->setChecked(enable_chunked_upload_limit);
@@ -298,7 +298,7 @@ void NetPlaySetupDialog::SaveSettings()
   Config::SetBaseOrCurrent(Config::NETPLAY_CHUNKED_UPLOAD_LIMIT,
                            m_host_chunked_upload_limit_box->value());
 
-  Config::SetBaseOrCurrent(Config::NETPLAY_USE_INDEX, m_host_server_browser->isChecked());
+  Config::SetBaseOrCurrent(Config::NETPLAY_USE_INDEX, true);
   //Config::SetBaseOrCurrent(Config::NETPLAY_INDEX_REGION,
    //                        m_host_server_region->currentData().toString().toStdString());
   Config::SetBaseOrCurrent(Config::NETPLAY_INDEX_NAME, m_host_server_name->text().toStdString());
