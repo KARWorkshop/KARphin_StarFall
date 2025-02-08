@@ -16,7 +16,7 @@ namespace Core
 // client data
 #define KAR_VERSION_MAJOR "3"
 #define KAR_VERSION_MINOR "0"
-#define KAR_VERSION_HOT_FIX "14"
+#define KAR_VERSION_HOT_FIX "15"
 #define KAR_VERSION_BUILD "Star Dust"
 
   //used in lobby string
@@ -28,13 +28,11 @@ namespace Core
 // the change log info
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
 #define KAR_CHANGE_LOG_BLURB_INFO_TEXT \
-  "-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX "-----\n"     \
-  "* Added custom TURN server backend.\n" \
-  "* Added custom Lobby database backend.\n" \
-  "* Added Warp Relay Account database backend.\n" \
-  "* Added Spector support to Lobbies.\n"                                                                                       \
-  "* Added prilimary betting support.\n"                                \
-  "* Added prilimary shock collar support.\n"   \
+  "\n-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX " -- --\n"  \                                        \
+  "* Added entry to force auto update under the \"KAR\" tab.\n" \
+  "* Neplay lobbies will always appear in the Server Browser.\n" \
+  "\n-----CHANGE LOG 3.0.14 -----\n"     \
+  "* Adjusted user path.\n" \
   "\n-----CHANGE LOG 3.0.13 -----\n"     \
   "* Fixed lobby version string, so if major and minor version are the same. You can join the lobby.\n"   \
   "* Merged netplay core codes into \"KARphin Core Netplay V1\".\n"   \
