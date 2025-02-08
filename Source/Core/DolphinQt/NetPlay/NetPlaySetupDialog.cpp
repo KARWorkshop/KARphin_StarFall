@@ -63,7 +63,7 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   m_host_force_port_box->setValue(host_listen_port);
   m_host_force_port_box->setEnabled(false);
 
-  m_host_server_browser->setChecked(true);
+  //m_host_server_browser->setChecked(true);
 
   //m_host_server_region->setEnabled(use_index);
   //m_host_server_region->setCurrentIndex(
@@ -156,7 +156,7 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_host_force_port_box = new QSpinBox;
   m_host_chunked_upload_limit_check = new QCheckBox(tr("Limit Chunked Upload Speed:"));
   m_host_chunked_upload_limit_box = new QSpinBox;
-  m_host_server_browser = new QCheckBox(tr("Show in server browser"));
+ // m_host_server_browser = new QCheckBox(tr("Show in server browser"));
   m_host_server_name = new QLineEdit;
   m_host_server_password = new QLineEdit;
   //m_host_server_region = new QComboBox;
@@ -193,7 +193,7 @@ void NetPlaySetupDialog::CreateMainLayout()
 #ifdef USE_UPNP
   host_layout->addWidget(m_host_upnp, 0, 2);
 #endif
-  host_layout->addWidget(m_host_server_browser, 1, 0);
+  //host_layout->addWidget(m_host_server_browser, 1, 0);
   //host_layout->addWidget(m_host_server_region, 1, 1);
   host_layout->addWidget(m_host_server_name, 1, 2);
   host_layout->addWidget(m_host_server_password, 1, 3);
@@ -251,7 +251,7 @@ void NetPlaySetupDialog::ConnectWidgets()
   connect(m_host_chunked_upload_limit_box, &QSpinBox::valueChanged, this,
           &NetPlaySetupDialog::SaveSettings);
 
-  connect(m_host_server_browser, &QCheckBox::toggled, this, &NetPlaySetupDialog::SaveSettings);
+  //connect(m_host_server_browser, &QCheckBox::toggled, this, &NetPlaySetupDialog::SaveSettings);
   connect(m_host_server_name, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
   connect(m_host_server_password, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
   //connect(m_host_server_region,
@@ -267,11 +267,11 @@ void NetPlaySetupDialog::ConnectWidgets()
   connect(m_button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(m_reset_traversal_button, &QPushButton::clicked, this,
           &NetPlaySetupDialog::ResetTraversalHost);
-  connect(m_host_server_browser, &QCheckBox::toggled, this, [this](bool value) {
+ // connect(m_host_server_browser, &QCheckBox::toggled, this, [this](bool value) {
     //m_host_server_region->setEnabled(value);
-    m_host_server_name->setEnabled(value);
-    m_host_server_password->setEnabled(value);
-  });
+  // // m_host_server_name->setEnabled(value);
+  //  m_host_server_password->setEnabled(value);
+  //});
 }
 
 void NetPlaySetupDialog::SaveSettings()
@@ -353,11 +353,11 @@ void NetPlaySetupDialog::accept()
       return;
     }
 
-    if (m_host_server_browser->isChecked() && m_host_server_name->text().isEmpty())
+   /* if (m_host_server_browser->isChecked() && m_host_server_name->text().isEmpty())
     {
       ModalMessageBox::critical(this, tr("Error"), tr("You must provide a name for your session!"));
       return;
-    }
+    }*/
 
     //if (m_host_server_browser->isChecked() &&
     //    m_host_server_region->currentData().toString().isEmpty())

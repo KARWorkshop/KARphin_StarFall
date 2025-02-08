@@ -46,6 +46,8 @@
 #include "Core/KAR/Versioning.hpp"
 #include <Core/KAR/KARBootData.hpp>
 
+#include <DolphinQt/KAR/Progs/Bootloader.hpp>
+
 static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no,
                               Common::MsgType style)
 {
@@ -113,7 +115,6 @@ static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no
   return false;
 }
 
-#include <QProcess>
 
 #ifdef _WIN32
 #define main app_main
@@ -318,14 +319,7 @@ int main(int argc, char* argv[])
       update_prompt.exec();
 
       //performs the update
-        const std::string KWRoot = File::GetExeDirectory() + "/..";
-        QProcess::startDetached(
-        QString::fromStdString(KWRoot + "/Tools/Bootloader.exe"),
-        {
-            QString::fromStdString("--headless"), QString::fromStdString("--silent"),
-         QString::fromStdString("-installDir"), QString::fromStdString(KWRoot),
-         QString::fromStdString("-KARphin"), QString::fromStdString("-boot")},
-        QString::fromStdString(KWRoot + "/Tools"));
+      KAR::Bootloader::InvokeBootloader_UpdateKARphin();
     }
 
     //show the user the change log only if it's the latest update and they haven't seen it before

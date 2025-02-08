@@ -258,6 +258,7 @@
     <ClInclude Include="Debugger\RegisterColumn.h" />
     <ClInclude Include="GBAHost.h" />
     <ClInclude Include="KAR\Mods\KARModPackManager.h" />
+    <ClInclude Include="KAR\Progs\Bootloader.hpp" />
     <ClInclude Include="NetPlay\KAR\KARSettingsWidget.hpp" />
     <ClInclude Include="NetPlay\KAR\WarpRelayAccountInfo.hpp" />
     <ClInclude Include="NetPlay\KAR\WarpRelayImageLoader.hpp" />
