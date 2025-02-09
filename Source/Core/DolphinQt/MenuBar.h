@@ -128,6 +128,9 @@ signals:
 private:
   void OnEmulationStateChanged(Core::State state);
 
+  //adds the KAR menu
+  void AddKARMenu();
+
   void AddFileMenu();
 
   void AddEmulationMenu();

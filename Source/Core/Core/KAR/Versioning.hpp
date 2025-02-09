@@ -27,9 +27,8 @@ namespace Core
 
 // the change log info
 #define KAR_CHANGE_LOG_BLURB_TITLE_TEXT "Welcome to KARphin Star Dust!!!!"
-#define KAR_CHANGE_LOG_BLURB_INFO_TEXT \
-  "\n-----CHANGE LOG " KAR_VERSION_MAJOR "." KAR_VERSION_MINOR "." KAR_VERSION_HOT_FIX " -- --\n"  \                                        \
-  "* Added entry to force auto update under the \"KAR\" tab.\n" \
+#define KAR_CHANGE_LOG_BLURB_INFO_TEXT "\n-----CHANGE LOG 3.0.15 ----\n"  \                                        \
+  "* Added entry to force auto update under the KAR tab.\n" \
   "* Neplay lobbies will always appear in the Server Browser.\n" \
   "\n-----CHANGE LOG 3.0.14 -----\n"     \
   "* Adjusted user path.\n" \

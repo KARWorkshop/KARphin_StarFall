@@ -92,6 +92,7 @@ MenuBar::MenuBar(QWidget* parent) : QMenuBar(parent)
   AddJITMenu();
   AddSymbolsMenu();
   AddHelpMenu();
+  AddKARMenu();
 
   connect(&Settings::Instance(), &Settings::EmulationStateChanged, this,
           [=, this](Core::State state) { OnEmulationStateChanged(state); });
@@ -216,6 +217,21 @@ void MenuBar::OnWriteJitBlockLogDump()
     if (button_pressed == QMessageBox::Ignore)
       ignore = true;
   }
+}
+
+#include <DolphinQt/KAR/Progs/Bootloader.hpp>
+
+void MenuBar::AddKARMenu()
+{
+  QMenu* kar_menu = addMenu(tr("&KAR"));
+
+  //force update KAR
+  kar_menu->addAction(tr("&Force Update"), this, [&]() {
+
+    // performs the update
+    KAR::Bootloader::InvokeBootloader_UpdateKARphin();
+  });
+  
 }
 
 void MenuBar::AddFileMenu()
