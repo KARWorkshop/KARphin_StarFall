@@ -194,6 +194,9 @@ private:
 
   static QPointer<MenuBar> s_menu_bar;
 
+  //KAR
+  QAction* KAR_ForceUpdate_Action;
+
   // File
   QAction* m_open_action;
   QAction* m_exit_action;

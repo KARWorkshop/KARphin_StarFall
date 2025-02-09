@@ -226,7 +226,7 @@ void MenuBar::AddKARMenu()
   QMenu* kar_menu = addMenu(tr("&KAR"));
 
   //force update KAR
-  kar_menu->addAction(tr("&Force Update"), this, [&]() {
+  KAR_ForceUpdate_Action = kar_menu->addAction(tr("&Force Update"), this, [&]() {
 
     // performs the update
     KAR::Bootloader::InvokeBootloader_UpdateKARphin();

@@ -63,7 +63,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 <a href='http://discord.gg/p3rGrcr'>%SUPPORT%</a>
 )")
           .replace(QStringLiteral("%VERSION_STRING%"),
-                   QString::fromStdString(KAR_VERSION_FULL_STRING))
+                   QString::fromStdString(std::string(KAR_VERSION_FULL_STRING)))
           .replace(QStringLiteral("%BRANCH%"),
                    // i18n: "Branch" means the version control term, not a literal tree branch.
                    tr("Branch: %1").arg(branch_str))
