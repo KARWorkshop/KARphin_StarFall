@@ -30,6 +30,8 @@
 #include "DiscIO/Enums.h"
 #include "VideoCommon/VideoBackendBase.h"
 
+#include <KARphin/IO/DirectoryStructure.hpp>
+
 namespace Config
 {
 // Main.Core
@@ -48,7 +50,7 @@ const Info<int> MAIN_TIMING_VARIANCE{{System::Main, "Core", "TimingVariance"}, 4
 const Info<bool> MAIN_CPU_THREAD{{System::Main, "Core", "CPUThread"}, true};
 const Info<bool> MAIN_SYNC_ON_SKIP_IDLE{{System::Main, "Core", "SyncOnSkipIdle"}, true};
 const Info<std::string> MAIN_DEFAULT_ISO{{System::Main, "Core", "DefaultISO"}, ""};
-const Info<bool> MAIN_ENABLE_CHEATS{{System::Main, "Core", "EnableCheats"}, false};
+const Info<bool> MAIN_ENABLE_CHEATS{{System::Main, "Core", "EnableCheats"}, true};
 const Info<int> MAIN_GC_LANGUAGE{{System::Main, "Core", "SelectedLanguage"}, 0};
 const Info<bool> MAIN_OVERRIDE_REGION_SETTINGS{{System::Main, "Core", "OverrideRegionSettings"},
                                                false};
@@ -58,7 +60,8 @@ const Info<AudioCommon::DPL2Quality> MAIN_DPL2_QUALITY{{System::Main, "Core", "D
 const Info<int> MAIN_AUDIO_LATENCY{{System::Main, "Core", "AudioLatency"}, 20};
 const Info<bool> MAIN_AUDIO_STRETCH{{System::Main, "Core", "AudioStretch"}, false};
 const Info<int> MAIN_AUDIO_STRETCH_LATENCY{{System::Main, "Core", "AudioStretchMaxLatency"}, 80};
-const Info<std::string> MAIN_MEMCARD_A_PATH{{System::Main, "Core", "MemcardAPath"}, ""};
+const Info<std::string> MAIN_MEMCARD_A_PATH{{System::Main, "Core", "MemcardAPath"},
+                                            KAR::IO::GetDirectory_MemoryCards()};
 const Info<std::string> MAIN_MEMCARD_B_PATH{{System::Main, "Core", "MemcardBPath"}, ""};
 const Info<std::string>& GetInfoForMemcardPath(ExpansionInterface::Slot slot)
 {
@@ -112,7 +115,7 @@ const Info<std::string>& GetInfoForGCIPathOverride(ExpansionInterface::Slot slot
 const Info<int> MAIN_MEMORY_CARD_SIZE{{System::Main, "Core", "MemoryCardSize"}, -1};
 
 const Info<ExpansionInterface::EXIDeviceType> MAIN_SLOT_A{
-    {System::Main, "Core", "SlotA"}, ExpansionInterface::EXIDeviceType::MemoryCardFolder};
+    {System::Main, "Core", "SlotA"}, ExpansionInterface::EXIDeviceType::MemoryCard};
 const Info<ExpansionInterface::EXIDeviceType> MAIN_SLOT_B{{System::Main, "Core", "SlotB"},
                                                           ExpansionInterface::EXIDeviceType::None};
 const Info<ExpansionInterface::EXIDeviceType> MAIN_SERIAL_PORT_1{
@@ -278,7 +281,7 @@ const Info<bool> MAIN_DUMP_AUDIO_SILENT{{System::Main, "DSP", "DumpAudioSilent"}
 const Info<bool> MAIN_DUMP_UCODE{{System::Main, "DSP", "DumpUCode"}, false};
 const Info<std::string> MAIN_AUDIO_BACKEND{{System::Main, "DSP", "Backend"},
                                            AudioCommon::GetDefaultSoundBackend()};
-const Info<int> MAIN_AUDIO_VOLUME{{System::Main, "DSP", "Volume"}, 100};
+const Info<int> MAIN_AUDIO_VOLUME{{System::Main, "DSP", "Volume"}, 50};
 const Info<bool> MAIN_AUDIO_MUTED{{System::Main, "DSP", "Muted"}, false};
 #ifdef _WIN32
 const Info<std::string> MAIN_WASAPI_DEVICE{{System::Main, "DSP", "WASAPIDevice"}, "Default"};
@@ -292,7 +295,8 @@ bool ShouldUseDPL2Decoder()
 // Main.General
 
 const Info<std::string> MAIN_DUMP_PATH{{System::Main, "General", "DumpPath"}, ""};
-const Info<std::string> MAIN_LOAD_PATH{{System::Main, "General", "LoadPath"}, ""};
+const Info<std::string> MAIN_LOAD_PATH{{System::Main, "General", "LoadPath"},
+                                       KAR::IO::GetDirectory_CustomLoadAssets()};
 const Info<std::string> MAIN_RESOURCEPACK_PATH{{System::Main, "General", "ResourcePackPath"}, ""};
 const Info<std::string> MAIN_FS_PATH{{System::Main, "General", "NANDRootPath"}, ""};
 const Info<std::string> MAIN_WII_SD_CARD_IMAGE_PATH{{System::Main, "General", "WiiSDCardPath"}, ""};
@@ -304,14 +308,14 @@ const Info<bool> MAIN_SHOW_FRAME_COUNT{{System::Main, "General", "ShowFrameCount
 const Info<std::string> MAIN_WIRELESS_MAC{{System::Main, "General", "WirelessMac"}, ""};
 const Info<std::string> MAIN_GDB_SOCKET{{System::Main, "General", "GDBSocket"}, ""};
 const Info<int> MAIN_GDB_PORT{{System::Main, "General", "GDBPort"}, -1};
-const Info<int> MAIN_ISO_PATH_COUNT{{System::Main, "General", "ISOPaths"}, 0};
+const Info<int> MAIN_ISO_PATH_COUNT{{System::Main, "General", "ISOPaths"}, 1};
 const Info<std::string> MAIN_SKYLANDERS_PATH{{System::Main, "General", "SkylandersCollectionPath"},
                                              ""};
 
 static Info<std::string> MakeISOPathConfigInfo(size_t idx)
 {
   return Config::Info<std::string>{{Config::System::Main, "General", fmt::format("ISOPath{}", idx)},
-                                   ""};
+                                   KAR::IO::GetDirectory_ROMs()};
 }
 
 std::vector<std::string> GetIsoPaths()
