@@ -292,6 +292,12 @@ void SetUserDirectory(std::string custom_path)
     return;
   }
 
+  //force local
+  std::string FP = File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR;
+  File::CreateFullPath(FP);
+  File::SetUserPath(D_USER_IDX, std::move(FP));
+  return;
+
   std::string user_path;
 #ifdef _WIN32
   // Detect where the User directory is. There are five different cases
