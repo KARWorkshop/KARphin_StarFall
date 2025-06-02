@@ -18,7 +18,7 @@ namespace KAR::Account
 
 
     //returns the instance of the account
-    static inline Account Instance()
+    static inline Account& Instance()
     {
       static Account a;
       return a;

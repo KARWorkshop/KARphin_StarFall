@@ -76,6 +76,8 @@
 #include "VideoCommon/OnScreenDisplay.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
+
 namespace NetPlay
 {
 using namespace WiimoteCommon;
@@ -308,6 +310,9 @@ bool NetPlayClient::Connect()
     player.name = m_player_name;
     player.pid = m_pid;
     player.revision = Common::GetNetplayDolphinVer();
+
+    //stores the PID as our active account
+    KAR::Account::Account::Instance().playerID = (uint8_t)m_pid;
 
     // add self to player list
     m_players[m_pid] = player;

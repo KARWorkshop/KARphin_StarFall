@@ -25,7 +25,7 @@ namespace KAR::Lobby
     std::string playerIconURLs[4] = {"", "", "", ""};  // stores the player urls
 
     //the static instance of the lobby
-    static inline Lobby Instance()
+    static inline Lobby& Instance()
     {
       static Lobby l;
       return l;

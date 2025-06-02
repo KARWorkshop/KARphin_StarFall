@@ -21,6 +21,10 @@
 #include "Core/PowerPC/PowerPC.h"
 #include "Core/System.h"
 
+#include <KARphin/WarpRelay/Lobby.hpp>
+#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
+#include <KARphin/Mods/GeckoCodeManager.hpp>
+
 namespace Gecko
 {
 static constexpr u32 CODE_SIZE = 8;
@@ -173,8 +177,32 @@ static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
   const u32 end_address = codelist_end_address - CODE_SIZE;
   u32 next_address = start_address;
 
+  std::vector<GeckoCode> runtimeCodes = s_active_codes;
+
+  //if we have a active netplay account
+  if (KAR::Account::Account::Instance().IsValidAccount())
+  {
+    //makes sure the FS gecko code mode exists
+    if (std::filesystem::exists(KAR::IO::GetDirectory_GeckoCodes()))
+    {
+      //if it's auto
+      for (size_t i = 0; i < 4; ++i)
+      {
+        if (KAR::Lobby::Lobby::Instance().playerIDs[i] == KAR::Account::Account::Instance().playerID)
+        {
+          Common::IniFile global, dummy;
+          global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port" + std::to_string(i + 1) + ".ini");
+          runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
+          break;
+        }
+      }
+
+      //if it's a forced port
+    }
+  }
+
   // NOTE: Only active codes are in the list
-  for (const GeckoCode& active_code : s_active_codes)
+  for (const GeckoCode& active_code : runtimeCodes)
   {
     // If the code is not going to fit in the space we have left then we have to skip it
     if (next_address + active_code.codes.size() * CODE_SIZE > end_address)
