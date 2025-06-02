@@ -18,7 +18,7 @@ namespace KAR::IO
 	//gets/creates the directory for all Memory Cards
 	static inline std::string GetDirectory_MemoryCards()
 	{
-    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "MemoryCards");
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "MemoryCards" + DIR_SEP);
 	}
 
   // gets/creates the directory for all ROMs
