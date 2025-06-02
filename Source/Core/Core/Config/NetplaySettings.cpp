@@ -11,6 +11,25 @@ static constexpr u16 DEFAULT_LISTEN_PORT = 2626;
 
 // Configuration Information
 
+// what fullscreen mode are we injecting
+const Info<uint8_t> NETPLAY_KAR_FULLSCREEN_MODE{{System::Main, "NetPlay", "FS_Mode"},
+                                                 1};
+/*
+0 = None
+1 = Auto
+
+2 = Port 1
+3 = Port 2
+4 = Port 3
+5 = Port 4
+
+6 = P1 and P2
+7 = P3 and P4
+
+8 = P1, P2, and P3
+9 = P2, P3, and P4
+*/
+
 // Main.NetPlay
 
 const Info<std::string> NETPLAY_TRAVERSAL_SERVER{{System::Main, "NetPlay", "TraversalServer"},

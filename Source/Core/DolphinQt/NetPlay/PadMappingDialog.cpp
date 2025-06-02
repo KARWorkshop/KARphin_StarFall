@@ -15,6 +15,8 @@
 
 #include "DolphinQt/Settings.h"
 
+#include <KARphin/WarpRelay/Lobby.hpp>
+
 PadMappingDialog::PadMappingDialog(QWidget* parent) : QDialog(parent)
 {
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -137,5 +139,9 @@ void PadMappingDialog::OnMappingChanged()
     m_pad_mapping[i] = gc_id > 0 ? m_players[gc_id - 1]->pid : 0;
     m_gba_config[i].enabled = m_gba_boxes[i]->isChecked();
     m_wii_mapping[i] = wii_id > 0 ? m_players[wii_id - 1]->pid : 0;
+
+    //sets the lobby per-player data so we access to port and such
+    KAR::Lobby::Lobby::Instance().playerDisplayNames[i] = gc_id > 0 ? m_players[gc_id - 1]->name : "";
+    KAR::Lobby::Lobby::Instance().playerIDs[i] = gc_id > 0 ? m_players[gc_id - 1]->pid : 0;
   }
 }

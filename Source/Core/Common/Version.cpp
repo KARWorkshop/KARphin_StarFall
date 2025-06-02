@@ -45,7 +45,7 @@ const std::string& GetScmRevGitStr()
 
 const std::string& GetScmDescStr()
 {
-  static const std::string scm_desc_str = KAR::GenerateVerString_Major_Minor();  // SCM_DESC_STR;
+  static const std::string scm_desc_str = SCM_DESC_STR;
   return scm_desc_str;
 }
 
