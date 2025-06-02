@@ -24,31 +24,33 @@ namespace KAR::IO
   // gets/creates the directory for all ROMs
   static inline std::string GetDirectory_ROMs()
   {
-    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "ROMs");
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "ROMs" +
+                              DIR_SEP);
   }
 
   // gets/creates the directory for all Mods
   static inline std::string GetDirectory_Mods()
   {
-    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Mods");
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Mods" +
+                              DIR_SEP);
   }
 
   // gets/creates the sub-directory in Mods for Gecko Codes
   static inline std::string GetDirectory_GeckoCodes()
   {
-    return CreateDirIfMissing(GetDirectory_Mods() + DIR_SEP + "GeckoCodes");
+    return CreateDirIfMissing(GetDirectory_Mods() + "GeckoCodes" + DIR_SEP);
   }
 
   // gets/creates the sub-directory in Mods for Loading textures and such
   static inline std::string GetDirectory_CustomLoadAssets()
   {
-    return CreateDirIfMissing(GetDirectory_Mods() + DIR_SEP + "Load");
+    return CreateDirIfMissing(GetDirectory_Mods() + "Load" + DIR_SEP);
   }
 
 	// gets/creates the directory for all core client settings
   static inline std::string GetDirectory_CoreClientSettings()
   {
-    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR);
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR + DIR_SEP);
   }
 
   }

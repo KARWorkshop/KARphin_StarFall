@@ -101,6 +101,10 @@ void HandleDiscordJoin(const char* join_secret)
 
 std::string ArtworkForGameId()
 {
+
+
+
+  //if it's any other game
   const DiscIO::Region region = SConfig::GetInstance().m_region;
   const bool is_wii = Core::System::GetInstance().IsWii();
   const std::string region_code = SConfig::GetInstance().GetGameTDBImageRegionCode(is_wii, region);

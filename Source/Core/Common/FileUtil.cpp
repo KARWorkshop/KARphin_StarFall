@@ -86,6 +86,8 @@ static DolSecTranslocateIsTranslocatedURL s_is_translocated_url;
 static DolSecTranslocateCreateOriginalPathForURL s_create_orig_path;
 #endif
 
+#include <KARphin/IO/DirectoryStructure.hpp>
+
 FileInfo::FileInfo(const std::string& path) : FileInfo(path.c_str())
 {
 }
@@ -850,7 +852,10 @@ static void RebuildUserDirectories(unsigned int dir_index)
     s_user_paths[D_GCUSER_IDX] = s_user_paths[D_USER_IDX] + GC_USER_DIR DIR_SEP;
     s_user_paths[D_WIIROOT_IDX] = s_user_paths[D_USER_IDX] + WII_USER_DIR DIR_SEP;
     s_user_paths[D_CONFIG_IDX] = s_user_paths[D_USER_IDX] + CONFIG_DIR DIR_SEP;
-    s_user_paths[D_GAMESETTINGS_IDX] = s_user_paths[D_USER_IDX] + GAMESETTINGS_DIR DIR_SEP;
+    s_user_paths[D_GAMESETTINGS_IDX] =
+        KAR::IO::GetDirectory_GeckoCodes();  // replaces the game settings directory with our gecko
+                                             // code directory  //s_user_paths[D_USER_IDX] +
+                                             // GAMESETTINGS_DIR DIR_SEP;
     s_user_paths[D_MAPS_IDX] = s_user_paths[D_USER_IDX] + MAPS_DIR DIR_SEP;
     s_user_paths[D_CACHE_IDX] = s_user_paths[D_USER_IDX] + CACHE_DIR DIR_SEP;
     s_user_paths[D_COVERCACHE_IDX] = s_user_paths[D_CACHE_IDX] + COVERCACHE_DIR DIR_SEP;
@@ -861,7 +866,8 @@ static void RebuildUserDirectories(unsigned int dir_index)
     s_user_paths[D_SHADERS_IDX] = s_user_paths[D_USER_IDX] + SHADERS_DIR DIR_SEP;
     s_user_paths[D_STATESAVES_IDX] = s_user_paths[D_USER_IDX] + STATESAVES_DIR DIR_SEP;
     s_user_paths[D_SCREENSHOTS_IDX] = s_user_paths[D_USER_IDX] + SCREENSHOTS_DIR DIR_SEP;
-    s_user_paths[D_LOAD_IDX] = s_user_paths[D_USER_IDX] + LOAD_DIR DIR_SEP;
+    s_user_paths[D_LOAD_IDX] =
+        KAR::IO::GetDirectory_CustomLoadAssets();  // s_user_paths[D_USER_IDX] + LOAD_DIR DIR_SEP;
     s_user_paths[D_HIRESTEXTURES_IDX] = s_user_paths[D_LOAD_IDX] + HIRES_TEXTURES_DIR DIR_SEP;
     s_user_paths[D_RIIVOLUTION_IDX] = s_user_paths[D_LOAD_IDX] + RIIVOLUTION_DIR DIR_SEP;
     s_user_paths[D_DUMP_IDX] = s_user_paths[D_USER_IDX] + DUMP_DIR DIR_SEP;
@@ -985,6 +991,9 @@ static void RebuildUserDirectories(unsigned int dir_index)
 // Don't call prior to setting the base user directory
 const std::string& GetUserPath(unsigned int dir_index)
 {
+  if (dir_index == D_GAMESETTINGS_IDX)
+    return KAR::IO::GetDirectory_GeckoCodes();
+
   return s_user_paths[dir_index];
 }
 
