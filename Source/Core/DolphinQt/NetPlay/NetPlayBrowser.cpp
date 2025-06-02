@@ -29,6 +29,8 @@
 #include "DolphinQt/QtUtils/SetWindowDecorations.h"
 #include "DolphinQt/Settings.h"
 
+#include <KARphin/Version.hpp>
+
 NetPlayBrowser::NetPlayBrowser(QWidget* parent) : QDialog(parent)
 {
   setWindowTitle(tr("NetPlay Session Browser"));
