@@ -15,6 +15,12 @@ namespace KAR::IO
     return dir;
   }
 
+  // gets/creates the directory for all core client settings
+  static inline std::string GetDirectory_CoreClientSettings()
+  {
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR + DIR_SEP);
+  }
+
 	//gets/creates the directory for all Memory Cards
 	static inline std::string GetDirectory_MemoryCards()
 	{
@@ -26,6 +32,19 @@ namespace KAR::IO
   {
     return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "ROMs" +
                               DIR_SEP);
+  }
+
+  // gets/creates the directory for all Accounts
+  static inline std::string GetDirectory_Account()
+  {
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Account" +
+                              DIR_SEP);
+  }
+
+  // gets/creates the sub-directory in Accounts for Controller Profiles
+  static inline std::string GetDirectory_ControllerProfile()
+  {
+    return CreateDirIfMissing(GetDirectory_Account() + "Controllers" + DIR_SEP);
   }
 
   // gets/creates the directory for all Mods
@@ -45,12 +64,6 @@ namespace KAR::IO
   static inline std::string GetDirectory_CustomLoadAssets()
   {
     return CreateDirIfMissing(GetDirectory_Mods() + "Load" + DIR_SEP);
-  }
-
-	// gets/creates the directory for all core client settings
-  static inline std::string GetDirectory_CoreClientSettings()
-  {
-    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR + DIR_SEP);
   }
 
   }

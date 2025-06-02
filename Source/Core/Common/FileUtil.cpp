@@ -992,7 +992,7 @@ static void RebuildUserDirectories(unsigned int dir_index)
 const std::string& GetUserPath(unsigned int dir_index)
 {
   if (dir_index == D_GAMESETTINGS_IDX)
-    return KAR::IO::GetDirectory_GeckoCodes();
+    s_user_paths[dir_index] = KAR::IO::GetDirectory_GeckoCodes();
 
   return s_user_paths[dir_index];
 }

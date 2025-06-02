@@ -59,6 +59,8 @@
 #include "InputCommon/ControllerInterface/CoreDevice.h"
 #include "InputCommon/InputConfig.h"
 
+#include <KARphin/IO/DirectoryStructure.hpp>
+
 MappingWindow::MappingWindow(QWidget* parent, Type type, int port_num)
     : QDialog(parent), m_port(port_num)
 {
@@ -317,8 +319,7 @@ void MappingWindow::OnSaveProfilePressed()
   if (profile_name.isEmpty())
     return;
 
-  const std::string profile_path =
-      m_config->GetUserProfileDirectoryPath() + profile_name.toStdString() + ".ini";
+  const std::string profile_path = KAR::IO::GetDirectory_ControllerProfile() + profile_name.toStdString() + ".ini";
 
   File::CreateFullPath(profile_path);
 
@@ -484,7 +485,8 @@ void MappingWindow::PopulateProfileSelection()
 {
   m_profiles_combo->clear();
 
-  const std::string profiles_path = m_config->GetUserProfileDirectoryPath();
+  const std::string profiles_path =
+      KAR::IO::GetDirectory_ControllerProfile();  // m_config->GetUserProfileDirectoryPath();
   for (const auto& filename : Common::DoFileSearch({profiles_path}, {".ini"}))
   {
     std::string basename;
