@@ -16,6 +16,7 @@
 #include "DolphinQt/Settings.h"
 
 #include <KARphin/WarpRelay/Lobby.hpp>
+#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
 
 PadMappingDialog::PadMappingDialog(QWidget* parent) : QDialog(parent)
 {
@@ -143,5 +144,7 @@ void PadMappingDialog::OnMappingChanged()
     //sets the lobby per-player data so we access to port and such
     KAR::Lobby::Lobby::Instance().playerDisplayNames[i] = gc_id > 0 ? m_players[gc_id - 1]->name : "";
     KAR::Lobby::Lobby::Instance().playerIDs[i] = gc_id > 0 ? m_players[gc_id - 1]->pid : 0;
+
+    //sets our own account
   }
 }

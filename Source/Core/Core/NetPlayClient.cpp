@@ -1921,6 +1921,7 @@ void NetPlayClient::UpdateDevices()
       {
         si.ChangeDevice(SerialInterface::SIDEVICE_GC_CONTROLLER, pad);
       }
+      KAR::Lobby::Lobby::Instance().ourPort = pad;
       local_pad++;
     }
     else if (player_id > 0)
