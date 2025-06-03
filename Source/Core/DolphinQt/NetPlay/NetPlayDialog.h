@@ -180,4 +180,6 @@ private:
   bool m_host_input_authority = false;
 
   StartGameCallback m_start_game_callback;
+
+  bool hasSeenCTDesyncMsg = false; //have we seen the CT desync message
 };

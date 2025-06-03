@@ -967,10 +967,30 @@ void NetPlayDialog::OnHostInputAuthorityChanged(bool enabled)
 
 void NetPlayDialog::OnDesync(u32 frame, const std::string& player)
 {
-  DisplayMessage(tr("Possible desync detected: %1 might have desynced at frame %2")
-                     .arg(QString::fromStdString(player), QString::number(frame)),
-                 "red", OSD::Duration::VERY_LONG);
-}
+  //if it's not the first frame 0 desync, but one later on
+  //then we know it's the standard CT desync from the FS
+  //we hide it the first time
+  if (Config::Get(Config::NETPLAY_KAR_FULLSCREEN_MODE) != 0 && !hasSeenCTDesyncMsg && frame > 10)
+    hasSeenCTDesyncMsg = true;
+
+  else
+  {
+    //if it's a frame 0-5 desync a "Frame 0 Desync"
+    if (frame < 5)
+    {
+      DisplayMessage(
+        tr("%s has Frame 0 Desynced, this is caused by having the wrong memory card. Make sure all Player's are using the same memory card preset.")
+                         .arg(QString::fromStdString(player)),
+                     "red", OSD::Duration::VERY_LONG);
+    }
+
+    //regular desync
+    else
+      DisplayMessage(tr("Possible desync detected: %1 might have desynced at frame %2")
+                       .arg(QString::fromStdString(player), QString::number(frame)),
+                   "red", OSD::Duration::VERY_LONG);
+  }
+      }
 
 void NetPlayDialog::OnConnectionLost()
 {
