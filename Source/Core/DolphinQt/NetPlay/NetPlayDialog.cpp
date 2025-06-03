@@ -771,6 +771,9 @@ void NetPlayDialog::UpdateGUI()
 void NetPlayDialog::BootGame(const std::string& filename,
                              std::unique_ptr<BootSessionData> boot_session_data)
 {
+  //reset the CT hide desync message
+  hasSeenCTDesyncMsg = false;
+
   m_got_stop_request = false;
   m_start_game_callback(filename, std::move(boot_session_data));
 }

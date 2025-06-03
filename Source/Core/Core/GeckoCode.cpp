@@ -194,15 +194,6 @@ static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
 
       //if it's auto
       case 1:
-      //for (size_t i = 0; i < 4; ++i)
-      //{
-      //  if (KAR::Lobby::Lobby::Instance().playerIDs[i] == KAR::Account::Account::Instance().playerID)
-      //  { 
-      //    global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port" + std::to_string(i + 1) + ".ini");
-      //    runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
-      //    break;
-      //  }
-      //}
         global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port" + std::to_string(KAR::Lobby::Lobby::Instance().ourPort + 1) +".ini");
         runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
       break;
