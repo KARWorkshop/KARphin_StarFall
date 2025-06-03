@@ -21,6 +21,8 @@
 #include "Core/PowerPC/PowerPC.h"
 #include "Core/System.h"
 
+#include <Core/Config/NetplaySettings.h>
+
 #include <KARphin/WarpRelay/Lobby.hpp>
 #include <KARphin/WarpRelay/WarpRelayAccount.hpp>
 #include <KARphin/Mods/GeckoCodeManager.hpp>
@@ -179,25 +181,55 @@ static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
 
   std::vector<GeckoCode> runtimeCodes = s_active_codes;
 
-  //if we have a active netplay account
-  if (KAR::Account::Account::Instance().IsValidAccount())
+  //if we have a active netplay account and the FS mode is not none
+  if (KAR::Account::Account::Instance().IsValidAccount() && Config::Get(Config::NETPLAY_KAR_FULLSCREEN_MODE) > 0)
   {
     //makes sure the FS gecko code mode exists
     if (std::filesystem::exists(KAR::IO::GetDirectory_GeckoCodes()))
     {
+      //gecko loading
+      Common::IniFile global, dummy;
+      switch (Config::Get(Config::NETPLAY_KAR_FULLSCREEN_MODE))
+      {
+
       //if it's auto
+      case 1:
       for (size_t i = 0; i < 4; ++i)
       {
         if (KAR::Lobby::Lobby::Instance().playerIDs[i] == KAR::Account::Account::Instance().playerID)
-        {
-          Common::IniFile global, dummy;
+        { 
           global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port" + std::to_string(i + 1) + ".ini");
           runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
           break;
         }
       }
+      break;
 
-      //if it's a forced port
+      //forces port 1
+      case 2:
+        global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port1.ini");
+        runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
+        break;
+
+        // forces port 2
+      case 3:
+        global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port2.ini");
+        runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
+        break;
+
+        // forces port 3
+      case 4:
+        global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port3.ini");
+        runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
+        break;
+
+        // forces port 4
+      case 5:
+        global.Load(KAR::IO::GetDirectory_GeckoCodes() + "FS/Port4.ini");
+        runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
+        break;
+
+      }
     }
   }
 
