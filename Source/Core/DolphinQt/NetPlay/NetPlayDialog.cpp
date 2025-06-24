@@ -490,6 +490,10 @@ void NetPlayDialog::OnStart()
     return;
   }
 
+  //if we're backside, or backside based enabled the memory card
+
+  //if we're KRDX or other forks, disable memory card
+
   if (Settings::Instance().GetNetPlayServer()->RequestStartGame())
     SetOptionsEnabled(false);
 }
