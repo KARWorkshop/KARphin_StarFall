@@ -450,6 +450,8 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
 
   received_packet >> new_player.revision;
   received_packet >> new_player.name;
+  //std::string runtimeExternalIP = "";
+  //received_packet >> runtimeExternalIP;
 
   if (StringUTF8CodePointCount(new_player.name) > MAX_NAME_LENGTH)
     return ConnectionError::NameTooLong;

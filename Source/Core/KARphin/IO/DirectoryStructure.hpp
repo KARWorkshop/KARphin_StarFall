@@ -66,4 +66,16 @@ namespace KAR::IO
     return CreateDirIfMissing(GetDirectory_Mods() + "Load" + DIR_SEP);
   }
 
+  // gets/creates the sub-directory in Mods for Loading Riivolution Patches
+  static inline std::string GetDirectory_RiivolutionPatches()
+  {
+    return CreateDirIfMissing(GetDirectory_Mods() + RIIVOLUTION_DIR + DIR_SEP);
+  }
+
+   // gets/creates the sub-directory in Mods for Loading Custom Textures
+  static inline std::string GetDirectory_CustomTextures()
+  {
+    return CreateDirIfMissing(GetDirectory_Mods() + HIRES_TEXTURES_DIR + DIR_SEP);
+  }
+
   }

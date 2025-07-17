@@ -79,6 +79,9 @@
 #include <KARphin/WarpRelay/WarpRelayAccount.hpp>
 #include <KARphin/WarpRelay/Lobby.hpp>
 
+#include <Common/Lazy.h>
+#include <Common/HttpRequest.h>
+
 namespace NetPlay
 {
 using namespace WiimoteCommon;
@@ -248,11 +251,92 @@ bool NetPlayClient::Connect()
 {
   INFO_LOG_FMT(NETPLAY, "Connecting to server.");
 
+
+  ////gets the public IP
+  //Common::Lazy<std::string> m_external_ip_address = Common::Lazy<std::string>([]() -> std::string {
+  //  Common::HttpRequest request;
+  //  // ENet does not support IPv6, so IPv4 has to be used
+  //  request.UseIPv4();
+  //  Common::HttpRequest::Response response =
+  //      request.Get("https://ip.dolphin-emu.org/", {{"X-Is-Dolphin", "1"}});
+
+  //  if (response.has_value())
+  //    return std::string(response->begin(), response->end());
+  //  return "";
+  //});
+
+  //const std::string runtimeExternalIP = m_external_ip_address->data();
+
+  //std::vector<std::string> deviceAddresses;
+
+  ////gets the user's IP and Mac and packs it so we can send it to the host
+  //ULONG bufferSize = 0;
+  //GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, nullptr, nullptr, &bufferSize);
+
+  //IP_ADAPTER_ADDRESSES* adapterAddresses =
+  //    reinterpret_cast<IP_ADAPTER_ADDRESSES*>(malloc(bufferSize));
+  //if (!adapterAddresses)
+  //{
+  //  std::cerr << "Memory allocation failed\n";
+  //  return 1;
+  //}
+
+  //DWORD result = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, nullptr, adapterAddresses,
+  //                                    &bufferSize);
+  //if (result != NO_ERROR)
+  //{
+  //  std::cerr << "GetAdaptersAddresses failed: " << result << "\n";
+  //  free(adapterAddresses);
+  //  return 1;
+  //}
+
+  //for (IP_ADAPTER_ADDRESSES* adapter = adapterAddresses; adapter != nullptr;
+  //     adapter = adapter->Next)
+  //{
+  //  std::wcout << L"Adapter: " << adapter->FriendlyName << std::endl;
+  // // deviceAddresses.emplace_back(adapter->FriendlyName);
+
+  //  for (IP_ADAPTER_UNICAST_ADDRESS* addr = adapter->FirstUnicastAddress; addr != nullptr;
+  //       addr = addr->Next)
+  //  {
+  //    char ipstring[INET6_ADDRSTRLEN] = {0};
+
+  //    if (addr->Address.lpSockaddr->sa_family == AF_INET)
+  //    {
+  //      sockaddr_in* ipv4 = reinterpret_cast<sockaddr_in*>(addr->Address.lpSockaddr);
+  //      inet_ntop(AF_INET, &(ipv4->sin_addr), ipstring, sizeof(ipstring));
+  //      std::cout << "IPv4 Address: " << ipstring << std::endl;
+  //      deviceAddresses.emplace_back(ipstring);
+  //    }
+  //    else if (addr->Address.lpSockaddr->sa_family == AF_INET6)
+  //    {
+  //      sockaddr_in6* ipv6 = reinterpret_cast<sockaddr_in6*>(addr->Address.lpSockaddr);
+  //      inet_ntop(AF_INET6, &(ipv6->sin6_addr), ipstring, sizeof(ipstring));
+  //      std::cout << "IPv6 Address: " << ipstring << std::endl;
+  //      deviceAddresses.emplace_back(ipstring);
+  //    }
+  //  }
+
+  //  std::cout << std::endl;
+  //}
+
+  //free(adapterAddresses);
+
+  ////compresses
+  //std::string addressData = "";
+  //for (size_t i = 0; i < deviceAddresses.size(); ++i)
+  //  addressData += "\n" + deviceAddresses[i];
+
+ // m_dialog->OnPlayerConnect(runtimeExternalIP);
+
+  //logs Warp Relay Account
+
   // send connect message
   sf::Packet packet;
   packet << Common::GetScmRevGitStr();
   packet << Common::GetNetplayDolphinVer();
   packet << m_player_name;
+ // packet << runtimeExternalIP;
   Send(packet);
   enet_host_flush(m_client);
   sf::Packet rpac;
