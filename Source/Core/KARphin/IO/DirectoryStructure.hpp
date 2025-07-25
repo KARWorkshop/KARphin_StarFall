@@ -27,6 +27,13 @@ namespace KAR::IO
     return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "MemoryCards" + DIR_SEP);
 	}
 
+  // gets/creates the directory for Tools
+  static inline std::string GetDirectory_Tools()
+  {
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Tools" +
+                              DIR_SEP);
+  }
+
   // gets/creates the directory for all ROMs
   static inline std::string GetDirectory_ROMs()
   {

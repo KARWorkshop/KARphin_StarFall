@@ -43,6 +43,9 @@
 #include "UICommon/CommandLineParse.h"
 #include "UICommon/UICommon.h"
 
+#include <KARphin/Updater/KARphin_AutoUpdater.hpp>
+
+
 static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no,
                               Common::MsgType style)
 {
@@ -117,11 +120,7 @@ static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no
 int main(int argc, char* argv[])
 {
   //checks if we need to update
-
-  //if we do, kill this program
-
-  //if not, continue as normal
-
+  const KAR::Updater::UpdaterResult updateCheckResult = KAR::Updater::KARphin_CheckForUpdate();
 
 
 #ifdef _WIN32
@@ -260,6 +259,37 @@ int main(int argc, char* argv[])
     Settings::Instance().ApplyStyle();
 
     MainWindow win{std::move(boot), static_cast<const char*>(options.get("movie"))};
+
+    //render a prompt that we need to update
+    if (updateCheckResult != KAR::Updater::UpdaterResult::ThereIsNoUpdate)
+    {
+      std::string titleText = "New KARphin Update!";
+      std::string bodyText = "A new update is ready to download!";
+      std::string infoText = "Press \"Ok\", KARphin will close and then download the new content. When it finishes, it will boot KARphin again.";
+
+      if (updateCheckResult == KAR::Updater::UpdaterResult::CouldNotFindTheUpdater)
+      {
+        titleText = "Could not find the KARphin Updater!";
+        bodyText = "There is a issue with your install!";
+        infoText = "The updater for KARphin could not be found. Verify that your install is "
+            "complete. Try doing a full re-install of the KARphin download. "
+            "If this error still persists, then send a screenshot of your install's folder, "
+            "and this message in the KAR Online Discord Support channel.";
+      }
+
+      ModalMessageBox analytics_prompt(&win);
+      analytics_prompt.setIcon(QMessageBox::Critical);
+      analytics_prompt.setStandardButtons(QMessageBox::Ok);
+      analytics_prompt.setWindowTitle(QObject::tr(titleText.c_str()));
+      analytics_prompt.setText(QObject::tr(bodyText.c_str()));
+      analytics_prompt.setInformativeText(QObject::tr(infoText.c_str()));
+
+      SetQWidgetWindowDecorations(&analytics_prompt);
+      /*const int answer = */analytics_prompt.exec();
+
+           //KAR::Updater::PerformUpdate();
+    }
+
 
 //#if defined(USE_ANALYTICS) && USE_ANALYTICS
 //    if (!Config::Get(Config::MAIN_ANALYTICS_PERMISSION_ASKED))
