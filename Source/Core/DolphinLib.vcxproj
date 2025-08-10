@@ -74,7 +74,6 @@
   <ItemGroup>
     <ClInclude Include="KARphin\IO\DirectoryStructure.hpp" />
     <ClInclude Include="KARphin\Mods\GeckoCodeManager.hpp" />
-    <ClInclude Include="KARphin\Updater\KARphin_AutoUpdater.hpp" />
     <ClInclude Include="KARphin\Vender\json.hpp" />
     <ClInclude Include="KARphin\Vender\json_fwd.hpp" />
     <ClInclude Include="KARphin\Version.hpp" />
