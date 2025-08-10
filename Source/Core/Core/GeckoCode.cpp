@@ -77,12 +77,12 @@ void SetActiveCodes(std::span<const GeckoCode> gcodes)
   std::lock_guard lk(s_active_codes_lock);
 
   s_active_codes.clear();
-  if (Config::AreCheatsEnabled())
-  {
+ // if (Config::AreCheatsEnabled())
+  //{
     s_active_codes.reserve(gcodes.size());
     std::copy_if(gcodes.begin(), gcodes.end(), std::back_inserter(s_active_codes),
                  [](const GeckoCode& code) { return code.enabled; });
-  }
+  //}
   s_active_codes.shrink_to_fit();
 
   s_code_handler_installed = Installation::Uninstalled;

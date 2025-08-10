@@ -21,12 +21,6 @@ namespace KAR::IO
     return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR + DIR_SEP);
   }
 
-	//gets/creates the directory for all Memory Cards
-	static inline std::string GetDirectory_MemoryCards()
-	{
-    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "MemoryCards" + DIR_SEP);
-	}
-
   // gets/creates the directory for Tools
   static inline std::string GetDirectory_Tools()
   {
@@ -83,6 +77,12 @@ namespace KAR::IO
   static inline std::string GetDirectory_CustomTextures()
   {
     return CreateDirIfMissing(GetDirectory_Mods() + HIRES_TEXTURES_DIR + DIR_SEP);
+  }
+
+  // gets the runtime memory card
+  static inline std::string GetDirectory_Runtime_MemoryCard()
+  {
+    return CreateDirIfMissing(GetDirectory_Mods() + "RuntimeInfo" + DIR_SEP);
   }
 
   }

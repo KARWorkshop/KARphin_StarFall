@@ -829,6 +829,26 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
     UpdateDiscordPresence();
   });
   DisplayMessage(tr("Game changed to \"%1\"").arg(qname), "magenta");
+
+  // disable or enable the memory card
+  if (sync_identifier.game_id == "KBSE02")
+  {
+    m_savedata_none_action->setChecked(false);
+    m_savedata_load_only_action->setChecked(true);
+    m_savedata_load_and_write_action->setChecked(false);
+    m_savedata_all_wii_saves_action->setChecked(false);
+    SaveSettings();
+    DisplayMessage(tr("%1 does support the memory card, it will be enabled.").arg(qname), "green");
+  }
+  else
+  {
+    m_savedata_none_action->setChecked(true);
+    m_savedata_load_only_action->setChecked(false);
+    m_savedata_load_and_write_action->setChecked(false);
+    m_savedata_all_wii_saves_action->setChecked(false);
+    SaveSettings();
+    DisplayMessage(tr("%1 does not support the memory card, it will be disabled to stop desyncs.").arg(qname), "yellow");
+  }
 }
 
 void NetPlayDialog::OnMsgChangeGBARom(int pad, const NetPlay::GBAConfig& config)
