@@ -129,9 +129,9 @@ void AdvancedPane::CreateLayout()
   mem1_override_slider_layout->setContentsMargins(0, 0, 0, 0);
   ram_override_layout->addLayout(mem1_override_slider_layout);
 
-  m_mem1_override_slider = new QSlider(Qt::Horizontal);
-  m_mem1_override_slider->setRange(24, 64);
-  mem1_override_slider_layout->addWidget(m_mem1_override_slider);
+  //m_mem1_override_slider = new QSlider(Qt::Horizontal);
+ // m_mem1_override_slider->setRange(24, 64);
+ // mem1_override_slider_layout->addWidget(m_mem1_override_slider);
 
   m_mem1_override_slider_label = new QLabel();
   mem1_override_slider_layout->addWidget(m_mem1_override_slider_label);
@@ -140,9 +140,9 @@ void AdvancedPane::CreateLayout()
   mem2_override_slider_layout->setContentsMargins(0, 0, 0, 0);
   ram_override_layout->addLayout(mem2_override_slider_layout);
 
-  m_mem2_override_slider = new QSlider(Qt::Horizontal);
-  m_mem2_override_slider->setRange(64, 128);
-  mem2_override_slider_layout->addWidget(m_mem2_override_slider);
+ // m_mem2_override_slider = new QSlider(Qt::Horizontal);
+ // m_mem2_override_slider->setRange(64, 128);
+  //mem2_override_slider_layout->addWidget(m_mem2_override_slider);
 
   m_mem2_override_slider_label = new QLabel();
   mem2_override_slider_layout->addWidget(m_mem2_override_slider_label);
@@ -213,17 +213,17 @@ void AdvancedPane::ConnectLayout()
     Update();
   });
 
-  connect(m_mem1_override_slider, &QSlider::valueChanged, [this](int slider_value) {
+  /* connect(m_mem1_override_slider, &QSlider::valueChanged, [this](int slider_value) {
     const u32 mem1_size = m_mem1_override_slider->value() * 0x100000;
     Config::SetBaseOrCurrent(Config::MAIN_MEM1_SIZE, mem1_size);
     Update();
-  });
+  });*/
 
-  connect(m_mem2_override_slider, &QSlider::valueChanged, [this](int slider_value) {
-    const u32 mem2_size = m_mem2_override_slider->value() * 0x100000;
-    Config::SetBaseOrCurrent(Config::MAIN_MEM2_SIZE, mem2_size);
-    Update();
-  });
+ // connect(m_mem2_override_slider, &QSlider::valueChanged, [this](int slider_value) {
+  //  const u32 mem2_size = m_mem2_override_slider->value() * 0x100000;
+  //  Config::SetBaseOrCurrent(Config::MAIN_MEM2_SIZE, mem2_size);
+  //  Update();
+ // });
 
   connect(m_custom_rtc_checkbox, &QCheckBox::toggled, [this](bool enable_custom_rtc) {
     Config::SetBaseOrCurrent(Config::MAIN_CUSTOM_RTC_ENABLE, enable_custom_rtc);
@@ -285,28 +285,28 @@ void AdvancedPane::Update()
   m_ram_override_checkbox->setEnabled(!running);
   SignalBlocking(m_ram_override_checkbox)->setChecked(enable_ram_override_widgets);
 
-  m_mem1_override_slider->setEnabled(enable_ram_override_widgets && !running);
+ /* m_mem1_override_slider->setEnabled(enable_ram_override_widgets && !running);
   m_mem1_override_slider_label->setEnabled(enable_ram_override_widgets && !running);
 
   {
     const QSignalBlocker blocker(m_mem1_override_slider);
     const u32 mem1_size = Config::Get(Config::MAIN_MEM1_SIZE) / 0x100000;
     m_mem1_override_slider->setValue(mem1_size);
-  }
+  }*/
 
   m_mem1_override_slider_label->setText([] {
     const u32 mem1_size = Config::Get(Config::MAIN_MEM1_SIZE) / 0x100000;
     return tr("%1 MB (MEM1)").arg(QString::number(mem1_size));
   }());
 
-  m_mem2_override_slider->setEnabled(enable_ram_override_widgets && !running);
+  /*m_mem2_override_slider->setEnabled(enable_ram_override_widgets && !running);
   m_mem2_override_slider_label->setEnabled(enable_ram_override_widgets && !running);
 
   {
     const QSignalBlocker blocker(m_mem2_override_slider);
     const u32 mem2_size = Config::Get(Config::MAIN_MEM2_SIZE) / 0x100000;
     m_mem2_override_slider->setValue(mem2_size);
-  }
+  }*/
 
   m_mem2_override_slider_label->setText([] {
     const u32 mem2_size = Config::Get(Config::MAIN_MEM2_SIZE) / 0x100000;

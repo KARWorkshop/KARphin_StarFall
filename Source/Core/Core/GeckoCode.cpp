@@ -184,7 +184,7 @@ static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
   //if we have a active netplay account and the FS mode is not none
   if (KAR::Account::Account::Instance().IsValidAccount() && Config::Get(Config::NETPLAY_KAR_FULLSCREEN_MODE) > 0)
   {
-    //makes sure the FS gecko code mode exists
+    //makes sure the FS gecko code mod exists
     if (std::filesystem::exists(KAR::IO::GetDirectory_GeckoCodes()))
     {
       //gecko loading
