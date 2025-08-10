@@ -156,6 +156,9 @@ GameFile::GameFile(std::string path) : m_file_path(std::move(path))
     m_blob_type = DiscIO::BlobType::DIRECTORY;
   }
 
+  //generates a metadata file for the launcher so we can see the games
+
+
   if (!IsValid() && GetExtension() == ".json")
   {
     auto descriptor = DiscIO::ParseGameModDescriptorFile(m_file_path);
