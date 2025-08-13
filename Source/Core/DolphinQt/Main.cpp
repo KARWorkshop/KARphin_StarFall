@@ -43,6 +43,8 @@
 #include "UICommon/CommandLineParse.h"
 #include "UICommon/UICommon.h"
 
+#include <KARphin/Version.hpp>
+
 
 static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no,
                               Common::MsgType style)
@@ -288,6 +290,9 @@ int main(int argc, char* argv[])
 //      DolphinAnalytics::Instance().ReloadConfig();
 //    }
 //#endif
+
+    //writes KARphin version manifest file
+    KAR::Version::WriteManifestFile();
 
     if (!Settings::Instance().IsBatchModeEnabled())
     {
