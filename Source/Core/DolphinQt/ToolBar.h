@@ -21,6 +21,9 @@ public:
 
   void closeEvent(QCloseEvent*) override;
 signals:
+  void OnNetplayHostPressed();
+  void OnNetplayLobbiesPressed();
+
   void OpenPressed();
   void RefreshPressed();
   void PlayPressed();
@@ -47,6 +50,9 @@ private:
   void MakeActions();
   void UpdateIcons();
   void UpdatePausePlayButtonState(bool playing_state);
+
+  QAction* m_netplay_connect_host_action;
+  QAction* m_netplay_lobbyList_action;
 
   QAction* m_open_action;
   QAction* m_refresh_action;

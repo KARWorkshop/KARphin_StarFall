@@ -139,6 +139,8 @@
 #include "VideoCommon/NetPlayChatUI.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <KARphin/Version.hpp>
+
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
 // This #define within X11/X.h conflicts with our WiimoteSource enum.
@@ -221,7 +223,8 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
                        const std::string& movie_path)
     : QMainWindow(nullptr)
 {
-  setWindowTitle(tr("KARphin K4"));
+  setWindowTitle(QString::fromStdString(std::string("KARphin [") +
+    std::to_string(KARPHIN_VERSION_MAJOR) + "." + std::to_string(KARPHIN_VERSION_MINOR) + "." + std::to_string(KARPHIN_VERSION_HOTFIX) + " - " + KARPHIN_BUILD_TYPE_DEV + "]"));
   setWindowIcon(Resources::GetAppIcon());
   setUnifiedTitleAndToolBarOnMac(true);
   setAcceptDrops(true);
@@ -685,6 +688,9 @@ void MainWindow::ConnectHotkeys()
 void MainWindow::ConnectToolBar()
 {
   addToolBar(m_tool_bar);
+
+  connect(m_tool_bar, &ToolBar::OnNetplayHostPressed, this, &MainWindow::ShowNetPlaySetupDialog);
+  connect(m_tool_bar, &ToolBar::OnNetplayLobbiesPressed, this, &MainWindow::ShowNetPlayBrowser);
 
   connect(m_tool_bar, &ToolBar::OpenPressed, this, &MainWindow::Open);
   connect(m_tool_bar, &ToolBar::RefreshPressed, this, &MainWindow::RefreshGameList);

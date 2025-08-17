@@ -113,6 +113,11 @@ void ToolBar::MakeActions()
   // i18n: Here, PC is an acronym for program counter, not personal computer.
   m_set_pc_action = addAction(tr("Set PC"), this, &ToolBar::SetPCPressed);
 
+  m_netplay_connect_host_action = addAction(tr("Host"), this, &ToolBar::OnNetplayHostPressed);
+  m_netplay_lobbyList_action = addAction(tr("Lobbbies"), this, &ToolBar::OnNetplayLobbiesPressed);
+
+  addSeparator();
+
   m_open_action = addAction(tr("Open"), this, &ToolBar::OpenPressed);
   m_refresh_action = addAction(tr("Refresh"), [this] { emit RefreshPressed(); });
   m_refresh_action->setEnabled(false);
@@ -134,7 +139,7 @@ void ToolBar::MakeActions()
   // Ensure every button has about the same width
   std::vector<QWidget*> items;
   for (const auto& action :
-       {m_open_action, m_pause_play_action, m_stop_action, m_stop_action, m_fullscreen_action,
+       {m_netplay_connect_host_action, m_netplay_lobbyList_action, m_open_action, m_pause_play_action, m_stop_action, m_stop_action, m_fullscreen_action,
         m_screenshot_action, m_config_action, m_graphics_action, m_controllers_action,
         m_step_action, m_step_over_action, m_step_out_action, m_skip_action, m_show_pc_action,
         m_set_pc_action})
@@ -194,4 +199,7 @@ void ToolBar::UpdateIcons()
   m_config_action->setIcon(Resources::GetThemeIcon("config"));
   m_controllers_action->setIcon(Resources::GetThemeIcon("classic"));
   m_graphics_action->setIcon(Resources::GetThemeIcon("graphics"));
+
+  m_netplay_connect_host_action->setIcon(Resources::GetThemeIcon("Connect"));
+  m_netplay_lobbyList_action->setIcon(Resources::GetThemeIcon("Lobbies"));
 }

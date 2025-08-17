@@ -15,6 +15,12 @@ namespace KAR::IO
     return dir;
   }
 
+  // gets/creates the directory for all core sys folder
+  static inline std::string GetDirectory_Sys()
+  {
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + "Sys" + DIR_SEP);
+  }
+
   // gets/creates the directory for all core client settings
   static inline std::string GetDirectory_CoreClientSettings()
   {

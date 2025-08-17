@@ -22,6 +22,7 @@ class GeckoCode
 {
 public:
   GeckoCode() = default;
+  GeckoCode(const bool& _e) { enabled = _e; }
   struct Code
   {
     u32 address = 0;
