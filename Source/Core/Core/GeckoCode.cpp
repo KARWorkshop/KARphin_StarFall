@@ -68,7 +68,7 @@ enum class Installation
 
 static Installation s_code_handler_installed = Installation::Uninstalled;
 // the currently active codes
-static std::vector<GeckoCode> s_active_codes = {GeckoCode(true)};
+static std::vector<GeckoCode> s_active_codes;
 static std::vector<GeckoCode> s_synced_codes;
 static std::mutex s_active_codes_lock;
 

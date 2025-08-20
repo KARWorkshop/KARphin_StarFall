@@ -72,7 +72,11 @@
     <Text Include="$(BuildInfoTemplate)" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="KARphin\AutoUpdating\KARphinUpdating.hpp" />
+    <ClInclude Include="KARphin\AutoUpdating\ModAutoUpdating.hpp" />
+    <ClInclude Include="KARphin\AutoUpdating\ModManagerUpdating.hpp" />
     <ClInclude Include="KARphin\IO\DirectoryStructure.hpp" />
+    <ClInclude Include="KARphin\ModSyncing\ModSync_Music.hpp" />
     <ClInclude Include="KARphin\Mods\GeckoCodeManager.hpp" />
     <ClInclude Include="KARphin\Vender\json.hpp" />
     <ClInclude Include="KARphin\Vender\json_fwd.hpp" />

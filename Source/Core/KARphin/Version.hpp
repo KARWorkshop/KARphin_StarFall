@@ -17,6 +17,13 @@
 
 namespace KAR::Version
 {
+// stores the KARphin manifest version data
+struct ManifestVersionData
+{
+  uint32_t major = 0, minor = 0, hotfix = 0;
+  bool isDist = true;
+};
+
 
 //writes a manifest file for versioning
 static inline void WriteManifestFile()
@@ -29,6 +36,25 @@ static inline void WriteManifestFile()
 
   File::CreateEmptyFile(File::GetExeDirectory() + "/" + "manifest.karphin");
   File::WriteStringToFile(File::GetExeDirectory() + "/" + "manifest.karphin", manifest.dump());
+}
+
+ // loads the manifest version file
+static inline ManifestVersionData LoadManifestFile(const std::filesystem::path manifestFilepath)
+{
+  ManifestVersionData data;
+
+  std::string jsonData = "";
+  if (!File::ReadFileToString(manifestFilepath.string(), jsonData))
+    return data;
+
+  nlohmann::json manifestVer = nlohmann::json::parse(jsonData);
+
+  data.major = manifestVer["major"].get<uint32_t>();
+  data.minor = manifestVer["minor"].get<uint32_t>();
+  data.hotfix = manifestVer["hotfix"].get<uint32_t>();
+  data.isDist = manifestVer["build"].get<bool>();
+
+  return data;
 }
 
 }

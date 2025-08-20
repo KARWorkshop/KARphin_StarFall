@@ -73,7 +73,7 @@ private:
   QPushButton* m_add_code;
   QPushButton* m_edit_code;
   QPushButton* m_remove_code;
- // QPushButton* m_download_codes;
+  QPushButton* m_download_codes;
   std::vector<Gecko::GeckoCode> m_gecko_codes;
   bool m_restart_required;
 };
