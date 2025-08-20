@@ -65,6 +65,8 @@
 #include "VideoCommon/NetPlayGolfUI.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <Common/FileUtil.h>
+
 namespace
 {
 QString InetAddressToString(const Common::TraversalInetAddress& addr)
@@ -839,6 +841,35 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
             .arg(QString::fromStdString(game->GetFileFormatName())),
                    "yellow");
     DisplayMessage(tr("To extract a ISO either use the Mod Manager to install mods. Or follow the guide in the Discord for extracting it manually."), "white");
+  }
+  else
+  {
+    //DisplayMessage(
+      //  tr("Extracted filesystem detected, checking if we can enable expanded KARphin functionality...."),
+      //  "green");
+
+    //if it finds a Hoshi file
+    std::string filesDir = std::filesystem::path(game->GetFilePath()).parent_path().string() +
+                           DIR_SEP +
+                           ".." + DIR_SEP + "files" + DIR_SEP; 
+    //DisplayMessage(tr("%1").arg(QString::fromStdString(filesDir)), "white");
+
+    if (File::IsFile(filesDir + "hoshi.bin"))
+    {
+      DisplayMessage(tr("Hoshi framework found, enabling expanded KARphin functionality."),
+                     "green");
+
+      if (sync_identifier.game_id == "GKYE01")
+        DisplayMessage(tr("Deluxe detected, thank you for playing. If you run into any issues please send a message in the Support channel in the Discord. If you have any feedback please use the Deluxe Feedback Channel in the Discord."),
+                       "orange");
+      else if (sync_identifier.game_id == "IGNE01")
+      {
+        DisplayMessage(tr("Ignition detected, enabling Ignition specific KARphin integration."),
+                       "orange");
+
+         //reads the version file and checks it
+      }
+    }
   }
 
   // disable or enable the memory card
