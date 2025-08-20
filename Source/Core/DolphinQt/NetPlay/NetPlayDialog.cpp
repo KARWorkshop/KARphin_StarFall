@@ -830,6 +830,17 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
   });
   DisplayMessage(tr("Game changed to \"%1\"").arg(qname), "magenta");
 
+  //checks if it's a extracted filesystem or not
+  std::shared_ptr<const UICommon::GameFile> game = FindGameFile(m_current_game_identifier);
+  if (game->GetFileFormatName() != "Directory")
+  {
+    DisplayMessage(
+        tr("WARNING: KARphin works best with extracted ISO fileystems. This game is a %1.")
+            .arg(QString::fromStdString(game->GetFileFormatName())),
+                   "yellow");
+    DisplayMessage(tr("To extract a ISO either use the Mod Manager to install mods. Or follow the guide in the Discord for extracting it manually."), "white");
+  }
+
   // disable or enable the memory card
   if (sync_identifier.game_id == "KBSE02")
   {

@@ -4,6 +4,8 @@
 
 #include <KARphin/Version.hpp>
 
+#include <curl/curl.h>
+
 namespace KAR::AutoUpdate::KARphin
 {
 	//checks if KARphin needs a update
