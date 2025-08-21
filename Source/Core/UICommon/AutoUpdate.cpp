@@ -195,14 +195,21 @@ void AutoUpdateChecker::CheckForUpdate(std::string_view update_track,
   const bool needsUpdate = KAR::AutoUpdate::KARphin::CheckForKARphinUpdate();
 
   if (!needsUpdate)
-    SuccessAlertFmtT("You are running the latest version available on this update track.");
+  {
+  }
+    //SuccessAlertFmtT("You are running the latest version available on this update track.");
   else
   {
-    SuccessAlertFmtT("Update needed");
+   // SuccessAlertFmtT("Update needed");
 
     NewVersionInformation nvi;
-    nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
+
+    if(update_track == "beta")
+      nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
                             "Dist/KARphin_Win.ignitionKey";
+    else if (update_track == "dev")
+      nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
+                              "Dev/KARphin_Win.ignitionKey";
     OnUpdateAvailable(nvi);
 
     //render change log
