@@ -55,7 +55,7 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
     return;
   }
 
-  bool updateDeps = false;
+  //bool updateDeps = false;
 
   std::optional<int> choice = RunOnObject(m_parent, [&] {
     QDialog* dialog = new QDialog(m_parent);
@@ -77,9 +77,9 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
     changelog->setOpenExternalLinks(true);
     changelog->setMinimumWidth(400);
 
-    auto* updateDepsCheck = new QCheckBox(tr("Also update KARphin dependicies?"));
+   // auto* updateDepsCheck = new QCheckBox(tr("Also update KARphin dependicies?"));
 
-    connect(updateDepsCheck, &QCheckBox::toggled, [&](bool checked) { updateDeps = checked; });
+    //connect(updateDepsCheck, &QCheckBox::toggled, [&](bool checked) { updateDeps = checked; });
 
     auto* buttons = new QDialogButtonBox;
 
@@ -90,7 +90,7 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
 
     layout->addWidget(label);
     layout->addWidget(changelog);
-    layout->addWidget(updateDepsCheck);
+    //layout->addWidget(updateDepsCheck);
     layout->addWidget(buttons);
 
     connect(buttons, &QDialogButtonBox::accepted, dialog, &QDialog::accept);

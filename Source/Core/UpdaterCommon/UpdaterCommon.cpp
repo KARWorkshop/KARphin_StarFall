@@ -615,6 +615,7 @@ std::optional<Manifest> FetchAndParseManifest(const std::string& url)
 
 struct Options
 {
+  std::string branchURL;
   std::string oldKARphinVersion;
   std::string this_manifest_url;
   std::string next_manifest_url;
