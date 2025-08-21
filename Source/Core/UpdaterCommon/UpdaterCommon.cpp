@@ -711,7 +711,7 @@ bool RunUpdater(std::vector<std::string> args)
 
   // gets the URL from the KWQI data
   const std::string MEMORY_CARD_URL =
-      "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
+      "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/Dev/DolphinD.key";
 
   // gets the image
   // std::string endpoint{URL};
@@ -720,13 +720,13 @@ bool RunUpdater(std::vector<std::string> args)
   // The server always redirects once to the same location.
   http.FollowRedirects(1);
 
-  const Common::HttpRequest::Response response = http.Get(MEMORY_CARD_URL);
+  auto response = http.Get(MEMORY_CARD_URL);
   std::string FP = "";
   if (response.has_value())  // writes the image to cache
   {
     // packs data
     const std::vector<uint8_t> data = response.value();
-    FP = File::GetExeDirectory() + DIR_SEP + "NetplayMemCard.USA.raw";
+    FP = File::GetExeDirectory() + DIR_SEP + "KARphin.exe";
     File::CreateEmptyFile(FP);
     std::ofstream outFile(FP, std::ios::binary);
     outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
@@ -827,7 +827,7 @@ bool RunUpdater(std::vector<std::string> args)
 
   //if (opts.binary_to_restart)
   //{
-    UI::LaunchApplication(File::GetExeDirectory() + DIR_SEP + "Dolphin.exe");
+    UI::LaunchApplication(File::GetExeDirectory() + DIR_SEP + "KARphin.exe");
   //}
 
   return true;

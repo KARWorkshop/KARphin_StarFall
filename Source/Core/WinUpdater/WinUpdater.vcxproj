@@ -28,6 +28,7 @@
     <ClInclude Include="..\UpdaterCommon\Platform.h" />
     <ClInclude Include="..\UpdaterCommon\UI.h" />
     <ClInclude Include="..\UpdaterCommon\UpdaterCommon.h" />
+    <ClInclude Include="zipper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\UpdaterCommon\UpdaterCommon.cpp" />
