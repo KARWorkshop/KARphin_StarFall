@@ -44,6 +44,7 @@
 #include "UICommon/UICommon.h"
 
 #include <KARphin/Version.hpp>
+#include <KARphin/AutoUpdating/KARphinUpdating.hpp>
 
 
 static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no,
@@ -119,6 +120,9 @@ static bool QtMsgAlertHandler(const char* caption, const char* text, bool yes_no
 
 int main(int argc, char* argv[])
 {
+  //checks for update
+  const bool isUpdate = KAR::AutoUpdate::KARphin::CheckForKARphinUpdate();
+
 
 #ifdef _WIN32
   const bool console_attached = AttachConsole(ATTACH_PARENT_PROCESS) != FALSE;
@@ -290,6 +294,25 @@ int main(int argc, char* argv[])
 //      DolphinAnalytics::Instance().ReloadConfig();
 //    }
 //#endif
+
+    if (isUpdate)
+       {
+         ModalMessageBox analytics_prompt(&win);
+    
+         analytics_prompt.setIcon(QMessageBox::Question);
+         analytics_prompt.setStandardButtons(QMessageBox::Ok);
+         analytics_prompt.setWindowTitle(QObject::tr("NEW KARPHIN UPDATE!"));
+         analytics_prompt.setText(QObject::tr("There is a New Update"));
+         analytics_prompt.setInformativeText(
+             QObject::tr("There is a new KARphin update, once you hit ok. KARphin will close and perform a update. It will reopen on it's own when it is done."));
+    
+         SetQWidgetWindowDecorations(&analytics_prompt);
+         analytics_prompt.exec();
+    
+         //download the latest build
+         KAR::AutoUpdate::KARphin::DownloadLatestBuild();
+         //invoke the unzipper
+       }
 
     //writes KARphin version manifest file
     KAR::Version::WriteManifestFile();

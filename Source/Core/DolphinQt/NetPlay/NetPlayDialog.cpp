@@ -243,12 +243,9 @@ void NetPlayDialog::CreateMainLayout()
       std::string FP = "";
       if (response.has_value())  // writes the image to cache
       {
-        // net cache
-        const std::string memoryCardDir = KAR::IO::GetDirectory_MemoryCards();
-
         // packs data
         const std::vector<uint8_t> data = response.value();
-        FP = memoryCardDir + "NetplayMemCard.USA.raw";
+        FP = KAR::IO::GetDirectory_MemoryCards() + "NetplayMemCard.USA.raw";
         File::CreateEmptyFile(FP);
         std::ofstream outFile(FP, std::ios::binary);
         outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
@@ -971,6 +968,10 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
             m_savedata_load_only_action->setChecked(false);
             m_savedata_load_and_write_action->setChecked(false);
             m_savedata_all_wii_saves_action->setChecked(false);
+
+             Config::SetCurrent(Config::MAIN_MEMCARD_A_PATH,
+                               KAR::IO::GetDirectory_MemoryCards() + "NetplayMemCard.USA.raw");
+
             SaveSettings();
             DisplayMessage(tr("%1 has disabled the memory card.").arg(qname), "yellow");
             memoryCardHasBeenDisabled = true;
