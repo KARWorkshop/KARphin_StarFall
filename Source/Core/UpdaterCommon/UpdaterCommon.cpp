@@ -203,35 +203,34 @@ void TodoList::Log() const
   }
 }
 
-bool DownloadContent(const std::vector<TodoList::DownloadOp>& to_download,
-                     const std::string& content_base_url, const std::string& temp_path)
+bool DownloadContent(const std::string& downloadURL, const std::string& content_base_url, const std::string& temp_path)
 {
   Common::HttpRequest req(std::chrono::seconds(30), ProgressCallback);
 
   UI::SetTotalMarquee(false);
 
-  for (size_t i = 0; i < to_download.size(); i++)
-  {
-    UI::SetTotalProgress(static_cast<int>(i + 1), static_cast<int>(to_download.size()));
+  //for (size_t i = 0; i < to_download.size(); i++)
+  //{
+    UI::SetTotalProgress(static_cast<int>(1), static_cast<int>(66666));
 
-    auto& download = to_download[i];
+   // auto& download = to_download[i];
 
-    std::string hash_filename = HexEncode(download.hash.data(), download.hash.size());
+    //std::string hash_filename = HexEncode(downloadURL.data(), downloadURL.size());
 
     // File already exists, skipping
-    if (File::Exists(temp_path + DIR_SEP + hash_filename))
-      continue;
+    if (File::Exists(temp_path + DIR_SEP + "KARphin_win.ignitionKey"))
+      return false;
 
-    UI::SetDescription("Downloading " + download.filename + "... (File " + std::to_string(i + 1) +
-                       " of " + std::to_string(to_download.size()) + ")");
+    UI::SetDescription("Downloading " + downloadURL + "... (File " + std::to_string(1) +
+                       " of )");
     UI::SetCurrentMarquee(false);
 
     // Add slashes where needed.
-    std::string content_store_path = hash_filename;
-    content_store_path.insert(4, "/");
-    content_store_path.insert(2, "/");
+    //std::string content_store_path = hash_filename;
+    //content_store_path.insert(4, "/");
+    //content_store_path.insert(2, "/");
 
-    std::string url = content_base_url + content_store_path;
+    std::string url = downloadURL;
     LogToFile("Downloading %s ...\n", url.c_str());
 
     auto resp = req.Get(url);
@@ -239,7 +238,7 @@ bool DownloadContent(const std::vector<TodoList::DownloadOp>& to_download,
       return false;
 
     UI::SetCurrentMarquee(true);
-    UI::SetDescription("Verifying " + download.filename + "...");
+    UI::SetDescription("Verifying ...");
 
     std::string contents(reinterpret_cast<char*>(resp->data()), resp->size());
     std::optional<std::string> maybe_decompressed = GzipInflate(contents);
@@ -248,20 +247,20 @@ bool DownloadContent(const std::vector<TodoList::DownloadOp>& to_download,
     const std::string decompressed = std::move(*maybe_decompressed);
 
     // Check that the downloaded contents have the right hash.
-    Manifest::Hash contents_hash = ComputeHash(decompressed);
-    if (contents_hash != download.hash)
-    {
-      LogToFile("Wrong hash on downloaded content %s.\n", url.c_str());
-      return false;
-    }
+    //Manifest::Hash contents_hash = ComputeHash(decompressed);
+    //if (contents_hash != download.hash)
+    //{
+    //  LogToFile("Wrong hash on downloaded content %s.\n", url.c_str());
+    //  return false;
+    //}
 
-    const std::string out = temp_path + DIR_SEP + hash_filename;
+    const std::string out = "C:/KARWorkshop/Uniform Client Project Star Fall/KARphin_StarFall/Binary/x64/KARphin_win.ignitionKey";
     if (!File::WriteStringToFile(out, decompressed))
     {
       LogToFile("Could not write cache file %s.\n", out.c_str());
       return false;
     }
-  }
+ // }
   return true;
 }
 
@@ -276,42 +275,54 @@ TodoList ComputeActionsToDo(Manifest this_manifest, Manifest next_manifest)
 {
   TodoList todo;
 
-  // Delete if present in this manifest but not in next manifest.
-  for (const auto& entry : this_manifest.entries)
-  {
-    if (next_manifest.entries.find(entry.first) == next_manifest.entries.end())
-    {
-      TodoList::DeleteOp del;
-      del.filename = entry.first;
-      del.old_hash = entry.second;
-      todo.to_delete.push_back(std::move(del));
-    }
-  }
+  //TodoList::DownloadOp download;
+  //download.filename = entry.first;
+  //download.hash = entry.second;
 
-  // Download and update if present in next manifest with different hash from this manifest.
-  for (const auto& entry : next_manifest.entries)
-  {
-    std::optional<Manifest::Hash> old_hash;
+  //todo.to_download.push_back(std::move(download));
 
-    const auto& old_entry = this_manifest.entries.find(entry.first);
-    if (old_entry != this_manifest.entries.end())
-      old_hash = old_entry->second;
+  //TodoList::UpdateOp update;
+  //update.filename = entry.first;
+  //update.old_hash = old_hash;
+  //update.new_hash = entry.second;
+  //todo.to_update.push_back(std::move(update));
 
-    if (!old_hash || *old_hash != entry.second)
-    {
-      TodoList::DownloadOp download;
-      download.filename = entry.first;
-      download.hash = entry.second;
+  //// Delete if present in this manifest but not in next manifest.
+  //for (const auto& entry : this_manifest.entries)
+  //{
+  //  if (next_manifest.entries.find(entry.first) == next_manifest.entries.end())
+  //  {
+  //    TodoList::DeleteOp del;
+  //    del.filename = entry.first;
+  //    del.old_hash = entry.second;
+  //    todo.to_delete.push_back(std::move(del));
+  //  }
+  //}
 
-      todo.to_download.push_back(std::move(download));
+  //// Download and update if present in next manifest with different hash from this manifest.
+  //for (const auto& entry : next_manifest.entries)
+  //{
+  //  std::optional<Manifest::Hash> old_hash;
 
-      TodoList::UpdateOp update;
-      update.filename = entry.first;
-      update.old_hash = old_hash;
-      update.new_hash = entry.second;
-      todo.to_update.push_back(std::move(update));
-    }
-  }
+  //  const auto& old_entry = this_manifest.entries.find(entry.first);
+  //  if (old_entry != this_manifest.entries.end())
+  //    old_hash = old_entry->second;
+
+  //  if (!old_hash || *old_hash != entry.second)
+  //  {
+  //    TodoList::DownloadOp download;
+  //    download.filename = entry.first;
+  //    download.hash = entry.second;
+
+  //    todo.to_download.push_back(std::move(download));
+
+  //    TodoList::UpdateOp update;
+  //    update.filename = entry.first;
+  //    update.old_hash = old_hash;
+  //    update.new_hash = entry.second;
+  //    todo.to_update.push_back(std::move(update));
+  //  }
+  //}
 
   return todo;
 }
@@ -478,28 +489,28 @@ bool UpdateFiles(const std::vector<TodoList::UpdateOp>& to_update,
   return true;
 }
 
-bool PerformUpdate(const TodoList& todo, const std::string& install_base_path,
+bool PerformUpdate(const std::string& downloadURL, const std::string& install_base_path,
                    const std::string& content_base_url, const std::string& temp_path)
 {
   LogToFile("Starting download step...\n");
-  if (!DownloadContent(todo.to_download, content_base_url, temp_path))
+  if (!DownloadContent(downloadURL, content_base_url, temp_path))
     return false;
   LogToFile("Download step completed.\n");
 
-  LogToFile("Starting platform version check step...\n");
+  /*LogToFile("Starting platform version check step...\n");
   if (!PlatformVersionCheck(todo.to_update, install_base_path, temp_path))
     return false;
-  LogToFile("Platform version check step completed.\n");
+  LogToFile("Platform version check step completed.\n");*/
 
-  LogToFile("Starting update step...\n");
+  /*LogToFile("Starting update step...\n");
   if (!UpdateFiles(todo.to_update, install_base_path, temp_path))
     return false;
-  LogToFile("Update step completed.\n");
+  LogToFile("Update step completed.\n");*/
 
-  LogToFile("Starting deletion step...\n");
+  /*LogToFile("Starting deletion step...\n");
   if (!DeleteObsoleteFiles(todo.to_delete, install_base_path))
     return false;
-  LogToFile("Deletion step completed.\n");
+  LogToFile("Deletion step completed.\n");*/
 
   return true;
 }
@@ -730,7 +741,7 @@ bool RunUpdater(std::vector<std::string> args)
 
   UI::SetDescription("Fetching and parsing manifests...");
 
-  Manifest this_manifest, next_manifest;
+  /*Manifest this_manifest, next_manifest;
   {
     std::optional<Manifest> maybe_manifest = FetchAndParseManifest(opts.this_manifest_url);
     if (!maybe_manifest)
@@ -747,12 +758,12 @@ bool RunUpdater(std::vector<std::string> args)
       return false;
     }
     next_manifest = std::move(*maybe_manifest);
-  }
+  }*/
 
   UI::SetDescription("Computing what to do...");
 
-  TodoList todo = ComputeActionsToDo(this_manifest, next_manifest);
-  todo.Log();
+  /*TodoList todo = ComputeActionsToDo(this_manifest, next_manifest);
+  todo.Log();*/
 
   std::string temp_dir = File::CreateTempDir();
   if (temp_dir.empty())
@@ -763,13 +774,13 @@ bool RunUpdater(std::vector<std::string> args)
 
   UI::SetDescription("Performing Update...");
 
-  bool ok = PerformUpdate(todo, opts.install_base_path, opts.content_store_url, temp_dir);
+ /* bool ok = PerformUpdate(todo, opts.install_base_path, opts.content_store_url, temp_dir);
   CleanUpTempDir(temp_dir, todo);
   if (!ok)
   {
     FatalError("Failed to apply the update.");
     return false;
-  }
+  }*/
 
   UI::ResetCurrentProgress();
   UI::ResetTotalProgress();

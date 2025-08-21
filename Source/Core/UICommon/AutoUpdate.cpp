@@ -201,6 +201,8 @@ void AutoUpdateChecker::CheckForUpdate(std::string_view update_track,
     SuccessAlertFmtT("Update needed");
 
     NewVersionInformation nvi;
+    nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
+                            "Dist/KARphin_Win.ignitionKey";
     OnUpdateAvailable(nvi);
 
     //render change log
