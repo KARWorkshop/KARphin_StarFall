@@ -65,7 +65,13 @@
 #include "VideoCommon/NetPlayGolfUI.h"
 #include "VideoCommon/VideoConfig.h"
 
+#include <KARphin/Games/GameIDs.hpp>
+#include <KARphin/IO/DirectoryStructure.hpp>
+
+#include <filesystem>
 #include <Common/FileUtil.h>
+#include <Common/IniFile.h>
+
 
 namespace
 {
@@ -209,6 +215,69 @@ void NetPlayDialog::CreateMainLayout()
   m_network_mode_group->addAction(m_host_input_authority_action);
   m_network_mode_group->addAction(m_golf_mode_action);
   m_fixed_delay_action->setChecked(true);
+
+  //KWQI options
+  m_KWQI_menu = m_menu_bar->addMenu(tr("KWQI"));
+  m_KWQI_menu->setToolTipsVisible(true);
+  m_downloadMemoryCard_action = m_KWQI_menu->addAction(tr("Download Memory Card"), this, [this] {
+
+    //is it a valid game ID get the memory card
+    if (m_current_game_identifier.game_id == KAR::GameIDs::GetGameID_Modded_Gen_1_Backside() ||
+        m_current_game_identifier.game_id == KAR::GameIDs::GetGameID_Vanilla_NA())
+    {
+      DisplayMessage(tr("Memory Card was found for %1, downloading....")
+                         .arg(QString::fromStdString(m_current_game_name)),
+                     "cyan");
+
+      //gets the URL from the KWQI data
+      const std::string MEMORY_CARD_URL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
+
+     // gets the image
+      // std::string endpoint{URL};
+      Common::HttpRequest http;
+
+      // The server always redirects once to the same location.
+      http.FollowRedirects(1);
+
+      const Common::HttpRequest::Response response = http.Get(MEMORY_CARD_URL);
+      std::string FP = "";
+      if (response.has_value())  // writes the image to cache
+      {
+        // net cache
+        const std::string memoryCardDir = KAR::IO::GetDirectory_MemoryCards();
+
+        // packs data
+        const std::vector<uint8_t> data = response.value();
+        FP = memoryCardDir + "NetplayMemCard.USA.raw";
+        File::CreateEmptyFile(FP);
+        std::ofstream outFile(FP, std::ios::binary);
+        outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+        outFile.close();
+
+        DisplayMessage(tr("Memory Card for %1, downloaded and set as active Netplay Memory Card")
+                           .arg(QString::fromStdString(m_current_game_name)),
+                       "green");
+      }
+      else  // if we failed, fallback
+      {
+        DisplayMessage(tr("There was KWQI but the URL didn't lead to a valid Memory Card!"),
+                       "red");
+      }
+    }
+    else
+    {
+      DisplayMessage(tr("There was no KWQI data for %1, can not download any Memory Card")
+                         .arg(QString::fromStdString(m_current_game_name)),
+                     "red");
+    }
+
+    });
+  m_downloadMemoryCard_action->setToolTip(
+      tr("Downloads the latest Memory Card for this mod. Make sure you have a KWQI file in the \"KWQI\" folder for this mod."));
+  //QAction* m_downloadMemoryCard_action;
+  //QAction* m_syncMods_Music_action;
+  //QAction* m_syncMods_action;
+  //QAction* m_updateMod_action;
 
   m_game_digest_menu = m_menu_bar->addMenu(tr("Checksum"));
   m_game_digest_menu->addAction(tr("Current game"), this, [this] {
@@ -832,64 +901,101 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
   });
   DisplayMessage(tr("Game changed to \"%1\"").arg(qname), "magenta");
 
-  //checks if it's a extracted filesystem or not
-  std::shared_ptr<const UICommon::GameFile> game = FindGameFile(m_current_game_identifier);
-  if (game->GetFileFormatName() != "Directory")
-  {
-    DisplayMessage(
-        tr("WARNING: KARphin works best with extracted ISO fileystems. This game is a %1.")
-            .arg(QString::fromStdString(game->GetFileFormatName())),
-                   "yellow");
-    DisplayMessage(tr("To extract a ISO either use the Mod Manager to install mods. Or follow the guide in the Discord for extracting it manually."), "white");
-  }
-  else
-  {
-    //DisplayMessage(
-      //  tr("Extracted filesystem detected, checking if we can enable expanded KARphin functionality...."),
-      //  "green");
+  //if it's a vanilla ID or Gen 1
+  //bool isLegacy = false;
+  //isLegacy = KAR::GameIDs::IsGameID_Vanilla(m_current_game_identifier.game_id.c_str());
+  //if (!isLegacy)
+  //  isLegacy = KAR::GameIDs::IsGameID_Modded_Gen_1(m_current_game_identifier.game_id.c_str());
 
-    //if it finds a Hoshi file
-    std::string filesDir = std::filesystem::path(game->GetFilePath()).parent_path().string() +
-                           DIR_SEP +
-                           ".." + DIR_SEP + "files" + DIR_SEP; 
-    //DisplayMessage(tr("%1").arg(QString::fromStdString(filesDir)), "white");
-
-    if (File::IsFile(filesDir + "hoshi.bin"))
+  //if (!isLegacy)
+  //{
+  bool memoryCardHasBeenDisabled = false;
+    std::shared_ptr<const UICommon::GameFile> game = FindGameFile(m_current_game_identifier);
+    if (game->GetFileFormatName() != "Directory")
     {
-      DisplayMessage(tr("Hoshi framework found, enabling expanded KARphin functionality."),
-                     "green");
+      //DisplayMessage(
+      //    tr("WARNING: KARphin works best with extracted ISO fileystems. This game is a %1.")
+      //        .arg(QString::fromStdString(game->GetFileFormatName())),
+      //    "yellow");
+      //DisplayMessage(tr("To extract a ISO either use the Mod Manager to install mods. Or follow "
+      //                  "the guide in the Discord for extracting it manually."),
+      //               "white");
+    }
+    else
+    {
+      // if it finds a Hoshi file
+      std::string filesDir = std::filesystem::path(game->GetFilePath()).parent_path().string() +
+                             DIR_SEP + ".." + DIR_SEP + "files" + DIR_SEP;
 
-      if (sync_identifier.game_id == "GKYE01")
-        DisplayMessage(tr("Deluxe detected, thank you for playing. If you run into any issues please send a message in the Support channel in the Discord. If you have any feedback please use the Deluxe Feedback Channel in the Discord."),
-                       "orange");
-      else if (sync_identifier.game_id == "IGNE01")
+      if (File::IsFile(filesDir + "hoshi.bin"))
       {
-        DisplayMessage(tr("Ignition detected, enabling Ignition specific KARphin integration."),
-                       "orange");
+        DisplayMessage(tr("Hoshi framework found, enabling expanded KARphin functionality."),
+                       "green");
 
-         //reads the version file and checks it
+        if (sync_identifier.game_id == KAR::GameIDs::GetGameID_Modded_Gen_2_Ignition())
+        {
+          DisplayMessage(tr("Ignition detected, enabling Ignition specific KARphin integration."),
+                         "orange");
+
+          // check the version
+          if (File::IsFile(filesDir + "version.manifest"))
+          {
+            /*std::string jsonData = "";
+            File::ReadFileToString(filesDir + "version.manifest", jsonData);
+
+            nlohmann::json manifestVer = nlohmann::json::parse(jsonData);
+
+            DisplayMessage(
+                tr("Ignition: %1.%2.%3 - %4")
+                    .arg(QString::fromStdString(
+                             std::to_string(manifestVer["major"].get<uint32_t>())),
+                         QString::fromStdString(
+                             std::to_string(manifestVer["minor"].get<uint32_t>())),
+                         QString::fromStdString(
+                             std::to_string(manifestVer["hotfix"].get<uint32_t>())),
+                         QString::fromStdString(
+                             manifestVer["build"].get<bool>() == true ? "Distribution" : "Dev")),
+                "white");*/
+          }
+          else
+          {
+            DisplayMessage(tr("Could not load version information for Ignition. Make sure your "
+                              "install was correct."),
+                           "red");
+          }
+
+          //enables memory card
+          if (File::IsFile(filesDir + "disable.memoryCard"))
+          {
+            m_savedata_none_action->setChecked(true);
+            m_savedata_load_only_action->setChecked(false);
+            m_savedata_load_and_write_action->setChecked(false);
+            m_savedata_all_wii_saves_action->setChecked(false);
+            SaveSettings();
+            DisplayMessage(tr("%1 has disabled the memory card.").arg(qname), "yellow");
+            memoryCardHasBeenDisabled = true;
+          }
+
+          // enable music syncing
+
+          // machine pack menu
+
+          // reads the version file and checks it
+        }
       }
     }
-  }
+  //}
 
-  // disable or enable the memory card
-  if (sync_identifier.game_id == "KBSE02")
+  //regular optionations
+    if (!memoryCardHasBeenDisabled)
   {
     m_savedata_none_action->setChecked(false);
-    m_savedata_load_only_action->setChecked(true);
-    m_savedata_load_and_write_action->setChecked(false);
-    m_savedata_all_wii_saves_action->setChecked(false);
-    SaveSettings();
-    DisplayMessage(tr("%1 does support the memory card, it will be enabled.").arg(qname), "green");
-  }
-  else
-  {
-    m_savedata_none_action->setChecked(true);
-    m_savedata_load_only_action->setChecked(false);
-    m_savedata_load_and_write_action->setChecked(false);
-    m_savedata_all_wii_saves_action->setChecked(false);
-    SaveSettings();
-    DisplayMessage(tr("%1 does not support the memory card, it will be disabled to stop desyncs.").arg(qname), "yellow");
+      m_savedata_load_only_action->setChecked(true);
+      m_savedata_load_and_write_action->setChecked(false);
+      m_savedata_all_wii_saves_action->setChecked(false);
+      SaveSettings();
+      DisplayMessage(tr("%1 does support the memory card, it will be enabled.").arg(qname),
+      "green");
   }
 }
 

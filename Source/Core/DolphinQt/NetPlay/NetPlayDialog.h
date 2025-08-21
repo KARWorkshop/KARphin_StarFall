@@ -133,6 +133,13 @@ private:
   QPushButton* m_kick_button;
   QPushButton* m_assign_ports_button;
 
+  //KWQI operations
+  QMenu* m_KWQI_menu;
+  QAction* m_downloadMemoryCard_action;
+  QAction* m_syncMods_Music_action;
+  QAction* m_syncMods_action;
+  QAction* m_updateMod_action;
+
   // Other
   QMenuBar* m_menu_bar;
   QMenu* m_data_menu;

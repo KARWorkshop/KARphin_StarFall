@@ -85,10 +85,10 @@ namespace KAR::IO
     return CreateDirIfMissing(GetDirectory_Mods() + HIRES_TEXTURES_DIR + DIR_SEP);
   }
 
-  // gets the runtime memory card
-  static inline std::string GetDirectory_Runtime_MemoryCard()
+  // gets the memory card folder
+  static inline std::string GetDirectory_MemoryCards()
   {
-    return CreateDirIfMissing(GetDirectory_Mods() + "RuntimeInfo" + DIR_SEP);
+    return CreateDirIfMissing(GetDirectory_Mods() + "MemoryCards" + DIR_SEP);
   }
 
   }
