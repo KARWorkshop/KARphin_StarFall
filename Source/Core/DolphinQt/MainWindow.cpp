@@ -224,7 +224,7 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
     : QMainWindow(nullptr)
 {
   setWindowTitle(QString::fromStdString(std::string("KARphin [") +
-    std::to_string(KARPHIN_VERSION_MAJOR) + "." + std::to_string(KARPHIN_VERSION_MINOR) + "." + std::to_string(KARPHIN_VERSION_HOTFIX) + " - " + KARPHIN_BUILD_TYPE_DEV + "]"));
+                                        KAR::Version::GetVersionString_Full() + "]"));
   setWindowIcon(Resources::GetAppIcon());
   setUnifiedTitleAndToolBarOnMac(true);
   setAcceptDrops(true);

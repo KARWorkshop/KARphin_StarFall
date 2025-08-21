@@ -20,6 +20,8 @@
 #include "DolphinQt/QtUtils/SetWindowDecorations.h"
 #include "DolphinQt/Settings.h"
 
+#include <KARphin/Version.hpp>
+
 // Refer to docs/autoupdate_overview.md for a detailed overview of the autoupdate process
 
 Updater::Updater(QWidget* parent, std::string update_track, std::string hash_override)
@@ -62,11 +64,11 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
     dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     auto* label = new QLabel(
-        tr("<h2>A new version of Dolphin is available!</h2>Dolphin %1 is available for "
+        tr("<h2>A new version of KARphin is available!</h2>KARphin %1 is available for "
            "download. "
            "You are running %2.<br> Would you like to update?<br><h4>Release Notes:</h4>")
             .arg(QString::fromStdString(info.new_shortrev))
-            .arg(QString::fromStdString(Common::GetScmDescStr())));
+            .arg(QString::fromStdString(KAR::Version::GetVersionString_Full())));
     label->setTextFormat(Qt::RichText);
 
     auto* changelog = new QTextBrowser;
@@ -75,7 +77,7 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
     changelog->setOpenExternalLinks(true);
     changelog->setMinimumWidth(400);
 
-    auto* update_later_check = new QCheckBox(tr("Update after closing Dolphin"));
+    auto* update_later_check = new QCheckBox(tr("Update after closing KARphin"));
 
     connect(update_later_check, &QCheckBox::toggled, [&](bool checked) { later = checked; });
 

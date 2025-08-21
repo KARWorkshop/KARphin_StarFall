@@ -71,7 +71,7 @@ bool InitWindow()
     return false;
 
   window_handle =
-      CreateWindow(L"UPDATER", L"Dolphin Updater", WINDOW_FLAGS, CW_USEDEFAULT, CW_USEDEFAULT, 500,
+      CreateWindow(L"UPDATER", L"KARphin Updater", WINDOW_FLAGS, CW_USEDEFAULT, CW_USEDEFAULT, 500,
                    100, nullptr, nullptr, GetModuleHandle(nullptr), 0);
 
   if (!window_handle)

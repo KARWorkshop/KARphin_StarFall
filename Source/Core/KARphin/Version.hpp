@@ -17,6 +17,15 @@
 
 namespace KAR::Version
 {
+  //returns a version string
+static inline std::string GetVersionString_Full()
+{
+  return std::to_string(KARPHIN_VERSION_MAJOR) + "." + std::to_string(KARPHIN_VERSION_MINOR) + "." +
+         std::to_string(KARPHIN_VERSION_HOTFIX) + " - " +
+         (KARPHIN_BUILD_IS_DIST == true ? KARPHIN_BUILD_TYPE_DISTRIBUTION :
+                                          KARPHIN_BUILD_TYPE_DEV);
+}
+
 // stores the KARphin manifest version data
 struct ManifestVersionData
 {
