@@ -278,30 +278,37 @@ void AutoUpdateChecker::TriggerUpdate(const AutoUpdateChecker::NewVersionInforma
   s_update_triggered = true;
 #ifdef OS_SUPPORTS_UPDATER
   std::map<std::string, std::string> updater_flags;
-  updater_flags["this-manifest-url"] = info.this_manifest_url;
-  updater_flags["next-manifest-url"] = info.next_manifest_url;
   updater_flags["content-store-url"] = info.content_store_url;
   updater_flags["parent-pid"] = std::to_string(GetOwnProcessId());
   updater_flags["install-base-path"] = File::GetExeDirectory();
   updater_flags["log-file"] = File::GetUserPath(D_LOGS_IDX) + UPDATER_LOG_FILE;
+  updater_flags["binary-to-restart"] = File::GetExePath();
 
-  if (restart_mode == RestartMode::RESTART_AFTER_UPDATE)
-    updater_flags["binary-to-restart"] = File::GetExePath();
 
-#ifdef __APPLE__
-  // Copy the updater so it can update itself if needed.
-  const std::string reloc_updater_path = UpdaterPath(true);
-  if (!File::Copy(UpdaterPath(), reloc_updater_path))
-  {
-    CriticalAlertFmtT("Unable to create updater copy.");
-    return;
-  }
-  if (chmod((reloc_updater_path + UPDATER_CONTENT_PATH).c_str(), 0700) != 0)
-  {
-    CriticalAlertFmtT("Unable to set permissions on updater copy.");
-    return;
-  }
-#endif
+//  updater_flags["this-manifest-url"] = info.this_manifest_url;
+//  updater_flags["next-manifest-url"] = info.next_manifest_url;
+//  updater_flags["content-store-url"] = info.content_store_url;
+//  updater_flags["parent-pid"] = std::to_string(GetOwnProcessId());
+//  updater_flags["install-base-path"] = File::GetExeDirectory();
+//  updater_flags["log-file"] = File::GetUserPath(D_LOGS_IDX) + UPDATER_LOG_FILE;
+//
+//  if (restart_mode == RestartMode::RESTART_AFTER_UPDATE)
+//    updater_flags["binary-to-restart"] = File::GetExePath();
+//
+//#ifdef __APPLE__
+//  // Copy the updater so it can update itself if needed.
+//  const std::string reloc_updater_path = UpdaterPath(true);
+//  if (!File::Copy(UpdaterPath(), reloc_updater_path))
+//  {
+//    CriticalAlertFmtT("Unable to create updater copy.");
+//    return;
+//  }
+//  if (chmod((reloc_updater_path + UPDATER_CONTENT_PATH).c_str(), 0700) != 0)
+//  {
+//    CriticalAlertFmtT("Unable to set permissions on updater copy.");
+//    return;
+//  }
+//#endif
 
   // Run the updater!
   std::string command_line = MakeUpdaterCommandLine(updater_flags);

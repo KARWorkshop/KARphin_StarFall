@@ -55,7 +55,7 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
     return;
   }
 
-  bool later = false;
+  bool updateDeps = false;
 
   std::optional<int> choice = RunOnObject(m_parent, [&] {
     QDialog* dialog = new QDialog(m_parent);
@@ -77,15 +77,12 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
     changelog->setOpenExternalLinks(true);
     changelog->setMinimumWidth(400);
 
-    auto* update_later_check = new QCheckBox(tr("Update after closing KARphin"));
+    auto* updateDepsCheck = new QCheckBox(tr("Also update KARphin dependicies?"));
 
-    connect(update_later_check, &QCheckBox::toggled, [&](bool checked) { later = checked; });
+    connect(updateDepsCheck, &QCheckBox::toggled, [&](bool checked) { updateDeps = checked; });
 
     auto* buttons = new QDialogButtonBox;
 
-    auto* never_btn =
-        buttons->addButton(tr("Never Auto-Update"), QDialogButtonBox::DestructiveRole);
-    buttons->addButton(tr("Remind Me Later"), QDialogButtonBox::RejectRole);
     buttons->addButton(tr("Install Update"), QDialogButtonBox::AcceptRole);
 
     auto* layout = new QVBoxLayout;
@@ -93,13 +90,8 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
 
     layout->addWidget(label);
     layout->addWidget(changelog);
-    layout->addWidget(update_later_check);
+    layout->addWidget(updateDepsCheck);
     layout->addWidget(buttons);
-
-    connect(never_btn, &QPushButton::clicked, [dialog] {
-      Settings::Instance().SetAutoUpdateTrack(QString{});
-      dialog->reject();
-    });
 
     connect(buttons, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
     connect(buttons, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
@@ -110,15 +102,11 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
 
   if (choice && *choice == QDialog::Accepted)
   {
-    TriggerUpdate(info, later ? AutoUpdateChecker::RestartMode::NO_RESTART_AFTER_UPDATE :
-                                AutoUpdateChecker::RestartMode::RESTART_AFTER_UPDATE);
+    TriggerUpdate(info, AutoUpdateChecker::RestartMode::RESTART_AFTER_UPDATE);
 
-    if (!later)
-    {
-      RunOnObject(m_parent, [this] {
-        m_parent->close();
-        return 0;
-      });
-    }
+   RunOnObject(m_parent, [this] {
+      m_parent->close();
+      return 0;
+    });
   }
 }

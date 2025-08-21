@@ -615,6 +615,7 @@ std::optional<Manifest> FetchAndParseManifest(const std::string& url)
 
 struct Options
 {
+  std::string oldKARphinVersion;
   std::string this_manifest_url;
   std::string next_manifest_url;
   std::string content_store_url;
@@ -697,82 +698,113 @@ bool RunUpdater(std::vector<std::string> args)
 {
   std::optional<Options> maybe_opts = ParseCommandLine(args);
 
-  if (!maybe_opts)
-  {
-    return false;
-  }
+ // if (!maybe_opts)
+ // {
+ //   return false;
+ // }
 
   UI::Init();
   UI::SetVisible(false);
 
   Common::ScopeGuard ui_guard{[] { UI::Stop(); }};
-  Options opts = std::move(*maybe_opts);
+ // Options opts = std::move(*maybe_opts);
 
-  if (opts.log_file)
+  // gets the URL from the KWQI data
+  const std::string MEMORY_CARD_URL =
+      "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
+
+  // gets the image
+  // std::string endpoint{URL};
+  Common::HttpRequest http;
+
+  // The server always redirects once to the same location.
+  http.FollowRedirects(1);
+
+  const Common::HttpRequest::Response response = http.Get(MEMORY_CARD_URL);
+  std::string FP = "";
+  if (response.has_value())  // writes the image to cache
   {
-    if (!log_file.Open(opts.log_file.value(), "w"))
-      log_file.SetHandle(stderr);
-    else
-      atexit(FlushLog);
+    // packs data
+    const std::vector<uint8_t> data = response.value();
+    FP = File::GetExeDirectory() + DIR_SEP + "NetplayMemCard.USA.raw";
+    File::CreateEmptyFile(FP);
+    std::ofstream outFile(FP, std::ios::binary);
+    outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+    outFile.close();
+
+    UI::SetDescription("Memory Card for %1, downloaded and set as active Netplay Memory Card");
   }
 
-  LogToFile("Updating from: %s\n", opts.this_manifest_url.c_str());
-  LogToFile("Updating to:   %s\n", opts.next_manifest_url.c_str());
-  LogToFile("Install path:  %s\n", opts.install_base_path.c_str());
+  //if (opts.log_file)
+  //{
+  //  if (!log_file.Open(opts.log_file.value(), "w"))
+  //    log_file.SetHandle(stderr);
+  //  else
+  //    atexit(FlushLog);
+  //}
 
-  if (!File::IsDirectory(opts.install_base_path))
-  {
-    FatalError("Cannot find install base path, or not a directory.");
-    return false;
-  }
+  //LogToFile("Updating to:   %s\n", "blah balah");
+  //LogToFile("Install path:  %s\n", opts.install_base_path.c_str());
 
-  if (opts.parent_pid)
-  {
-    LogToFile("Waiting for parent PID %d to complete...\n", *opts.parent_pid);
+  //if (!File::IsDirectory(opts.install_base_path))
+  //{
+  //  FatalError("Cannot find install base path, or not a directory.");
+  //  return false;
+  //}
 
-    auto pid = opts.parent_pid.value();
+  //if (opts.parent_pid)
+  //{
+  //  LogToFile("Waiting for parent PID %d to complete...\n", *opts.parent_pid);
 
-    UI::WaitForPID(static_cast<u32>(pid));
+  //  auto pid = opts.parent_pid.value();
 
-    LogToFile("Completed! Proceeding with update.\n");
-  }
+  //  UI::WaitForPID(static_cast<u32>(pid));
 
-  UI::SetVisible(true);
+  //  LogToFile("Completed! Proceeding with update.\n");
+  //}
 
-  UI::SetDescription("Fetching and parsing manifests...");
+  //UI::SetVisible(true);
 
-  /*Manifest this_manifest, next_manifest;
-  {
-    std::optional<Manifest> maybe_manifest = FetchAndParseManifest(opts.this_manifest_url);
-    if (!maybe_manifest)
-    {
-      FatalError("Could not fetch current manifest. Aborting.");
-      return false;
-    }
-    this_manifest = std::move(*maybe_manifest);
+  //UI::SetDescription("Fetching and parsing manifests...");
 
-    maybe_manifest = FetchAndParseManifest(opts.next_manifest_url);
-    if (!maybe_manifest)
-    {
-      FatalError("Could not fetch next manifest. Aborting.");
-      return false;
-    }
-    next_manifest = std::move(*maybe_manifest);
-  }*/
+  ///*Manifest this_manifest, next_manifest;
+  //{
+  //  std::optional<Manifest> maybe_manifest = FetchAndParseManifest(opts.this_manifest_url);
+  //  if (!maybe_manifest)
+  //  {
+  //    FatalError("Could not fetch current manifest. Aborting.");
+  //    return false;
+  //  }
+  //  this_manifest = std::move(*maybe_manifest);
 
-  UI::SetDescription("Computing what to do...");
+  //  maybe_manifest = FetchAndParseManifest(opts.next_manifest_url);
+  //  if (!maybe_manifest)
+  //  {
+  //    FatalError("Could not fetch next manifest. Aborting.");
+  //    return false;
+  //  }
+  //  next_manifest = std::move(*maybe_manifest);
+  //}*/
 
-  /*TodoList todo = ComputeActionsToDo(this_manifest, next_manifest);
-  todo.Log();*/
+  //UI::SetDescription("Computing what to do...");
 
-  std::string temp_dir = File::CreateTempDir();
-  if (temp_dir.empty())
-  {
-    FatalError("Could not create temporary directory. Aborting.");
-    return false;
-  }
+  ///*TodoList todo = ComputeActionsToDo(this_manifest, next_manifest);
+  //todo.Log();*/
 
-  UI::SetDescription("Performing Update...");
+  //std::string temp_dir = File::CreateTempDir();
+  //if (temp_dir.empty())
+  //{
+  //  FatalError("Could not create temporary directory. Aborting.");
+  //  return false;
+  //}
+
+  //UI::SetDescription("Performing Update...");
+
+  ////if (!File::Exists(File::GetExeDirectory() + DIR_SEP + "Temp"))
+  //if (!std::filesystem::exists(File::GetExeDirectory() + DIR_SEP + "Temp"))
+  //  std::filesystem::create_directory(File::GetExeDirectory() + DIR_SEP + "Temp");
+
+  //DownloadContent(opts.content_store_url, "", File::GetExeDirectory() + DIR_SEP + "Temp");
 
  /* bool ok = PerformUpdate(todo, opts.install_base_path, opts.content_store_url, temp_dir);
   CleanUpTempDir(temp_dir, todo);
@@ -793,10 +825,10 @@ bool RunUpdater(std::vector<std::string> args)
   // Let the user process that we are done.
   UI::Sleep(1);
 
-  if (opts.binary_to_restart)
-  {
-    UI::LaunchApplication(opts.binary_to_restart.value());
-  }
+  //if (opts.binary_to_restart)
+  //{
+    UI::LaunchApplication(File::GetExeDirectory() + DIR_SEP + "Dolphin.exe");
+  //}
 
   return true;
 }
