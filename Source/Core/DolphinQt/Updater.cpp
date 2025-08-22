@@ -57,6 +57,10 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
 
   //bool updateDeps = false;
 
+  //loads the online data
+  KAR::Version::ManifestVersionData onlineData =
+      KAR::Version::LoadManifestFile(File::GetExeDirectory() + "/manifetsOnline");
+
   std::optional<int> choice = RunOnObject(m_parent, [&] {
     QDialog* dialog = new QDialog(m_parent);
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -68,12 +72,12 @@ void Updater::OnUpdateAvailable(const NewVersionInformation& info)
            "download. "
            "You are running %2.<br> Would you like to update?<br><h4>Release Notes:</h4>")
             .arg(QString::fromStdString(info.new_shortrev))
-            .arg(QString::fromStdString(KAR::Version::GetVersionString_Full())));
+            .arg(QString::fromStdString(onlineData.GetVersionString_Full())));
     label->setTextFormat(Qt::RichText);
 
     auto* changelog = new QTextBrowser;
 
-    changelog->setHtml(QString::fromStdString(info.changelog_html));
+    changelog->setHtml(QString::fromStdString(onlineData.changeLog));
     changelog->setOpenExternalLinks(true);
     changelog->setMinimumWidth(400);
 

@@ -9,10 +9,10 @@
 
 #define KARPHIN_VERSION_MAJOR 4
 #define KARPHIN_VERSION_MINOR 1
-#define KARPHIN_VERSION_HOTFIX 5
+#define KARPHIN_VERSION_HOTFIX 6
 #define KARPHIN_BUILD_IS_DIST true
 
-#define CHANGE_LOG "Backside can now download"
+#define KARPHIN_CHANGE_LOG "change log now gets renderer"
 
 #define KARPHIN_BUILD_TYPE_DISTRIBUTION "Dist"
 #define KARPHIN_BUILD_TYPE_DEV "Dev"
@@ -33,6 +33,16 @@ struct ManifestVersionData
 {
   uint32_t major = 0, minor = 0, hotfix = 0;
   bool isDist = true;
+  std::string changeLog = "NO CHANGE LOG DATA LOADED";
+
+  // returns a version string
+  inline std::string GetVersionString_Full()
+  {
+    return std::to_string(major) + "." + std::to_string(minor) +
+           "." + std::to_string(hotfix) + " - " +
+           (hotfix == true ? KARPHIN_BUILD_TYPE_DISTRIBUTION :
+                                            KARPHIN_BUILD_TYPE_DEV);
+  }
 };
 
 
@@ -44,6 +54,7 @@ static inline void WriteManifestFile()
   manifest["minor"] = KARPHIN_VERSION_MINOR;
   manifest["hotfix"] = KARPHIN_VERSION_HOTFIX;
   manifest["build"] = KARPHIN_BUILD_IS_DIST;
+  manifest["changeLog"] = KARPHIN_CHANGE_LOG;
 
   File::CreateEmptyFile(File::GetExeDirectory() + "/" + "manifest.karphin");
   File::WriteStringToFile(File::GetExeDirectory() + "/" + "manifest.karphin", manifest.dump());
@@ -64,6 +75,9 @@ static inline ManifestVersionData LoadManifestFile(const std::filesystem::path m
   data.minor = manifestVer["minor"].get<uint32_t>();
   data.hotfix = manifestVer["hotfix"].get<uint32_t>();
   data.isDist = manifestVer["build"].get<bool>();
+
+  if (manifestVer.contains("changeLog"))
+    data.changeLog = manifestVer["changeLog"].get<std::string>();
 
   return data;
 }
