@@ -18,7 +18,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>KARphin.exe</TargetName>
+    <TargetName>KARphin</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

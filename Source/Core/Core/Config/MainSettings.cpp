@@ -471,7 +471,7 @@ const Info<bool> MAIN_FIFOPLAYER_EARLY_MEMORY_UPDATES{
 // Main.AutoUpdate
 
 const Info<std::string> MAIN_AUTOUPDATE_UPDATE_TRACK{{System::Main, "AutoUpdate", "UpdateTrack"},
-                                                     Common::GetScmUpdateTrackStr()};
+                                                     "beta"};
 const Info<std::string> MAIN_AUTOUPDATE_HASH_OVERRIDE{{System::Main, "AutoUpdate", "HashOverride"},
                                                       ""};
 

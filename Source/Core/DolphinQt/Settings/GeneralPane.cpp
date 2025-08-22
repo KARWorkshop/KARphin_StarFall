@@ -35,8 +35,8 @@
 #include "UICommon/DiscordPresence.h"
 #endif
 
-constexpr int AUTO_UPDATE_DISABLE_INDEX = 0;
-constexpr int AUTO_UPDATE_BETA_INDEX = 1;
+constexpr int AUTO_UPDATE_DISABLE_INDEX = 1;
+constexpr int AUTO_UPDATE_BETA_INDEX = 0;
 constexpr int AUTO_UPDATE_DEV_INDEX = 2;
 
 constexpr const char* AUTO_UPDATE_DISABLE_STRING = "";
@@ -194,7 +194,7 @@ void GeneralPane::CreateAutoUpdate()
   auto_update_group_layout->addRow(tr("&Auto Update:"), m_combobox_update_track);
 
   for (const QString& option :
-       {tr("Don't Update"), tr("Releases (every few months)"), tr("Dev (multiple times a day)")})
+       {tr("Releases (every few months)"), tr("Don't Update"), tr("Dev (multiple times a day)")})
     m_combobox_update_track->addItem(option);
 }
 
