@@ -191,7 +191,7 @@ void NetPlaySetupDialog::CreateMainLayout()
   host_widget->setLayout(host_layout);
 
   m_connection_type->addItem(tr("Direct Connection"));
-  m_connection_type->addItem(tr("Traversal Server"));
+  m_connection_type->addItem(tr("Online"));
 
   m_main_layout->addWidget(new QLabel(tr("Connection Type:")), 0, 0);
   m_main_layout->addWidget(m_connection_type, 0, 1);

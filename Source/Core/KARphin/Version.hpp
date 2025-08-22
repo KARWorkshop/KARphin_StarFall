@@ -9,10 +9,10 @@
 
 #define KARPHIN_VERSION_MAJOR 4
 #define KARPHIN_VERSION_MINOR 1
-#define KARPHIN_VERSION_HOTFIX 6
+#define KARPHIN_VERSION_HOTFIX 8
 #define KARPHIN_BUILD_IS_DIST true
 
-#define KARPHIN_CHANGE_LOG "change log now gets renderer"
+#define KARPHIN_CHANGE_LOG "<h2>Minor Change</h2><br><p>Update window, yes this window, shows the proper build type for the new version.</p>"
 
 #define KARPHIN_BUILD_TYPE_DISTRIBUTION "Dist"
 #define KARPHIN_BUILD_TYPE_DEV "Dev"
@@ -40,7 +40,7 @@ struct ManifestVersionData
   {
     return std::to_string(major) + "." + std::to_string(minor) +
            "." + std::to_string(hotfix) + " - " +
-           (hotfix == true ? KARPHIN_BUILD_TYPE_DISTRIBUTION :
+           (isDist == true ? KARPHIN_BUILD_TYPE_DISTRIBUTION :
                                             KARPHIN_BUILD_TYPE_DEV);
   }
 };
