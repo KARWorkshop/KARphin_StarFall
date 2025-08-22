@@ -204,12 +204,15 @@ void AutoUpdateChecker::CheckForUpdate(std::string_view update_track,
 
     NewVersionInformation nvi;
 
-    if(update_track == "beta")
-      nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
+     nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
                             "Dist/KARphin_Win.ignitionKey";
-    else if (update_track == "dev")
-      nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
-                              "Dev/KARphin_Win.ignitionKey";
+
+   // if(update_track == "beta")
+   //   nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
+   //                         "Dist/KARphin_Win.ignitionKey";
+   // else if (update_track == "dev")
+   //   nvi.content_store_url = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
+   //                           "Dev/KARphin_Win.ignitionKey";
     OnUpdateAvailable(nvi);
 
     //render change log

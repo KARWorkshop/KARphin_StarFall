@@ -699,20 +699,20 @@ bool RunUpdater(std::vector<std::string> args)
 {
   std::optional<Options> maybe_opts = ParseCommandLine(args);
 
-  if (!maybe_opts)
-  {
-    return false;
-  }
+  //if (!maybe_opts)
+  //{
+  //  return false;
+  //}
 
   UI::Init();
   UI::SetVisible(false);
 
   Common::ScopeGuard ui_guard{[] { UI::Stop(); }};
-  Options opts = std::move(*maybe_opts);
+  //Options opts = std::move(*maybe_opts);
 
   // gets the URL from the KWQI data
-  //const std::string MEMORY_CARD_URL =
-    //  "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/Dev/DolphinD.key";
+  const std::string MEMORY_CARD_URL =
+      "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/Dist/KARphin_Win.ignitionKey";
 
   // gets the image
   // std::string endpoint{URL};
@@ -721,7 +721,7 @@ bool RunUpdater(std::vector<std::string> args)
   // The server always redirects once to the same location.
   http.FollowRedirects(1);
 
-  auto response = http.Get(opts.content_store_url);
+  auto response = http.Get(MEMORY_CARD_URL);
   std::string FP = "";
   if (response.has_value())  // writes the image to cache
   {
