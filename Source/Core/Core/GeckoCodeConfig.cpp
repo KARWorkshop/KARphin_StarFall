@@ -30,6 +30,8 @@ std::vector<GeckoCode> DownloadCodes(std::string gametdb_id, bool* succeeded, bo
 
   if (gametdb_id == KAR::GameIDs::GetGameID_Vanilla_NA())
     endpoint = {"https://github.com/KARWorkshop/Patches/releases/download/Deluxe/GKYE01.ini"};
+  else if (gametdb_id == KAR::GameIDs::GetGameID_Modded_Gen_1_Backside())
+    endpoint = {"https://github.com/KARWorkshop/Patches/releases/download/B4/KBSE02.ini"};
 
   Common::HttpRequest http;
 

@@ -114,7 +114,7 @@ void ToolBar::MakeActions()
   m_set_pc_action = addAction(tr("Set PC"), this, &ToolBar::SetPCPressed);
 
   m_netplay_connect_host_action = addAction(tr("Host"), this, &ToolBar::OnNetplayHostPressed);
-  m_netplay_lobbyList_action = addAction(tr("Lobbbies"), this, &ToolBar::OnNetplayLobbiesPressed);
+  m_netplay_lobbyList_action = addAction(tr("Lobbies"), this, &ToolBar::OnNetplayLobbiesPressed);
 
   addSeparator();
 
