@@ -115,6 +115,7 @@ void ToolBar::MakeActions()
 
   m_netplay_connect_host_action = addAction(tr("Host"), this, &ToolBar::OnNetplayHostPressed);
   m_netplay_lobbyList_action = addAction(tr("Lobbies"), this, &ToolBar::OnNetplayLobbiesPressed);
+  m_netplay_Account_action = addAction(tr("Account"), this, &ToolBar::OnNetplayLobbiesPressed);
 
   addSeparator();
 
@@ -202,4 +203,5 @@ void ToolBar::UpdateIcons()
 
   m_netplay_connect_host_action->setIcon(Resources::GetThemeIcon("Connect"));
   m_netplay_lobbyList_action->setIcon(Resources::GetThemeIcon("Lobbies"));
+  m_netplay_Account_action->setIcon(Resources::GetThemeIcon("Account"));
 }

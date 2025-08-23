@@ -53,6 +53,7 @@ private:
 
   QAction* m_netplay_connect_host_action;
   QAction* m_netplay_lobbyList_action;
+  QAction* m_netplay_Account_action;
 
   QAction* m_open_action;
   QAction* m_refresh_action;
