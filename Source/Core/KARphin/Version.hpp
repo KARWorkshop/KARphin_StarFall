@@ -5,14 +5,14 @@
 #include <Common/FileUtil.h>
 #include <KARphin/Vender/json.hpp>
 
+#include <KARphin/ChangeLog.hpp>
+
 #include <string>
 
 #define KARPHIN_VERSION_MAJOR 4
-#define KARPHIN_VERSION_MINOR 1
-#define KARPHIN_VERSION_HOTFIX 9
+#define KARPHIN_VERSION_MINOR 2
+#define KARPHIN_VERSION_HOTFIX 0
 #define KARPHIN_BUILD_IS_DIST true
-
-#define KARPHIN_CHANGE_LOG "<h2>Minor Change</h2><br><p>Added Account button for setting name.</p>"
 
 #define KARPHIN_BUILD_TYPE_DISTRIBUTION "Dist"
 #define KARPHIN_BUILD_TYPE_DEV "Dev"

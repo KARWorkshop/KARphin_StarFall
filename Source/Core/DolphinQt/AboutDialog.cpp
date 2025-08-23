@@ -12,71 +12,36 @@
 
 #include "DolphinQt/Resources.h"
 
+#include <KARphin/Version.hpp>
+
 AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 {
-  setWindowTitle(tr("About Dolphin"));
+  setWindowTitle(tr("About KARphin"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-  QString branch_str = QString::fromStdString(Common::GetScmBranchStr());
-  const int commits_ahead = Common::GetScmCommitsAheadMaster();
-  if (commits_ahead > 0)
-  {
-    branch_str = tr("%1 (%2)").arg(
-        branch_str,
-        // i18n: A positive number of version control commits made compared to some named branch
-        tr("%1 commit(s) ahead of %2").arg(commits_ahead).arg(QStringLiteral("master")));
-  }
 
   const QString text =
       QStringLiteral(R"(
-<p style='font-size:38pt; font-weight:400;'>Dolphin</p>
+<p style='font-size:38pt; font-weight:400;'>KARphin</p>
 
 <p style='font-size:18pt;'>%VERSION_STRING%</p>
 
 <p style='font-size: small;'>
-%BRANCH%<br>
-%REVISION%<br><br>
-%QT_VERSION%
+%CHNAGE_LOG%<br>
 </p>
 
 <p>
-%CHECK_FOR_UPDATES%: <a href='https://dolphin-emu.org/download'>dolphin-emu.org/download</a>
+KARphin is a free and open-source Kirby Air Ride emulator.
 </p>
 
 <p>
-%ABOUT_DOLPHIN%
+This software should not be used to play Kirby Air Ride ROMs you do not legally own.
 </p>
-
-<p>
-%GAMES_YOU_OWN%
-</p>
-
-<p>
-<a href='https://github.com/dolphin-emu/dolphin/blob/master/COPYING'>%LICENSE%</a> |
-<a href='https://github.com/dolphin-emu/dolphin/graphs/contributors'>%AUTHORS%</a> |
-<a href='https://forums.dolphin-emu.org/'>%SUPPORT%</a>
 )")
           .replace(QStringLiteral("%VERSION_STRING%"),
-                   QString::fromUtf8(Common::GetScmDescStr().c_str()))
-          .replace(QStringLiteral("%BRANCH%"),
+                   QString::fromStdString(KAR::Version::GetVersionString_Full()))
+          .replace(QStringLiteral("%CHNAGE_LOG%"),
                    // i18n: "Branch" means the version control term, not a literal tree branch.
-                   tr("Branch: %1").arg(branch_str))
-          .replace(QStringLiteral("%REVISION%"),
-                   tr("Revision: %1").arg(QString::fromUtf8(Common::GetScmRevGitStr().c_str())))
-          .replace(QStringLiteral("%QT_VERSION%"),
-                   tr("Using Qt %1").arg(QStringLiteral(QT_VERSION_STR)))
-          .replace(QStringLiteral("%CHECK_FOR_UPDATES%"), tr("Check for updates"))
-          .replace(QStringLiteral("%ABOUT_DOLPHIN%"),
-                   // i18n: The word "free" in the standard phrase "free and open source"
-                   // is "free" as in "freedom" - it refers to certain properties of the
-                   // software's license, not the software's price. (It is true that Dolphin
-                   // can be downloaded at no cost, but that's not what this message says.)
-                   tr("Dolphin is a free and open-source GameCube and Wii emulator."))
-          .replace(QStringLiteral("%GAMES_YOU_OWN%"),
-                   tr("This software should not be used to play games you do not legally own."))
-          .replace(QStringLiteral("%LICENSE%"), tr("License"))
-          .replace(QStringLiteral("%AUTHORS%"), tr("Authors"))
-          .replace(QStringLiteral("%SUPPORT%"), tr("Support"));
+                   tr("%1").arg(QString::fromStdString(KARPHIN_CHANGE_LOG)));
 
   QLabel* text_label = new QLabel(text);
   text_label->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -89,8 +54,8 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
               // in your translation, please use the type of curly quotes that's appropriate for
               // your language. If you aren't sure which type is appropriate, see
               // https://en.wikipedia.org/wiki/Quotation_mark#Specific_language_features
-              tr("\u00A9 2003-2024+ Dolphin Team. \u201cGameCube\u201d and \u201cWii\u201d are "
-                 "trademarks of Nintendo. Dolphin is not affiliated with Nintendo in any way.")));
+              tr("\u00A9 2025+ Jas. \u201cGameCube\u201d and \u201cWii\u201d and \u201cKirby Air Ride\u201d are "
+                 "trademarks of Nintendo. KARphin is not affiliated with Nintendo in any way.")));
 
   QLabel* logo = new QLabel();
   logo->setPixmap(Resources::GetAppIcon().pixmap(200, 200));

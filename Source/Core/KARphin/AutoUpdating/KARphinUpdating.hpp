@@ -38,8 +38,26 @@ static inline bool CheckForKARphinUpdate()
 
     // checks if the update is needed
     KAR::Version::ManifestVersionData online = KAR::Version::LoadManifestFile(FP);
-    if (online.isDist != KARPHIN_BUILD_IS_DIST || online.major > KARPHIN_VERSION_MAJOR ||
-        online.minor > KARPHIN_VERSION_MINOR || online.hotfix > KARPHIN_VERSION_HOTFIX)
+
+    //check if the build types
+    if (online.isDist != KARPHIN_BUILD_IS_DIST)
+      return true;
+
+     if (online.major > KARPHIN_VERSION_MAJOR)
+      return true;
+    if (online.major < KARPHIN_VERSION_MINOR)
+      return false;
+
+    // majors are equal
+    if (online.minor > KARPHIN_VERSION_MINOR)
+      return true;
+    if (online.minor < KARPHIN_VERSION_MINOR)
+      return false;
+
+    // minors are equal
+    if (online.hotfix > KARPHIN_VERSION_HOTFIX)
+      return true;
+
       return true;
   }
 

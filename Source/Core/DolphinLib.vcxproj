@@ -75,6 +75,7 @@
     <ClInclude Include="KARphin\AutoUpdating\KARphinUpdating.hpp" />
     <ClInclude Include="KARphin\AutoUpdating\ModAutoUpdating.hpp" />
     <ClInclude Include="KARphin\AutoUpdating\ModManagerUpdating.hpp" />
+    <ClInclude Include="KARphin\ChangeLog.hpp" />
     <ClInclude Include="KARphin\Games\GameIDs.hpp" />
     <ClInclude Include="KARphin\IO\DirectoryStructure.hpp" />
     <ClInclude Include="KARphin\ModSyncing\ModSync_Music.hpp" />
