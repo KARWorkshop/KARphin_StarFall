@@ -165,6 +165,7 @@ private:
   void ShowHotkeyDialog();
   void ShowNetPlaySetupDialog();
   void ShowNetPlayBrowser();
+  void ShowAccountMenu(); //KAR Warp Relay Accounts
   void ShowFIFOPlayer();
   void ShowSkylanderPortal();
   void ShowInfinityBase();

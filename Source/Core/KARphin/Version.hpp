@@ -12,7 +12,7 @@
 #define KARPHIN_VERSION_HOTFIX 9
 #define KARPHIN_BUILD_IS_DIST true
 
-#define KARPHIN_CHANGE_LOG "<h2>Minor Change</h2><br><p>Added Account button for setting name.</p><br><p>Minor tweaks for adding links to our stuff and About section.</p>"
+#define KARPHIN_CHANGE_LOG "<h2>Minor Change</h2><br><p>Added Account button for setting name.</p>"
 
 #define KARPHIN_BUILD_TYPE_DISTRIBUTION "Dist"
 #define KARPHIN_BUILD_TYPE_DEV "Dev"

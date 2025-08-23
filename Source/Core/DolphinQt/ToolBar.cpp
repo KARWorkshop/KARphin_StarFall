@@ -115,7 +115,7 @@ void ToolBar::MakeActions()
 
   m_netplay_connect_host_action = addAction(tr("Host"), this, &ToolBar::OnNetplayHostPressed);
   m_netplay_lobbyList_action = addAction(tr("Lobbies"), this, &ToolBar::OnNetplayLobbiesPressed);
-  m_netplay_Account_action = addAction(tr("Account"), this, &ToolBar::OnNetplayLobbiesPressed);
+  m_netplay_Account_action = addAction(tr("Account"), this, &ToolBar::OnWarpRelayAccountPressed);
 
   addSeparator();
 

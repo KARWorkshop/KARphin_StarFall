@@ -173,6 +173,7 @@
     <ClCompile Include="Host.cpp" />
     <ClCompile Include="HotkeyScheduler.cpp" />
     <ClCompile Include="InfinityBase/InfinityBaseWindow.cpp" />
+    <ClCompile Include="KAR\WarpRelayAccountInfo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MenuBar.cpp" />
@@ -250,6 +251,7 @@
     <QtMoc Include="Config\PatchesWidget.h" />
     <ClInclude Include="Debugger\RegisterColumn.h" />
     <ClInclude Include="GBAHost.h" />
+    <ClInclude Include="KAR\WarpRelayAccountInfo.hpp" />
     <ClInclude Include="QtUtils\ActionHelper.h" />
     <ClInclude Include="QtUtils\ClearLayoutRecursively.h" />
     <ClInclude Include="QtUtils\DolphinFileDialog.h" />

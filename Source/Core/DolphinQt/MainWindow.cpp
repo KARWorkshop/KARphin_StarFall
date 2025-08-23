@@ -141,6 +141,8 @@
 
 #include <KARphin/Version.hpp>
 
+#include <DolphinQt/KAR/WarpRelayAccountInfo.hpp>
+
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
 // This #define within X11/X.h conflicts with our WiimoteSource enum.
@@ -691,6 +693,7 @@ void MainWindow::ConnectToolBar()
 
   connect(m_tool_bar, &ToolBar::OnNetplayHostPressed, this, &MainWindow::ShowNetPlaySetupDialog);
   connect(m_tool_bar, &ToolBar::OnNetplayLobbiesPressed, this, &MainWindow::ShowNetPlayBrowser);
+  connect(m_tool_bar, &ToolBar::OnWarpRelayAccountPressed, this, &MainWindow::ShowAccountMenu);
 
   connect(m_tool_bar, &ToolBar::OpenPressed, this, &MainWindow::Open);
   connect(m_tool_bar, &ToolBar::RefreshPressed, this, &MainWindow::RefreshGameList);
@@ -1376,6 +1379,14 @@ void MainWindow::ShowNetPlayBrowser()
   auto* browser = new NetPlayBrowser(this);
   browser->setAttribute(Qt::WA_DeleteOnClose, true);
   connect(browser, &NetPlayBrowser::Join, this, &MainWindow::NetPlayJoin);
+  SetQWidgetWindowDecorations(browser);
+  browser->exec();
+}
+
+void MainWindow::ShowAccountMenu()
+{
+  auto* browser = new KAR::WarpRelay::AccountInfoDialog(this);
+  browser->setAttribute(Qt::WA_DeleteOnClose, true);
   SetQWidgetWindowDecorations(browser);
   browser->exec();
 }

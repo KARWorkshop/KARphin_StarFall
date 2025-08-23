@@ -23,6 +23,7 @@ public:
 signals:
   void OnNetplayHostPressed();
   void OnNetplayLobbiesPressed();
+  void OnWarpRelayAccountPressed();
 
   void OpenPressed();
   void RefreshPressed();

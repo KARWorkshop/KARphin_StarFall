@@ -28,6 +28,8 @@
 #include "UICommon/GameFile.h"
 #include "UICommon/NetPlayIndex.h"
 
+#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
+
 NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWidget* parent)
     : QDialog(parent), m_game_list_model(game_list_model)
 {
@@ -36,11 +38,15 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
 
   CreateMainLayout();
 
+  // loads all accounts
+  KAR::Account::Account::Instance() = KAR::Account::LoadAccount_Default();
+  KAR::Account::Account acc = KAR::Account::Account::Instance();
+
   bool use_index = Config::Get(Config::NETPLAY_USE_INDEX);
   std::string index_region = Config::Get(Config::NETPLAY_INDEX_REGION);
   std::string index_name = Config::Get(Config::NETPLAY_INDEX_NAME);
   std::string index_password = Config::Get(Config::NETPLAY_INDEX_PASSWORD);
-  std::string nickname = Config::Get(Config::NETPLAY_NICKNAME);
+  std::string nickname = KAR::Account::Account::Instance().displayName;
   std::string traversal_choice = Config::Get(Config::NETPLAY_TRAVERSAL_CHOICE);
   int connect_port = Config::Get(Config::NETPLAY_CONNECT_PORT);
   int host_port = Config::Get(Config::NETPLAY_HOST_PORT);
@@ -262,7 +268,7 @@ void NetPlaySetupDialog::SaveSettings()
 {
   Config::ConfigChangeCallbackGuard config_guard;
 
-  Config::SetBaseOrCurrent(Config::NETPLAY_NICKNAME, m_nickname_edit->text().toStdString());
+  Config::SetBaseOrCurrent(Config::NETPLAY_NICKNAME, KAR::Account::Account::Instance().displayName);
   Config::SetBaseOrCurrent(m_connection_type->currentIndex() == 0 ? Config::NETPLAY_ADDRESS :
                                                                     Config::NETPLAY_HOST_CODE,
                            m_ip_edit->text().toStdString());
