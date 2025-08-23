@@ -961,7 +961,7 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
                            "red");
           }
 
-          //enables memory card
+          //disables memory card
           if (File::IsFile(filesDir + "disable.memoryCard"))
           {
             m_savedata_none_action->setChecked(true);
@@ -969,12 +969,12 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
             m_savedata_load_and_write_action->setChecked(false);
             m_savedata_all_wii_saves_action->setChecked(false);
 
-             Config::SetCurrent(Config::MAIN_MEMCARD_A_PATH,
-                               KAR::IO::GetDirectory_MemoryCards() + "NetplayMemCard.USA.raw");
+             Config::SetCurrent(Config::MAIN_MEMCARD_A_PATH, "");
 
             SaveSettings();
             DisplayMessage(tr("%1 has disabled the memory card.").arg(qname), "yellow");
             memoryCardHasBeenDisabled = true;
+            m_downloadMemoryCard_action->setDisabled(true);
           }
 
           // enable music syncing
@@ -990,6 +990,7 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
   //regular optionations
     if (!memoryCardHasBeenDisabled)
   {
+      m_downloadMemoryCard_action->setDisabled(false);
     m_savedata_none_action->setChecked(false);
       m_savedata_load_only_action->setChecked(true);
       m_savedata_load_and_write_action->setChecked(false);
