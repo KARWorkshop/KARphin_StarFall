@@ -271,8 +271,8 @@ void NetPlayDialog::CreateMainLayout()
     });
   m_downloadMemoryCard_action->setToolTip(
       tr("Downloads the latest Memory Card for this mod. Make sure you have a KWQI file in the \"KWQI\" folder for this mod."));
-  //QAction* m_downloadMemoryCard_action;
-  //QAction* m_syncMods_Music_action;
+
+
   //QAction* m_syncMods_action;
   //QAction* m_updateMod_action;
 
@@ -363,6 +363,10 @@ void NetPlayDialog::CreatePlayersLayout()
   m_kick_button = new QPushButton(tr("Kick Player"));
   m_assign_ports_button = new QPushButton(tr("Assign Controller Ports"));
 
+  //only the host can sync music
+  //m_syncNetplayMusic_button = new QPushButton(tr("Sync Netplay Music"));
+ // m_syncNetplayMusic_button->setVisible(false);
+
   m_players_list->setTabKeyNavigation(false);
   m_players_list->setColumnCount(5);
   m_players_list->verticalHeader()->hide();
@@ -381,6 +385,7 @@ void NetPlayDialog::CreatePlayersLayout()
   layout->addWidget(m_players_list, 1, 0, 1, -1);
   layout->addWidget(m_kick_button, 2, 0, 1, -1);
   layout->addWidget(m_assign_ports_button, 3, 0, 1, -1);
+ // layout->addWidget(m_syncNetplayMusic_button, 4, 0, 1, -1);
 
   m_players_box->setLayout(layout);
 }
@@ -412,6 +417,19 @@ void NetPlayDialog::ConnectWidgets()
     Settings::Instance().GetNetPlayServer()->SetGBAConfig(m_pad_mapping->GetGBAArray(), true);
     Settings::Instance().GetNetPlayServer()->SetWiimoteMapping(m_pad_mapping->GetWiimoteArray());
   });
+
+  //syncs netplay music
+  /*connect(m_syncNetplayMusic_button, &QPushButton::clicked, [this] {
+
+    //checks that it's a extracted filesystem
+
+    //checks if the folder "NetplayMusic" exists
+
+    //if not throw a error
+    DisplayMessage(tr("No \"NetplayMusic\" folder found, can not sync. Make sure %1 supports Music Syncing.")
+                       .arg(QString::fromStdString(m_current_game_name)),
+                   "red");
+  });*/
 
   // Chat
   connect(m_chat_send_button, &QPushButton::clicked, this, &NetPlayDialog::OnChat);
@@ -595,6 +613,9 @@ void NetPlayDialog::show(std::string nickname, bool use_traversal)
       const auto interface = QString::fromStdString(iface);
       m_room_box->addItem(iface == "!local!" ? tr("Local") : interface, interface);
     }
+
+    //show the sync music button
+    //m_syncNetplayMusic_button->setVisible(true);
   }
 
   m_data_menu->menuAction()->setVisible(is_hosting);
