@@ -601,8 +601,7 @@ void GameList::OpenWiki()
     return;
 
   QString game_id = QString::fromStdString(game->GetGameID());
-  QString url =
-      QStringLiteral("https://wiki.dolphin-emu.org/dolphin-redirect.php?gameid=").append(game_id);
+  QString url = QStringLiteral("https://kar.miraheze.org/wiki/Main_Page");
   QDesktopServices::openUrl(QUrl(url));
 }
 

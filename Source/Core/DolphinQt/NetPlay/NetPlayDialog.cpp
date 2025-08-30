@@ -990,12 +990,14 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
             m_savedata_load_and_write_action->setChecked(false);
             m_savedata_all_wii_saves_action->setChecked(false);
 
-             Config::SetCurrent(Config::MAIN_MEMCARD_A_PATH, "");
+            Config::SetCurrent(Config::MAIN_MEMCARD_A_PATH, "");
 
             SaveSettings();
-            DisplayMessage(tr("%1 has disabled the memory card.").arg(qname), "yellow");
+            DisplayMessage(tr("%1 has disabled the port A memory card.").arg(qname), "yellow");
             memoryCardHasBeenDisabled = true;
             m_downloadMemoryCard_action->setDisabled(true);
+            m_downloadMemoryCard_action->setToolTip(
+                tr("The current game has disabled the memory card."));
           }
 
           // enable music syncing
@@ -1019,6 +1021,7 @@ void NetPlayDialog::OnMsgChangeGame(const NetPlay::SyncIdentifier& sync_identifi
       SaveSettings();
       DisplayMessage(tr("%1 does support the memory card, it will be enabled.").arg(qname),
       "green");
+      m_downloadMemoryCard_action->setToolTip(tr("Click to download the memory card associated with this mod if it has one."));
   }
 }
 

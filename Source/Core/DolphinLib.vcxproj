@@ -78,6 +78,7 @@
     <ClInclude Include="KARphin\ChangeLog.hpp" />
     <ClInclude Include="KARphin\Games\GameIDs.hpp" />
     <ClInclude Include="KARphin\IO\DirectoryStructure.hpp" />
+    <ClInclude Include="KARphin\KWQI\KWQI.hpp" />
     <ClInclude Include="KARphin\ModSyncing\ModSync_Music.hpp" />
     <ClInclude Include="KARphin\Mods\GeckoCodeManager.hpp" />
     <ClInclude Include="KARphin\Vender\json.hpp" />
