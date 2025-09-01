@@ -28,6 +28,7 @@
 // 4.2.0
 #define KARPHIN_CHANGE_LOG_4_2_0 \
   "<h3> 4.2.0 - Minor Changes <h3>"\
+  "<p>KARphin will now appear as the discord activity by default</p>" \
   "<p>Right click a game and click wiki now opens our wiki</p>" \
   "<p>If the ROM disables memory cards, it will now disable the KWQI option for downloading memory cards.</p>" \
   "<p>Fixed bug with auto updater not checking major, minor, and hotfix priority.</p>" \

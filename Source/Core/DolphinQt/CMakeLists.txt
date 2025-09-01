@@ -268,6 +268,7 @@ add_executable(dolphin-emu
   HotkeyScheduler.h
   InfinityBase/InfinityBaseWindow.cpp
   InfinityBase/InfinityBaseWindow.h
+  KAR/WarpRelayAccountInfo.cpp
   Main.cpp
   MainWindow.cpp
   MainWindow.h

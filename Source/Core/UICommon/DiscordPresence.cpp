@@ -103,7 +103,6 @@ std::string ArtworkForGameId()
 {
 
 
-
   //if it's any other game
   const DiscIO::Region region = SConfig::GetInstance().m_region;
   const bool is_wii = Core::System::GetInstance().IsWii();
@@ -222,15 +221,15 @@ void UpdateDiscordPresence(int party_size, SecretType type, const std::string& s
   DiscordRichPresence discord_presence = {};
   if (game_artwork.empty())
   {
-    discord_presence.largeImageKey = "dolphin_logo";
-    discord_presence.largeImageText = "Dolphin is an emulator for the GameCube and the Wii.";
+    discord_presence.largeImageKey = "karphin_logo";
+    discord_presence.largeImageText = "KARphin is an emulator for playing Kirby Air Ride.";
   }
   else
   {
     discord_presence.largeImageKey = game_artwork.c_str();
     discord_presence.largeImageText = title.c_str();
-    discord_presence.smallImageKey = "dolphin_logo";
-    discord_presence.smallImageText = "Dolphin is an emulator for the GameCube and the Wii.";
+    discord_presence.smallImageKey = "karphin_logo";
+    discord_presence.smallImageText = "KARphin is an emulator for playing Kirby Air Ride.";
   }
   discord_presence.details = title.empty() ? "Not in-game" : title.c_str();
   if (reset_timer)
