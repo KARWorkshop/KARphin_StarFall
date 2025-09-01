@@ -27,6 +27,8 @@
 
 #endif
 
+#include <KARphin/Games/GameIDs.hpp>
+
 namespace Discord
 {
 #ifdef USE_DISCORD_PRESENCE
@@ -101,15 +103,22 @@ void HandleDiscordJoin(const char* join_secret)
 
 std::string ArtworkForGameId()
 {
+  const std::string GAME_ID = SConfig::GetInstance().GetGameID();
 
+  //if it's Ignition
+  if (GAME_ID == KAR::GameIDs::GetGameID_Modded_Gen_2_Ignition())
+    return "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-discord/Ignition_DiscordIcon.png";
+
+  //makes any game show formula chad if it doesn't have a custom one set
+  return "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-discord/Mic.png";
 
   //if it's any other game
-  const DiscIO::Region region = SConfig::GetInstance().m_region;
-  const bool is_wii = Core::System::GetInstance().IsWii();
-  const std::string region_code = SConfig::GetInstance().GetGameTDBImageRegionCode(is_wii, region);
-
-  static constexpr char cover_url[] = "https://discord.dolphin-emu.org/cover-art/{}/{}.png";
-  return fmt::format(cover_url, region_code, SConfig::GetInstance().GetGameTDBID());
+  //const DiscIO::Region region = SConfig::GetInstance().m_region;
+  //const bool is_wii = Core::System::GetInstance().IsWii();
+  //const std::string region_code = SConfig::GetInstance().GetGameTDBImageRegionCode(is_wii, region);
+  //
+  //static constexpr char cover_url[] = "https://discord.dolphin-emu.org/cover-art/{}/{}.png";
+  //return fmt::format(cover_url, region_code, SConfig::GetInstance().GetGameTDBID());
 }
 
 }  // namespace
