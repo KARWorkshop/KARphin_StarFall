@@ -27,6 +27,10 @@
 
 // 4.2.0
 #define KARPHIN_CHANGE_LOG_4_2_0 \
+  "<h3> 4.2.1 - Fixed the update to fix the update<h3>"                                                                \
+  "<p> adjusted change log versioning check, hopefully for the last time, if more issues persist with always showing the update let Jas know.</p>" \
+  "<h3> 4.2.0 - Can force the port <h3>"                                                                \
+  "<p>Using the dropdown in the Lobby, you can force the port to see, but 90% of the time you can left it at Auto.</p>"                                                        \
   "<h3> 4.2.0 - Minor Changes <h3>"\
   "<p>Lowered default audio even more.</p>" \
   "<p>KARphin will now appear as the discord activity by default</p>" \

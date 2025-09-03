@@ -144,6 +144,19 @@ void NetPlayDialog::CreateMainLayout()
   m_splitter = new QSplitter(Qt::Horizontal);
   m_menu_bar = new QMenuBar(this);
 
+  //allocates the dropdown for FS
+  FSDropdown = new QComboBox();
+  FSDropdown->addItem(tr("Splitscreen"));
+  FSDropdown->addItem(tr("Fullscreen: Auto"));
+  FSDropdown->addItem(tr("Fullscreen: Port 1"));
+  FSDropdown->addItem(tr("Fullscreen: Port 2"));
+  FSDropdown->addItem(tr("Fullscreen: Port 3"));
+  FSDropdown->addItem(tr("Fullscreen: Port 4"));
+  FSDropdown->setToolTip(
+      tr("Sets the fullscreen mode. Auto is the standard will follow whichever port you have set. "
+         "Port 1 to 4 will follow whichever player is set for that."));
+  FSDropdown->setCurrentIndex(Config::Get(Config::NETPLAY_KAR_FULLSCREEN_MODE));
+
   m_data_menu = m_menu_bar->addMenu(tr("Data"));
   m_data_menu->setToolTipsVisible(true);
 
@@ -321,8 +334,9 @@ void NetPlayDialog::CreateMainLayout()
   options_widget->addWidget(m_start_button, 0, 0, Qt::AlignVCenter);
   options_widget->addWidget(m_buffer_label, 0, 1, Qt::AlignVCenter);
   options_widget->addWidget(m_buffer_size_box, 0, 2, Qt::AlignVCenter);
-  options_widget->addWidget(m_quit_button, 0, 3, Qt::AlignVCenter | Qt::AlignRight);
-  options_widget->setColumnStretch(3, 1000);
+  options_widget->addWidget(FSDropdown, 0, 3, Qt::AlignVCenter);
+  options_widget->addWidget(m_quit_button, 0, 4, Qt::AlignVCenter | Qt::AlignRight);
+  options_widget->setColumnStretch(4, 1000);
 
   m_main_layout->addLayout(options_widget, 2, 0, 1, -1, Qt::AlignRight);
   m_main_layout->setRowStretch(1, 1000);
@@ -458,6 +472,10 @@ void NetPlayDialog::ConnectWidgets()
         server->SetHostInputAuthority(enable);
     }
   };
+
+  QObject::connect(FSDropdown, &QComboBox::currentIndexChanged, [&](const int& index) {
+    Config::SetCurrent(Config::NETPLAY_KAR_FULLSCREEN_MODE, index);
+  });
 
   connect(m_host_input_authority_action, &QAction::toggled, this,
           [hia_function] { hia_function(true); });

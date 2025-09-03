@@ -133,6 +133,7 @@ private:
   QPushButton* m_kick_button;
   QPushButton* m_assign_ports_button;
   //QPushButton* m_syncNetplayMusic_button;
+  QComboBox* FSDropdown;
 
   //KWQI operations
   QMenu* m_KWQI_menu;

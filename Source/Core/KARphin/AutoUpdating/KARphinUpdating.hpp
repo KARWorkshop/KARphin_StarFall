@@ -45,20 +45,21 @@ static inline bool CheckForKARphinUpdate()
 
      if (online.major > KARPHIN_VERSION_MAJOR)
       return true;
-    if (online.major < KARPHIN_VERSION_MINOR)
-      return false;
-
+   //if (online.major < KARPHIN_VERSION_MINOR)
+   //  return false;
+   //
     // majors are equal
-    if (online.minor > KARPHIN_VERSION_MINOR)
+     if (online.minor > KARPHIN_VERSION_MINOR && online.major <= KARPHIN_VERSION_MAJOR &&
+         online.hotfix <= KARPHIN_VERSION_HOTFIX)
       return true;
-    if (online.minor < KARPHIN_VERSION_MINOR)
-      return false;
+    //if (online.minor < KARPHIN_VERSION_MINOR)
+    //  return false;
 
     // minors are equal
-    if (online.hotfix > KARPHIN_VERSION_HOTFIX)
+     if (online.hotfix > KARPHIN_VERSION_HOTFIX && online.minor <= KARPHIN_VERSION_MINOR &&
+         online.major <= KARPHIN_VERSION_MAJOR)
       return true;
 
-      return true;
   }
 
   return false;
