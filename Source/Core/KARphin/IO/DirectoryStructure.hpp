@@ -54,6 +54,13 @@ namespace KAR::IO
     return CreateDirIfMissing(GetDirectory_Account() + "Controllers" + DIR_SEP);
   }
 
+  // gets/creates the directory for all KAR Workshop Quick Install files
+  static inline std::string GetDirectory_KWQI()
+  {
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "KWQI" +
+                              DIR_SEP);
+  }
+
   // gets/creates the directory for all Mods
   static inline std::string GetDirectory_Mods()
   {

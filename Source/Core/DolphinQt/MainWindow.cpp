@@ -143,6 +143,8 @@
 
 #include <DolphinQt/KAR/WarpRelayAccountInfo.hpp>
 
+#include <KARphin/KWQI/KWQI.hpp>
+
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
 // This #define within X11/X.h conflicts with our WiimoteSource enum.
@@ -225,6 +227,10 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
                        const std::string& movie_path)
     : QMainWindow(nullptr)
 {
+  // checks that the default KWQI files are installed
+  KWQI::InstallDefaultKWQI();
+
+
   setWindowTitle(QString::fromStdString(std::string("KARphin [") +
                                         KAR::Version::GetVersionString_Full() + "]"));
   setWindowIcon(Resources::GetAppIcon());

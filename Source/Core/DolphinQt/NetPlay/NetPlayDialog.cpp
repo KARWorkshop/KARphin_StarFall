@@ -72,6 +72,7 @@
 #include <Common/FileUtil.h>
 #include <Common/IniFile.h>
 
+#include <KARphin/KWQI/KWQI_MemoryCard.hpp>
 
 namespace
 {
@@ -241,6 +242,8 @@ void NetPlayDialog::CreateMainLayout()
       DisplayMessage(tr("Memory Card was found for %1, downloading....")
                          .arg(QString::fromStdString(m_current_game_name)),
                      "cyan");
+
+
 
       //gets the URL from the KWQI data
       const std::string MEMORY_CARD_URL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
