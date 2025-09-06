@@ -26,7 +26,7 @@
 
 
 // 4.2.0
-#define KARPHIN_CHANGE_LOG_4_2_0 \
+/*#define KARPHIN_CHANGE_LOG_4_2_0 \
   "<h3> 4.2.1 - Fixed the update to fix the update<h3>"                                                                \
   "<p> adjusted change log versioning check, hopefully for the last time, if more issues persist with always showing the update let Jas know.</p>" \
   "<h3> 4.2.0 - Can force the port <h3>"                                                                \
@@ -38,5 +38,18 @@
   "<p>If the ROM disables memory cards, it will now disable the KWQI option for downloading memory cards.</p>" \
   "<p>Fixed bug with auto updater not checking major, minor, and hotfix priority.</p>" \
   "<p>About section now renders current change log and description changes.</p>"
+*/
 
-#define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_2_0
+//4.3.XXXXX
+#define KARPHIN_CHANGE_LOG_4_3_0 \
+  "<h3> 4.3.0 - KWQI file integration</h3>" \
+  "<p>KAR Workshop Quick Install (KWQI) files are now supported for installing gecko codes and memory cards." \
+  " For a full tutorial see the Discord Guide [Installing Mods] in the KARphin setup channel.<br>" \
+  " Deluxe and Backside will still be the usual fallbacks, they will install the KWQI files if it's found to be missing.</p>" \
+  "<h3> 4.3.0 - Spectating</h3>" \
+  "<p>A new Spectating option has been added when either joining via the Lobby or Host Code.<br>" \
+  " This is mainly for streamers wanting to join so they can spectate the matches and saves some steps of the setup.<br>"     \
+  " You can still use it as a regular Player if you want.<br>It just unsets your port so you can use the Fullscreen dropdown to whichever screen you want.</p>" \
+  
+
+#define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_0
