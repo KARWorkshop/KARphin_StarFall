@@ -28,7 +28,7 @@ std::vector<GeckoCode> DownloadCodes(std::string gametdb_id, bool* succeeded, bo
   if (!KWQI::CheckForKWQIFile(gametdb_id))
     return std::vector<GeckoCode>();
 
-
+  //loads the data
 
   std::string endpoint = "";
 

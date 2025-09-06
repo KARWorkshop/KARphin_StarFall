@@ -5,25 +5,52 @@
 #include <KARphin/IO/DirectoryStructure.hpp>
 #include <KARphin/Games/GameIDs.hpp>
 
+#include <KARphin/Vender/json_fwd.hpp>
+#include <KARphin/Vender/json.hpp>
+
 #include <Common/HttpRequest.h>
 
 namespace KWQI
 {
+  //the spec version
+
+  //defines the framework it uses
+  enum class Framework
+  {
+    HackPack = 0, //a legacy support for B4
+
+    Hoshi, //based on Deluxe
+    Luna, //a fork of Hoshi that adds new features
+
+    Count
+  };
+
 	//defines the struct containing the KWQI data
 	struct KWQIData
 	{
-    bool usesMemoryCard = true,  // does this mod use a memory card
-        useLuna = false;         // does this mod use the LUNA framework
+    Framework framework = Framework::Count; //the framework it uses
 
-    std::string versionMajor = "",  // the major version for the spec
-        versionMinor = "",          // the minor version for the spec
+    std::string displayName = "",  // the name to show
+        desc = "",                 // the description of the mod
+        authors = "",              // who made it
 
-       baseGame_ID = "",  // what game ID does it use as a base
-        baseGame_Hash = "",  // what's the hash of the game
+        gameID = "", //the game ID for this mod
 
-        gameID = "",         // the game ID for this mod
-        geckoCodeURL = "",   // the gecko code URL for downloading
-        memoryCardURL = "";  // the memory card URL for this mod if it uses it
+      baseReleaseURL = ""; //the base URL for where the release is located
+
+    //writes a KWQI file
+    inline void WriteToDisc()
+    {
+      const std::filesystem::path fp = KAR::IO::GetDirectory_KWQI() + gameID + ".game";
+      if (std::filesystem::exists(fp))
+        std::filesystem::remove(fp);
+
+      nlohmann::json data;
+      File::CreateEmptyFile(fp.string());
+      File::WriteStringToFile(fp.string(), data.dump());
+    }
+
+    //loads a KWQI file
 
 	};
 
@@ -40,6 +67,10 @@ namespace KWQI
   {
     if (!CheckForKWQIFile(KAR::GameIDs::GetGameID_Vanilla_NA())) //installs Deluxe (UP keeps it as the vanilla ID and it's annoying but WHATEVER
     {
+      KWQIData data;
+      data.gameID = KAR::GameIDs::GetGameID_Vanilla_NA();
+
+
       Common::HttpRequest http;
 
       // The server always redirects once to the same location.
