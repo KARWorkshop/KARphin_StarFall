@@ -25,8 +25,10 @@ namespace Gecko
 {
 std::vector<GeckoCode> DownloadCodes(std::string gametdb_id, bool* succeeded, bool use_https)
 {
-  // codes.rc24.xyz is a mirror of the now defunct geckocodes.org. || eff this shit, we pull from
-  // KAR Workshop git hub release
+  if (!KWQI::CheckForKWQIFile(gametdb_id))
+    return std::vector<GeckoCode>();
+
+
 
   std::string endpoint = "";
 

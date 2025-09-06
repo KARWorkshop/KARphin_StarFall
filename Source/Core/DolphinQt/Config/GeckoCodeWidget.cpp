@@ -367,7 +367,7 @@ void GeckoCodeWidget::DownloadCodes()
 
   if (!success)
   {
-    ModalMessageBox::critical(this, tr("Error"), tr("Failed to download codes."));
+    ModalMessageBox::critical(this, tr("No KWQI file"), tr("Failed to download codes, make sure a KWQI file is in the KWQI folder!"));
     return;
   }
 
