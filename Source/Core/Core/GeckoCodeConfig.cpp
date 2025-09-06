@@ -19,6 +19,8 @@
 
 #include <KARphin/Games/GameIDs.hpp>
 
+#include <KARphin/KWQI/KWQI.hpp>
+
 namespace Gecko
 {
 std::vector<GeckoCode> DownloadCodes(std::string gametdb_id, bool* succeeded, bool use_https)

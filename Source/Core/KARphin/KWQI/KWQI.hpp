@@ -50,12 +50,9 @@ namespace KWQI
       if (response.has_value())  // writes the image to cache
       {
         // packs data
-        const std::vector<uint8_t> data = response.value();
+        std::istringstream ss(std::string(response->begin(), response->end()));
         FP = KAR::IO::GetDirectory_KWQI() + "GKYE01.KWQI";
-        File::CreateEmptyFile(FP);
-        std::ofstream outFile(FP, std::ios::binary);
-        outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
-        outFile.close();
+        File::WriteStringToFile(FP, ss.str());
       }
     }
 
@@ -72,12 +69,9 @@ namespace KWQI
       if (response.has_value())  // writes the image to cache
       {
         // packs data
-        const std::vector<uint8_t> data = response.value();
+        std::istringstream ss(std::string(response->begin(), response->end()));
         FP = KAR::IO::GetDirectory_KWQI() + "KBSE02.KWQI";
-        File::CreateEmptyFile(FP);
-        std::ofstream outFile(FP, std::ios::binary);
-        outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
-        outFile.close();
+        File::WriteStringToFile(FP, ss.str());
       }
     }
 
@@ -94,12 +88,9 @@ namespace KWQI
       if (response.has_value())  // writes the image to cache
       {
         // packs data
-        const std::vector<uint8_t> data = response.value();
+        std::istringstream ss(std::string(response->begin(), response->end()));
         FP = KAR::IO::GetDirectory_KWQI() + "IGNE01.KWQI";
-        File::CreateEmptyFile(FP);
-        std::ofstream outFile(FP, std::ios::binary);
-        outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
-        outFile.close();
+        File::WriteStringToFile(FP, ss.str());
       }
     }
 
