@@ -34,6 +34,8 @@
 
 #include "UICommon/GameFile.h"
 
+#include <KARphin/KWQI/KWQI.hpp>
+
 GeckoCodeWidget::GeckoCodeWidget(std::string game_id, std::string gametdb_id, u16 game_revision,
                                  bool restart_required)
     : m_game_id(std::move(game_id)), m_gametdb_id(std::move(gametdb_id)),
@@ -89,9 +91,20 @@ void GeckoCodeWidget::CreateWidgets()
   m_add_code = new NonDefaultQPushButton(tr("&Add New Code..."));
   m_edit_code = new NonDefaultQPushButton(tr("&Edit Code..."));
   m_remove_code = new NonDefaultQPushButton(tr("&Remove Code"));
+
   m_download_codes = new NonDefaultQPushButton(tr("Download Codes"));
 
-  m_download_codes->setToolTip(tr("Download Codes from the KWQI Files"));
+  //checks that we have the KWQI data
+  if (!KWQI::CheckForKWQIFile(m_game_id))
+  {
+    m_download_codes->setDisabled(true);
+    m_download_codes->setToolTip(tr("You don't have a KWQI file for this game. Place it in the KWQI folder for it to be read by KARphin."));
+  }
+  else
+  {
+    m_download_codes->setDisabled(false);
+    m_download_codes->setToolTip(tr("Download codes for this KWQI supported mod."));
+  }
 
   m_code_list->setEnabled(!m_game_id.empty());
   m_name_label->setEnabled(!m_game_id.empty());
@@ -102,7 +115,6 @@ void GeckoCodeWidget::CreateWidgets()
   m_add_code->setEnabled(!m_game_id.empty());
   m_edit_code->setEnabled(false);
   m_remove_code->setEnabled(false);
-  m_download_codes->setEnabled(!m_game_id.empty());
 
   auto* layout = new QVBoxLayout;
 

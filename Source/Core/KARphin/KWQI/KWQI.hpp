@@ -28,7 +28,7 @@ namespace KWQI
 	};
 
   //checks for a file with the game ID in the KWQI directory
-  static inline bool CheckForKWQI(const std::string& gameID)
+  static inline bool CheckForKWQIFile(const std::string& gameID)
   {
     return (std::filesystem::exists(KAR::IO::GetDirectory_KWQI() + gameID + ".KWQI"));
   }
@@ -38,7 +38,7 @@ namespace KWQI
   //checks for some default KWQI files we assume will be there, if not install them
   static inline void InstallDefaultKWQI()
   {
-    if (!CheckForKWQI(KAR::GameIDs::GetGameID_Vanilla_NA())) //installs Deluxe (UP keeps it as the vanilla ID and it's annoying but WHATEVER
+    if (!CheckForKWQIFile(KAR::GameIDs::GetGameID_Vanilla_NA())) //installs Deluxe (UP keeps it as the vanilla ID and it's annoying but WHATEVER
     {
       Common::HttpRequest http;
 
@@ -59,7 +59,7 @@ namespace KWQI
       }
     }
 
-    if (!CheckForKWQI(KAR::GameIDs::GetGameID_Modded_Gen_1_Backside()))  // installs B4
+    if (!CheckForKWQIFile(KAR::GameIDs::GetGameID_Modded_Gen_1_Backside()))  // installs B4
     {
       Common::HttpRequest http;
 
@@ -81,7 +81,7 @@ namespace KWQI
       }
     }
 
-    if (!CheckForKWQI(KAR::GameIDs::GetGameID_Modded_Gen_2_Ignition()))  // installs Ignition
+    if (!CheckForKWQIFile(KAR::GameIDs::GetGameID_Modded_Gen_2_Ignition()))  // installs Ignition
     {
       Common::HttpRequest http;
 
