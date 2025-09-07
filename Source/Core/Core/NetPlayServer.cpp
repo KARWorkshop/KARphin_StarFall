@@ -72,6 +72,8 @@
 
 #include "UICommon/GameFile.h"
 
+#include <KARphin/Version.hpp>
+
 #if !defined(_WIN32)
 #include <sys/socket.h>
 #include <sys/types.h>

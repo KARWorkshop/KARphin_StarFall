@@ -59,7 +59,7 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   m_host_upnp->setChecked(use_upnp);
 #endif
 
-  m_nickname_edit->setText(QString::fromStdString(nickname));
+  //m_nickname_edit->setText(QString::fromStdString(nickname));
   m_connection_type->setCurrentIndex(traversal_choice == "direct" ? 0 : 1);
   m_connect_port_box->setValue(connect_port);
   m_host_port_box->setValue(host_port);
@@ -92,13 +92,14 @@ void NetPlaySetupDialog::CreateMainLayout()
 {
   m_main_layout = new QGridLayout;
   m_button_box = new QDialogButtonBox(QDialogButtonBox::Cancel);
-  m_nickname_edit = new QLineEdit;
+ // m_nickname_edit = new QLineEdit;
   m_connection_type = new QComboBox;
-  m_reset_traversal_button = new NonDefaultQPushButton(tr("Reset Traversal Settings"));
+  m_reset_traversal_button = new NonDefaultQPushButton(tr("Reset Traversal Settings"), this);
+  m_reset_traversal_button->setVisible(true);
   m_tab_widget = new QTabWidget;
 
-  m_nickname_edit->setValidator(
-      new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, m_nickname_edit));
+  //m_nickname_edit->setValidator(
+  //    new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, m_nickname_edit));
 
   // Connection widget
   auto* connection_widget = new QWidget;
@@ -193,9 +194,7 @@ void NetPlaySetupDialog::CreateMainLayout()
 
   m_main_layout->addWidget(new QLabel(tr("Connection Type:")), 0, 0);
   m_main_layout->addWidget(m_connection_type, 0, 1);
-  m_main_layout->addWidget(m_reset_traversal_button, 0, 2);
-  m_main_layout->addWidget(new QLabel(tr("Nickname:")), 1, 0);
-  m_main_layout->addWidget(m_nickname_edit, 1, 1);
+  m_main_layout->addWidget(m_reset_traversal_button, 1, 1);
   m_main_layout->addWidget(m_tab_widget, 2, 0, 1, -1);
   m_main_layout->addWidget(m_button_box, 3, 0, 1, -1);
 
@@ -210,7 +209,7 @@ void NetPlaySetupDialog::ConnectWidgets()
 {
   connect(m_connection_type, &QComboBox::currentIndexChanged, this,
           &NetPlaySetupDialog::OnConnectionTypeChanged);
-  connect(m_nickname_edit, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
+ // connect(m_nickname_edit, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);
 
   // Connect widget
   connect(m_ip_edit, &QLineEdit::textChanged, this, &NetPlaySetupDialog::SaveSettings);

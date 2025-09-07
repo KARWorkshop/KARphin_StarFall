@@ -49,7 +49,7 @@ private:
   // Main Widget
   QDialogButtonBox* m_button_box;
   QComboBox* m_connection_type;
-  QLineEdit* m_nickname_edit;
+  //QLineEdit* m_nickname_edit;
   QGridLayout* m_main_layout;
   QTabWidget* m_tab_widget;
   QPushButton* m_reset_traversal_button;
