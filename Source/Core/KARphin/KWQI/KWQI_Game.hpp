@@ -6,6 +6,17 @@
 #include <KARphin/IO/DirectoryStructure.hpp>
 #include <KARphin/Games/GameIDs.hpp>
 
+#ifdef _MSC_VER
+#define SNPRINTF _snprintf_s
+#pragma warning(push)
+#pragma warning(disable : 4244)  // conversion from int to char
+#pragma warning(disable : 4127)  // conditional expression is constant
+#pragma warning(disable : 4702)  // unreachable code
+#else
+#define SNPRINTF snprintf
+#endif
+
+#include <stdio.h>
 #include <KARphin/Vender/json_fwd.hpp>
 #include <KARphin/Vender/json.hpp>
 

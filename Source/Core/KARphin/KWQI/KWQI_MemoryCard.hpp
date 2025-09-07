@@ -36,4 +36,4 @@ static inline bool DownloadMemoryCard(const std::string& memoryCardURL,
     //we failed
   return false;
   }
-}
+  }

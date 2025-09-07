@@ -83,6 +83,7 @@
 #include <string_view>
 #include <thread>
 #include <time.h>
+#include <stdio.h>
 #include <type_traits>
 #ifndef _WIN32
 #include <unistd.h>

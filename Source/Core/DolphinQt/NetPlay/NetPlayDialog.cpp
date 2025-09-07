@@ -72,7 +72,30 @@
 #include <Common/FileUtil.h>
 #include <Common/IniFile.h>
 
+#include <cstdio>
+
+
+#include <optional>
+#include <string>
+#include <vector>
+
+#include <algorithm>
+#include <optional>
+#include <sstream>
+#include <string>
+#include <vector>
+
+#include "Common/HttpRequest.h"
+#include "Common/IniFile.h"
+#include "Common/Logging/Log.h"
+#include "Common/StringUtil.h"
+#include "Core/CheatCodes.h"
+
+#include <Common/FileUtil.h>
+
+#include <picojson.h>
 #include <KARphin/KWQI/KWQI_MemoryCard.hpp>
+#include <KARphin/KWQI/KWQI_Game.hpp>
 
 namespace
 {
@@ -236,46 +259,55 @@ void NetPlayDialog::CreateMainLayout()
   m_downloadMemoryCard_action = m_KWQI_menu->addAction(tr("Download Memory Card"), this, [this] {
 
     //is it a valid game ID get the memory card
-    if (m_current_game_identifier.game_id == KAR::GameIDs::GetGameID_Modded_Gen_1_Backside() ||
-        m_current_game_identifier.game_id == KAR::GameIDs::GetGameID_Vanilla_NA())
+    if (KWQI::Game::CheckForKWQIFile(m_current_game_identifier.game_id))
     {
       DisplayMessage(tr("Memory Card was found for %1, downloading....")
                          .arg(QString::fromStdString(m_current_game_name)),
                      "cyan");
 
-
-
-      //gets the URL from the KWQI data
-      const std::string MEMORY_CARD_URL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
-
-     // gets the image
-      // std::string endpoint{URL};
-      Common::HttpRequest http;
-
-      // The server always redirects once to the same location.
-      http.FollowRedirects(1);
-
-      const Common::HttpRequest::Response response = http.Get(MEMORY_CARD_URL);
-      std::string FP = "";
-      if (response.has_value())  // writes the image to cache
+      if (KWQI::MemoryCard::DownloadMemoryCard(
+        KWQI::Game::LoadGameKWQIFile(m_current_game_identifier.game_id).memoryCardURL))
       {
-        // packs data
-        const std::vector<uint8_t> data = response.value();
-        FP = KAR::IO::GetDirectory_MemoryCards() + "NetplayMemCard.USA.raw";
-        File::CreateEmptyFile(FP);
-        std::ofstream outFile(FP, std::ios::binary);
-        outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
-        outFile.close();
-
         DisplayMessage(tr("Memory Card for %1, downloaded and set as active Netplay Memory Card")
                            .arg(QString::fromStdString(m_current_game_name)),
                        "green");
       }
-      else  // if we failed, fallback
+      else
       {
-        DisplayMessage(tr("There was KWQI but the URL didn't lead to a valid Memory Card!"),
-                       "red");
+        DisplayMessage(tr("There was KWQI but the URL didn't lead to a valid Memory Card!"), "red");
       }
+
+     // //gets the URL from the KWQI data
+     // const std::string MEMORY_CARD_URL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
+
+     //// gets the image
+     // // std::string endpoint{URL};
+     // Common::HttpRequest http;
+
+     // // The server always redirects once to the same location.
+     // http.FollowRedirects(1);
+
+     // const Common::HttpRequest::Response response = http.Get(MEMORY_CARD_URL);
+     // std::string FP = "";
+     // if (response.has_value())  // writes the image to cache
+     // {
+     //   // packs data
+     //   const std::vector<uint8_t> data = response.value();
+     //   FP = KAR::IO::GetDirectory_MemoryCards() + "NetplayMemCard.USA.raw";
+     //   File::CreateEmptyFile(FP);
+     //   std::ofstream outFile(FP, std::ios::binary);
+     //   outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+     //   outFile.close();
+
+     //   DisplayMessage(tr("Memory Card for %1, downloaded and set as active Netplay Memory Card")
+     //                      .arg(QString::fromStdString(m_current_game_name)),
+     //                  "green");
+     // }
+     // else  // if we failed, fallback
+     // {
+     //   DisplayMessage(tr("There was KWQI but the URL didn't lead to a valid Memory Card!"),
+     //                  "red");
+     // }
     }
     else
     {

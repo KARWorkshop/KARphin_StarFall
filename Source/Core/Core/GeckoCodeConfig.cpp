@@ -27,13 +27,6 @@ std::vector<GeckoCode> DownloadCodes(std::string gametdb_id, bool* succeeded, bo
 {
   std::string endpoint = "";
 
-  //checks if it's one of our default files
- // if (gametdb_id == KAR::GameIDs::GetGameID_Vanilla_NA())
- //   endpoint = {"https://github.com/KARWorkshop/Patches/releases/download/Deluxe/GKYE01.ini"};
- // else if (gametdb_id == KAR::GameIDs::GetGameID_Modded_Gen_2_Ignition())
- //   endpoint = {"https://github.com/KARWorkshop/Patches/releases/download/B4/KBSE02.ini"};
- // else if (gametdb_id == KAR::GameIDs::GetGameID_Modded_Gen_1_Backside())
- //   endpoint = {"https://github.com/KARWorkshop/Patches/releases/download/B4/KBSE02.ini"};
   if (!KWQI::Game::CheckForKWQIFile(gametdb_id)) {return std::vector<GeckoCode>();}
 
   //loads the file and sets the end point
