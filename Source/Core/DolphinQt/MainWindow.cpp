@@ -143,7 +143,7 @@
 
 #include <DolphinQt/KAR/WarpRelayAccountInfo.hpp>
 
-#include <KARphin/KWQI/KWQI.hpp>
+#include <KARphin/KWQI/KWQI_Game.hpp>
 
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
@@ -227,8 +227,8 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
                        const std::string& movie_path)
     : QMainWindow(nullptr)
 {
-  // checks that the default KWQI files are installed
-  KWQI::InstallDefaultKWQI();
+  //writes the default mods to disc
+  KWQI::Game::InstallDefaultMods();
 
 
   setWindowTitle(QString::fromStdString(std::string("KARphin [") +

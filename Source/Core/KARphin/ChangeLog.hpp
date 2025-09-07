@@ -43,9 +43,9 @@
 //4.3.XXXXX
 #define KARPHIN_CHANGE_LOG_4_3_0 \
   "<h3> 4.3.0 - KWQI file integration</h3>" \
-  "<p>KAR Workshop Quick Install (KWQI) files are now supported for installing gecko codes and memory cards." \
-  " For a full tutorial see the Discord Guide [Installing Mods] in the KARphin setup channel.<br>" \
-  " Deluxe and Backside will still be the usual fallbacks, they will install the KWQI files if it's found to be missing.</p>" \
+  "<p>KAR Workshop Quick Install (KWQI) are now fully supported. Deluxe and Backside are baked into KARphin." \
+  "<br>The spec and tooling are still being ironed out, so KARphin's internals might change for how KWQI works.<br>" \
+  "Modders will be worked with to make a API and spec that supports their goals and what is feasiable.</p>" \
   "<h3> 4.3.0 - Spectating</h3>" \
   "<p>A new Spectating option has been added when either joining via the Lobby or Host Code.<br>" \
   " This is mainly for streamers wanting to join so they can spectate the matches and saves some steps of the setup.<br>"     \

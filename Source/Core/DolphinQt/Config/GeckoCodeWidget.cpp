@@ -34,7 +34,7 @@
 
 #include "UICommon/GameFile.h"
 
-#include <KARphin/KWQI/KWQI.hpp>
+#include <KARphin/KWQI/KWQI_Game.hpp>
 
 GeckoCodeWidget::GeckoCodeWidget(std::string game_id, std::string gametdb_id, u16 game_revision,
                                  bool restart_required)
@@ -95,7 +95,7 @@ void GeckoCodeWidget::CreateWidgets()
   m_download_codes = new NonDefaultQPushButton(tr("Download Codes"));
 
   //checks that we have the KWQI data
-  if (!KWQI::CheckForKWQIFile(m_game_id))
+  if (!KWQI::Game::CheckForKWQIFile(m_game_id))
   {
     m_download_codes->setDisabled(true);
     m_download_codes->setToolTip(tr("You don't have a KWQI file for this game. Place it in the KWQI folder for it to be read by KARphin."));
