@@ -17,6 +17,9 @@ namespace Config
   //what fullscreen mode are we injecting
 extern const Info<uint8_t> NETPLAY_KAR_FULLSCREEN_MODE;
 
+// what kind of Account are we joining as
+extern const Info<uint8_t> NETPLAY_KAR_ACCOUNT_KIND;
+
 extern const Info<std::string> NETPLAY_TRAVERSAL_SERVER;
 extern const Info<u16> NETPLAY_TRAVERSAL_PORT;
 extern const Info<u16> NETPLAY_TRAVERSAL_PORT_ALT;

@@ -53,11 +53,22 @@ private:
   void SaveSettings() const;
   void RestoreSettings();
 
+  //joins as a spectator
+  void Join_AsSpectator();
+  //joins as a player
+  void Join_AsPlayer();
+
+  //joins as a bot
+
   QComboBox* m_region_combo;
   QLabel* m_status_label;
   QPushButton* m_button_refresh;
   QTableWidget* m_table_widget;
   QDialogButtonBox* m_button_box;
+  QPushButton* m_button_cancel;
+  QPushButton* m_button_joinAsPlayer;
+  QPushButton* m_button_joinAsSpectator;
+
   QLineEdit* m_edit_name;
   QLineEdit* m_edit_game_id;
   QCheckBox* m_check_hide_incompatible;

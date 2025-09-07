@@ -11,7 +11,7 @@ namespace KARphin::WarpRelay::Netplay::Packet
 	//defines the player kind for joining
 	enum class JoinKind
 	{
-		Player = 0x00, //they're a player and should be given a port for sending input
+		Player = 0, //they're a player and should be given a port for sending input
 		Spectator, //they're a spectator and should not be given a port
 		Bot, //they're a bot and should be given a port but will not be treated like a Player
 

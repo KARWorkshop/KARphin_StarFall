@@ -47,9 +47,7 @@
   "<br>The spec and tooling are still being ironed out, so KARphin's internals might change for how KWQI works.<br>" \
   "Modders will be worked with to make a API and spec that supports their goals and what is feasiable.</p>" \
   "<h3> 4.3.0 - Spectating</h3>" \
-  "<p>A new Spectating option has been added when either joining via the Lobby or Host Code.<br>" \
-  " This is mainly for streamers wanting to join so they can spectate the matches and saves some steps of the setup.<br>"     \
-  " You can still use it as a regular Player if you want.<br>It just unsets your port so you can use the Fullscreen dropdown to whichever screen you want.</p>" \
+  "<p>There is now a spectate button for joining as a spectator. This just unports you, saving a step for streamers.</p>" \
   
 
 #define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_0

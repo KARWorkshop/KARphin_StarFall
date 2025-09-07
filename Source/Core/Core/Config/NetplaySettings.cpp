@@ -30,6 +30,14 @@ const Info<uint8_t> NETPLAY_KAR_FULLSCREEN_MODE{{System::Main, "NetPlay", "FS_Mo
 9 = P2, P3, and P4
 */
 
+//what kind of Account are we joining as
+const Info<uint8_t> NETPLAY_KAR_ACCOUNT_KIND{{System::Main, "NetPlay", "AccountJoinType"}, 0};
+/*
+0 = Player
+1 = Spectator
+3 = Bot
+*/
+
 // Main.NetPlay
 
 const Info<std::string> NETPLAY_TRAVERSAL_SERVER{{System::Main, "NetPlay", "TraversalServer"},

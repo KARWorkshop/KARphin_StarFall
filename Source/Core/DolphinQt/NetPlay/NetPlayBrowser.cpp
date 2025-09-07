@@ -31,6 +31,8 @@
 
 #include <KARphin/Version.hpp>
 
+#include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
+
 NetPlayBrowser::NetPlayBrowser(QWidget* parent) : QDialog(parent)
 {
   setWindowTitle(tr("NetPlay Session Browser"));
@@ -87,7 +89,14 @@ void NetPlayBrowser::CreateWidgets()
   m_region_combo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
   m_status_label = new QLabel;
-  m_button_box = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+  m_button_box = new QDialogButtonBox(QDialogButtonBox::NoButton);
+  m_button_joinAsPlayer = new NonDefaultQPushButton(tr("Join"));
+  m_button_joinAsPlayer->setEnabled(false);
+  m_button_joinAsSpectator = new NonDefaultQPushButton(tr("Spectate"));
+  m_button_joinAsSpectator->setEnabled(false);
+  m_button_cancel = new NonDefaultQPushButton(tr("Cancel"));
+  m_button_cancel->setEnabled(true);
+
   m_button_refresh = new NonDefaultQPushButton(tr("Refresh"));
   m_edit_name = new QLineEdit;
   m_edit_game_id = new QLineEdit;
@@ -125,7 +134,9 @@ void NetPlayBrowser::CreateWidgets()
   layout->addWidget(m_button_box);
 
   m_button_box->addButton(m_button_refresh, QDialogButtonBox::ResetRole);
-  m_button_box->button(QDialogButtonBox::Ok)->setEnabled(false);
+  m_button_box->addButton(m_button_cancel, QDialogButtonBox::RejectRole);
+  m_button_box->addButton(m_button_joinAsPlayer, QDialogButtonBox::AcceptRole);
+  m_button_box->addButton(m_button_joinAsSpectator, QDialogButtonBox::AcceptRole);
 
   setLayout(layout);
 }
@@ -134,7 +145,8 @@ void NetPlayBrowser::ConnectWidgets()
 {
   connect(m_region_combo, &QComboBox::currentIndexChanged, this, &NetPlayBrowser::Refresh);
 
-  connect(m_button_box, &QDialogButtonBox::accepted, this, &NetPlayBrowser::accept);
+  connect(m_button_joinAsPlayer, &QPushButton::clicked, this, &NetPlayBrowser::Join_AsPlayer);
+  connect(m_button_joinAsSpectator, &QPushButton::clicked, this, &NetPlayBrowser::Join_AsSpectator);
   connect(m_button_box, &QDialogButtonBox::rejected, this, &NetPlayBrowser::reject);
   connect(m_button_refresh, &QPushButton::clicked, this, &NetPlayBrowser::Refresh);
 
@@ -224,7 +236,7 @@ void NetPlayBrowser::UpdateList()
   m_table_widget->setColumnCount(7);
   m_table_widget->setHorizontalHeaderLabels({tr("Region"), tr("Name"), tr("Password?"),
                                              tr("In-Game?"), tr("Game"), tr("Players"),
-                                             tr("Version")});
+                                             tr("version")});
 
   auto* hor_header = m_table_widget->horizontalHeader();
 
@@ -269,8 +281,9 @@ void NetPlayBrowser::UpdateList()
 
 void NetPlayBrowser::OnSelectionChanged()
 {
-  m_button_box->button(QDialogButtonBox::Ok)
-      ->setEnabled(!m_table_widget->selectedItems().isEmpty());
+  const bool roomIsSelected = !m_table_widget->selectedItems().isEmpty();
+  m_button_joinAsPlayer->setEnabled(roomIsSelected);
+  m_button_joinAsSpectator->setEnabled(roomIsSelected);
 }
 
 void NetPlayBrowser::OnUpdateStatusRequested(const QString& status)
@@ -282,6 +295,21 @@ void NetPlayBrowser::OnUpdateListRequested(std::vector<NetPlaySession> sessions)
 {
   m_sessions = std::move(sessions);
   UpdateList();
+}
+
+// joins as a spectator
+void NetPlayBrowser::Join_AsSpectator()
+{
+  Config::SetBaseOrCurrent(Config::NETPLAY_KAR_ACCOUNT_KIND, (uint8_t)KARphin::WarpRelay::Netplay::Packet::JoinKind::Spectator);
+  accept();
+}
+
+// joins as a player
+void NetPlayBrowser::Join_AsPlayer()
+{
+  Config::SetBaseOrCurrent(Config::NETPLAY_KAR_ACCOUNT_KIND,
+                           (uint8_t)KARphin::WarpRelay::Netplay::Packet::JoinKind::Player);
+  accept();
 }
 
 void NetPlayBrowser::accept()
