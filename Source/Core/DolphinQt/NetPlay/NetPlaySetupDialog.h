@@ -46,6 +46,11 @@ private:
 
   void OnConnectionTypeChanged(int index);
 
+  // joins as a spectator
+  void Join_AsSpectator();
+  // joins as a player
+  void Join_AsPlayer();
+
   // Main Widget
   QDialogButtonBox* m_button_box;
   QComboBox* m_connection_type;
@@ -60,6 +65,7 @@ private:
   QLabel* m_connect_port_label;
   QSpinBox* m_connect_port_box;
   QPushButton* m_connect_button;
+  QPushButton* m_connect_spectate_button;
 
   // Host Widget
   QLabel* m_host_port_label;

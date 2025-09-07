@@ -29,6 +29,7 @@
 #include "UICommon/NetPlayIndex.h"
 
 #include <KARphin/WarpRelay/WarpRelayAccount.hpp>
+#include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
 
 NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWidget* parent)
     : QDialog(parent), m_game_list_model(game_list_model)
@@ -110,6 +111,7 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_connect_port_label = new QLabel(tr("Port:"));
   m_connect_port_box = new QSpinBox;
   m_connect_button = new NonDefaultQPushButton(tr("Connect"));
+  m_connect_spectate_button = new NonDefaultQPushButton(tr("Spectate"));
 
   m_connect_port_box->setMaximum(65535);
 
@@ -126,6 +128,7 @@ void NetPlaySetupDialog::CreateMainLayout()
 
   connection_layout->addWidget(alert_label, 1, 0, 1, -1);
   connection_layout->addItem(new QSpacerItem(1, 1), 2, 0, -1, -1);
+  connection_layout->addWidget(m_connect_spectate_button, 3, 2, Qt::AlignRight);
   connection_layout->addWidget(m_connect_button, 3, 3, Qt::AlignRight);
 
   connection_widget->setLayout(connection_layout);
@@ -243,7 +246,8 @@ void NetPlaySetupDialog::ConnectWidgets()
   connect(m_host_upnp, &QCheckBox::stateChanged, this, &NetPlaySetupDialog::SaveSettings);
 #endif
 
-  connect(m_connect_button, &QPushButton::clicked, this, &QDialog::accept);
+  connect(m_connect_button, &QPushButton::clicked, this, &NetPlaySetupDialog::Join_AsPlayer);
+  connect(m_connect_spectate_button, &QPushButton::clicked, this, &NetPlaySetupDialog::Join_AsSpectator);
   connect(m_host_button, &QPushButton::clicked, this, &QDialog::accept);
   connect(m_button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(m_reset_traversal_button, &QPushButton::clicked, this,
@@ -316,6 +320,22 @@ void NetPlaySetupDialog::show()
 {
   PopulateGameList();
   QDialog::show();
+}
+
+// joins as a spectator
+void NetPlaySetupDialog::Join_AsSpectator()
+{
+  Config::SetBaseOrCurrent(Config::NETPLAY_KAR_ACCOUNT_KIND,
+                           (uint8_t)KARphin::WarpRelay::Netplay::Packet::JoinKind::Spectator);
+  accept();
+}
+
+// joins as a player
+void NetPlaySetupDialog::Join_AsPlayer()
+{
+  Config::SetBaseOrCurrent(Config::NETPLAY_KAR_ACCOUNT_KIND,
+                           (uint8_t)KARphin::WarpRelay::Netplay::Packet::JoinKind::Player);
+  accept();
 }
 
 void NetPlaySetupDialog::accept()
