@@ -571,8 +571,8 @@ void MainWindow::ConnectMenuBar()
 
   // Tools
   connect(m_menu_bar, &MenuBar::ShowMemcardManager, this, &MainWindow::ShowMemcardManager);
-  connect(m_menu_bar, &MenuBar::ShowResourcePackManager, this,
-          &MainWindow::ShowResourcePackManager);
+ // connect(m_menu_bar, &MenuBar::ShowResourcePackManager, this,
+  //        &MainWindow::ShowResourcePackManager);
   connect(m_menu_bar, &MenuBar::ShowCheatsManager, this, &MainWindow::ShowCheatsManager);
   connect(m_menu_bar, &MenuBar::BootGameCubeIPL, this, &MainWindow::OnBootGameCubeIPL);
   connect(m_menu_bar, &MenuBar::ImportNANDBackup, this, &MainWindow::OnImportNANDBackup);
@@ -700,6 +700,7 @@ void MainWindow::ConnectToolBar()
   connect(m_tool_bar, &ToolBar::OnNetplayHostPressed, this, &MainWindow::ShowNetPlaySetupDialog);
   connect(m_tool_bar, &ToolBar::OnNetplayLobbiesPressed, this, &MainWindow::ShowNetPlayBrowser);
   connect(m_tool_bar, &ToolBar::OnWarpRelayAccountPressed, this, &MainWindow::ShowAccountMenu);
+  connect(m_tool_bar, &ToolBar::OnModsMenuPressed, this, &MainWindow::ShowResourcePackManager);
 
   connect(m_tool_bar, &ToolBar::OpenPressed, this, &MainWindow::Open);
   connect(m_tool_bar, &ToolBar::RefreshPressed, this, &MainWindow::RefreshGameList);

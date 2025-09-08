@@ -121,7 +121,7 @@ void ToolBar::MakeActions()
 
   addSeparator();
 
-  m_KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OpenPressed);
+  m_KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OnModsMenuPressed);
   m_refresh_action = addAction(tr("Refresh"), [this] { emit RefreshPressed(); });
   m_refresh_action->setEnabled(false);
 

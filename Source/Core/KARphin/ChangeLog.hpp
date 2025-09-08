@@ -54,13 +54,10 @@
   "<p>Cleaned up some left over code brought from K3 for icons.</p>" \
 */
 
-#define KARPHIN_CHANGE_LOG_4_4_0                                                                   \
-  "<h3> 4.4.0 - Account Icons</h3>"                                                        \
-  "<p>Accounts now support rendering icon presets in the lobby. Set it in your Account menu.<br>This update will require to set your name again." \
-  "<br> Setting custom icons to whatever you want is a WIP. Everyone has presets</p>" \
-  "<h3> 4.4.0 - Minor Tweaks</h3>"                                                                \
+#define KARPHIN_CHANGE_LOG_4_3_1                                                                   \
+  "<h3> 4.3.1 - Minor Tweaks</h3>"                                                                \
   "<p>Added direct link to Kofi and Discord on icon bar.</p>" \
-  "<p>Added Mods menu to icon bar but it is currently lacking implementation.</p>" \
+  "<p>Mods menu added, but lacking full implementation</p>" \
 
 
-#define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_4_0
+#define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_1

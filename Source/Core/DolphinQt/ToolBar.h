@@ -24,6 +24,7 @@ signals:
   void OnNetplayHostPressed();
   void OnNetplayLobbiesPressed();
   void OnWarpRelayAccountPressed();
+  void OnModsMenuPressed();
 
   void OpenPressed();
   void RefreshPressed();
