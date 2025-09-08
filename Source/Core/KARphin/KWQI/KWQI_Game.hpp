@@ -48,8 +48,9 @@ namespace KWQI::Game
 
         gameID = "",  // the game ID for this mod
 
-        memoryCardURL = "", //the url for the memory card for downloading
-        geckoCodeURL = ""; //the url for the gecko code to download
+        memoryCardURL = "",  // the url for the memory card for downloading
+        geckoCodeURL = "",   // the url for the gecko code to download
+        xdeltaURL = ""; //the URL to download the xdelta patch file
 
     //writes a KWQI file
     inline void WriteToDisc()
@@ -68,6 +69,8 @@ namespace KWQI::Game
 
       data["memoryCardURL"] = memoryCardURL;
       data["geckoCodeURL"] = geckoCodeURL;
+      data["xDeltaURL"] = xdeltaURL;
+
 
       File::CreateEmptyFile(fp.string());
       File::WriteStringToFile(fp.string(), data.dump());
@@ -83,6 +86,7 @@ namespace KWQI::Game
       if (kwqi.contains("gameID")) { gameID = kwqi["gameID"].get<std::string>(); }
       if (kwqi.contains("memoryCardURL")) { memoryCardURL = kwqi["memoryCardURL"].get<std::string>(); }
       if (kwqi.contains("geckoCodeURL")) { geckoCodeURL = kwqi["geckoCodeURL"].get<std::string>(); }
+      if (kwqi.contains("xDeltaURL")) {xdeltaURL = kwqi["xDeltaURL"].get<std::string>();}
     }
 	};
 
@@ -100,6 +104,7 @@ namespace KWQI::Game
 
     data.geckoCodeURL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/GKYE01.ini";
     data.memoryCardURL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";
+    data.xdeltaURL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/Deluxe.xdelta";
 
     return data;
   }
@@ -117,6 +122,8 @@ namespace KWQI::Game
 
     data.geckoCodeURL = "https://github.com/KARWorkshop/Patches/releases/download/B4/KBSE02.ini";
     data.memoryCardURL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/StandardRuleSet.USA.raw";  // we just have Deluxe and Backside share the same memory card
+    data.xdeltaURL =
+        "https://github.com/KARWorkshop/Patches/releases/download/B4/Base_To_BS4.xdelta";
 
     return data;
   }
@@ -134,6 +141,7 @@ namespace KWQI::Game
 
     data.geckoCodeURL = "https://github.com/SeanMott/KAR-Ignition/releases/download/beta/IGNE01.ini";
     data.memoryCardURL = "https://github.com/KARWorkshop/Patches/releases/download/Deluxe/GKYE01.ini";
+    data.xdeltaURL = "";
 
     return data;
   }

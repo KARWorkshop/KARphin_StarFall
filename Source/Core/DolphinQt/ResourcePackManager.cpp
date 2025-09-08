@@ -39,7 +39,7 @@ void ResourcePackManager::CreateWidgets()
   m_table_widget->setTabKeyNavigation(false);
 
   m_open_directory_button = new NonDefaultQPushButton(tr("Open Directory..."));
-  m_change_button = new NonDefaultQPushButton(tr("Install"));
+  m_change_button = new NonDefaultQPushButton(tr("Download"));
   m_remove_button = new NonDefaultQPushButton(tr("Remove"));
   m_refresh_button = new NonDefaultQPushButton(tr("Refresh"));
   m_priority_up_button = new NonDefaultQPushButton(tr("Up"));
