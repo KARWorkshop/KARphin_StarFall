@@ -64,6 +64,7 @@ namespace KWQI::Game
 
       data["displayName"] = displayName;
       data["desc"] = desc;
+      data["authors"] = authors;
 
       data["gameID"] = gameID;
 
@@ -83,6 +84,7 @@ namespace KWQI::Game
       if (kwqi.contains("framework")) { framework = (Framework)(kwqi["framework"].get<int>()); }
       if (kwqi.contains("displayName")) { displayName = kwqi["displayName"].get<std::string>(); }
       if (kwqi.contains("desc")) { desc = kwqi["desc"].get<std::string>(); }
+      if (kwqi.contains("authors")) {authors = kwqi["authors"].get<std::string>();}
       if (kwqi.contains("gameID")) { gameID = kwqi["gameID"].get<std::string>(); }
       if (kwqi.contains("memoryCardURL")) { memoryCardURL = kwqi["memoryCardURL"].get<std::string>(); }
       if (kwqi.contains("geckoCodeURL")) { geckoCodeURL = kwqi["geckoCodeURL"].get<std::string>(); }
