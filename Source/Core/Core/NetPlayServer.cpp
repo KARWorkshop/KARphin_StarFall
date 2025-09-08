@@ -469,8 +469,9 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   m_update_pings = true;
 
   //if they're a spectator, skip giving them a port
-
-  AssignNewUserAPad(new_player);
+  if (onPlayerConnect.kind == KARphin::WarpRelay::Netplay::Packet::JoinKind::Player ||
+      onPlayerConnect.kind == KARphin::WarpRelay::Netplay::Packet::JoinKind::Bot)
+    AssignNewUserAPad(new_player);
 
   // tell other players a new player joined
   SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.name,
