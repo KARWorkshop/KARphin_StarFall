@@ -162,4 +162,38 @@ namespace KWQI::Game
     return g;
   }
 
+  //loads the KWQI game by a filepath
+  static inline KWQIData_Game LoadGameKWQIFileFromPath(const std::filesystem::path& filepath)
+  {
+    std::string str = "";
+    File::ReadFileToString(filepath.string(), str);
+    KWQIData_Game g;
+    g.Parse(str);
+    return g;
+  }
+
+  //gets every game in the KWQI directory
+  static inline std::vector<KWQIData_Game> GetEveryGame()
+  {
+    std::vector<KWQIData_Game> games;
+    games.reserve(3); //reserve space for Deluxe, B4, and Ignition
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(KAR::IO::GetDirectory_KWQI()))
+    {
+      if (std::filesystem::is_regular_file(entry.path()))
+      {
+        if (entry.path().extension() == ".game")
+          games.emplace_back(LoadGameKWQIFileFromPath(entry.path()));
+
+        //std::cout << "File: " << entry.path() << "\n";
+      }
+      else if (std::filesystem::is_directory(entry.path()))
+      {
+        //std::cout << "Directory: " << entry.path() << "\n";
+      }
+    }
+
+    return games;
+  }
+
  }
