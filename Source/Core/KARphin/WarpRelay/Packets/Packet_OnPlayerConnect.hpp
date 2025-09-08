@@ -23,7 +23,8 @@ namespace KARphin::WarpRelay::Netplay::Packet
 	{
     JoinKind kind = JoinKind::Player; //what kind of join are they
 
-    std::string clientVersion = ""; //the version of their client, if they got a incompatable version, reject them
+		std::string SCMVersion = "";  // the version control string of their client, if they got a incompatable version, reject them
+		std::string clientVersion = ""; //the version of their client, if they got a incompatable version, reject them
     std::string nickname = ""; //the nickname they choose to show online
     std::string warpRelayIconURL = ""; //the URL for their warp relay icon
 	};
@@ -32,6 +33,9 @@ namespace KARphin::WarpRelay::Netplay::Packet
 	static inline sf::Packet PackageDataIntoSFMLPacket_OnPlayerConnect(const Packet_OnPlayerConnect& data)
 	{
     sf::Packet packet;
+    packet << data.SCMVersion;
+    packet << data.clientVersion;
+    packet << data.nickname;
 
 		return packet;
 	}
