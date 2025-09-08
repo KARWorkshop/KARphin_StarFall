@@ -41,9 +41,12 @@ namespace KARphin::WarpRelay::Netplay::Packet
 	}
 
 	//unpacks the recived pack into our custom data struct
-  static inline Packet_OnPlayerConnect UnpackSFMLPacket_OnPlayerConnect(const sf::Packet& packet)
+  static inline Packet_OnPlayerConnect UnpackSFMLPacket_OnPlayerConnect(sf::Packet& packet)
   {
     Packet_OnPlayerConnect data;
+    packet >> data.SCMVersion;
+    packet >> data.clientVersion;
+    packet >> data.nickname;
 
     return data;
   }

@@ -72,7 +72,7 @@
 
 #include "UICommon/GameFile.h"
 
-#include <KARphin/Version.hpp>
+#include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
 
 #if !defined(_WIN32)
 #include <sys/socket.h>
@@ -435,9 +435,12 @@ static void SendSyncIdentifier(sf::Packet& spac, const SyncIdentifier& sync_iden
 // called from ---NETPLAY--- thread
 ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Packet& received_packet)
 {
-  std::string netplay_version;
-  received_packet >> netplay_version;
-  if (netplay_version != Common::GetScmRevGitStr())
+  KARphin::WarpRelay::Netplay::Packet::Packet_OnPlayerConnect onPlayerConnect =
+      KARphin::WarpRelay::Netplay::Packet::UnpackSFMLPacket_OnPlayerConnect(received_packet);
+
+  //std::string netplay_version;
+  //received_packet >> netplay_version;
+  if (onPlayerConnect.SCMVersion /*netplay_version*/ != Common::GetScmRevGitStr())
     return ConnectionError::VersionMismatch;
 
   if (m_is_running || m_start_pending)
@@ -450,10 +453,10 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   new_player.pid = GiveFirstAvailableIDTo(incoming_connection);
   new_player.socket = incoming_connection;
 
-  received_packet >> new_player.revision;
-  received_packet >> new_player.name;
-  //std::string runtimeExternalIP = "";
-  //received_packet >> runtimeExternalIP;
+  //received_packet >> new_player.revision;
+  //received_packet >> new_player.name;
+  new_player.revision = onPlayerConnect.clientVersion;
+  new_player.name = onPlayerConnect.nickname;
 
   if (StringUTF8CodePointCount(new_player.name) > MAX_NAME_LENGTH)
     return ConnectionError::NameTooLong;

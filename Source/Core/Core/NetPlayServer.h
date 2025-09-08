@@ -85,8 +85,6 @@ private:
     PlayerId pid{};
     std::string name;
     std::string revision;
-    std::string externalIP; //stores the IP
-    std::string warpRelayHash; //stores the unique ID associated with their warp relay account
     SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
     bool has_ipl_dump = false;
     bool has_hardware_fma = false;

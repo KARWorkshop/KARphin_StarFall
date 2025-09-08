@@ -121,7 +121,8 @@ void NetPlaySetupDialog::CreateMainLayout()
   connection_layout->addWidget(m_connect_port_box, 0, 3);
   auto* const alert_label = new QLabel(
       tr("ALERT:\n\n"
-         "All players should be using the latest build of KARphin! KARphin auto updates but if you have issues connecting that would be why, or there are network restrictions."));
+         "All players should be using the latest build of KARphin!\nKARphin auto updates but if you have issues connecting...\n"
+          "1. You aren't updated. OR\n2. There are network restrictions."));
 
   // Prevent the label from stretching vertically so the spacer gets all the extra space
   alert_label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
