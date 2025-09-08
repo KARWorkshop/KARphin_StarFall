@@ -43,11 +43,15 @@
 //4.3.XXXXX
 #define KARPHIN_CHANGE_LOG_4_3_0 \
   "<h3> 4.3.0 - KWQI file integration</h3>" \
-  "<p>KAR Workshop Quick Install (KWQI) are now fully supported. Deluxe and Backside are baked into KARphin." \
+  "<p>KAR Workshop Quick Install (KWQI) are now fully integrated. Deluxe and Backside are baked into KARphin." \
   "<br>The spec and tooling are still being ironed out, so KARphin's internals might change for how KWQI works.<br>" \
   "Modders will be worked with to make a API and spec that supports their goals and what is feasiable.</p>" \
   "<h3> 4.3.0 - Spectating</h3>" \
   "<p>There is now a spectate button for joining as a spectator. This just unports you, saving a step for streamers.</p>" \
+  "<h3> 4.3.0 - Minor Stuff</h3>"                                                                   \
+  "<p>On Connection packets now are compressed and uncompressed into a custom Warp Relay spec-ed struct.</p>" \
+  "<p>Tweaked the host warning message to be KARphin related</p>" \
+  "<p>Cleaned up some left over code brought from K3 for icons.</p>" \
   
 
 #define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_0

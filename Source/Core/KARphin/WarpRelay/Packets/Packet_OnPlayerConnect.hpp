@@ -33,9 +33,11 @@ namespace KARphin::WarpRelay::Netplay::Packet
 	static inline sf::Packet PackageDataIntoSFMLPacket_OnPlayerConnect(const Packet_OnPlayerConnect& data)
 	{
     sf::Packet packet;
-    packet << data.SCMVersion;
+    packet << (int)data.kind;
+		packet << data.SCMVersion;
     packet << data.clientVersion;
     packet << data.nickname;
+    packet << data.warpRelayIconURL;
 
 		return packet;
 	}
@@ -44,9 +46,14 @@ namespace KARphin::WarpRelay::Netplay::Packet
   static inline Packet_OnPlayerConnect UnpackSFMLPacket_OnPlayerConnect(sf::Packet& packet)
   {
     Packet_OnPlayerConnect data;
+    int kind = 0;
+    packet >> kind;
     packet >> data.SCMVersion;
     packet >> data.clientVersion;
     packet >> data.nickname;
+    packet >> data.warpRelayIconURL;
+
+		data.kind = (JoinKind)kind;
 
     return data;
   }
