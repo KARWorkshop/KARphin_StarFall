@@ -81,6 +81,8 @@ private:
   QLineEdit* m_host_server_password;
   QComboBox* m_host_server_region;
 
+  QCheckBox* m_host_touryMode;
+
 #ifdef USE_UPNP
   QCheckBox* m_host_upnp;
 #endif

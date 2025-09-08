@@ -147,6 +147,9 @@ void NetPlaySetupDialog::CreateMainLayout()
   m_host_server_name = new QLineEdit;
   m_host_server_password = new QLineEdit;
   m_host_server_region = new QComboBox;
+  m_host_touryMode = new QCheckBox(tr("Tourny Mode"));
+  m_host_touryMode->setToolTip(tr("Disables all custom textures and forces certain KARphin "
+                                  "settings on and off for compliance with EKPN standard."));
 
 #ifdef USE_UPNP
   m_host_upnp = new QCheckBox(tr("Forward port (UPnP)"));
@@ -184,11 +187,13 @@ void NetPlaySetupDialog::CreateMainLayout()
   host_layout->addWidget(m_host_server_region, 1, 1);
   host_layout->addWidget(m_host_server_name, 1, 2);
   host_layout->addWidget(m_host_server_password, 1, 3);
+  
   host_layout->addWidget(m_host_games, 2, 0, 1, -1);
   host_layout->addWidget(m_host_force_port_check, 3, 0);
   host_layout->addWidget(m_host_force_port_box, 3, 1, Qt::AlignLeft);
   host_layout->addWidget(m_host_chunked_upload_limit_check, 4, 0);
   host_layout->addWidget(m_host_chunked_upload_limit_box, 4, 1, Qt::AlignLeft);
+  host_layout->addWidget(m_host_touryMode, 4, 2, Qt::AlignLeft);
   host_layout->addWidget(m_host_button, 4, 3, 2, 1, Qt::AlignRight);
 
   host_widget->setLayout(host_layout);

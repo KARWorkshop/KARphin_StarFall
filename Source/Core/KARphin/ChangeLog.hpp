@@ -48,6 +48,8 @@
   "Modders will be worked with to make a API and spec that supports their goals and what is feasiable.</p>" \
   "<h3> 4.3.0 - Spectating</h3>" \
   "<p>There is now a spectate button for joining as a spectator. This just unports you, saving a step for streamers.</p>" \
+  "<h3> 4.3.0 - Tourny Mode</h3>"                                                                   \
+  "<p>Hosts can now enable Tourny mode, which disables all custom textures and forces certain KARphin settings on and off for compliance with EKPN standard.</p>" \
   "<h3> 4.3.0 - Minor Stuff</h3>"                                                                   \
   "<p>On Connection packets now are compressed and uncompressed into a custom Warp Relay spec-ed struct.</p>" \
   "<p>Tweaked the host warning message to be KARphin related</p>" \
