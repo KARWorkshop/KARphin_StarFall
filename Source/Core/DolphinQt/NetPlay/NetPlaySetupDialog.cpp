@@ -30,6 +30,7 @@
 
 #include <KARphin/WarpRelay/WarpRelayAccount.hpp>
 #include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
+#include <KARphin/WarpRelay/Lobby.hpp>
 
 NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWidget* parent)
     : QDialog(parent), m_game_list_model(game_list_model)
@@ -373,6 +374,9 @@ void NetPlaySetupDialog::accept()
                                 tr("You must provide a region for your session!"));
       return;
     }
+
+    //stores the needed settings in the Lobby
+    KARphin::WarpRelay::Netplay::Lobby::Instance().isTournyMode = m_host_touryMode->isChecked();
 
     emit Host(*items[0]->data(Qt::UserRole).value<std::shared_ptr<const UICommon::GameFile>>());
   }

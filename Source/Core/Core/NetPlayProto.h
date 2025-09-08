@@ -187,6 +187,9 @@ enum class MessageID : u8
 
   SyncSaveData = 0xF1,
   SyncCodes = 0xF2,
+
+  //changes a property in the lobby
+  ChangeLobbyProperty = 0xF3,
 };
 
 enum class ConnectionError : u8

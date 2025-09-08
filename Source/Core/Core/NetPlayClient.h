@@ -318,6 +318,10 @@ private:
   void OnGameDigestError(sf::Packet& packet);
   void OnGameDigestAbort();
 
+  //----custom KAR ones-----
+
+  void OnLobbyPropertyChanged(sf::Packet& packet);
+
   bool m_is_connected = false;
   ConnectionState m_connection_state = ConnectionState::Failure;
 

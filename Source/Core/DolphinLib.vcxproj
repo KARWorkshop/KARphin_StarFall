@@ -86,6 +86,7 @@
     <ClInclude Include="KARphin\Vender\json_fwd.hpp" />
     <ClInclude Include="KARphin\Version.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Lobby.hpp" />
+    <ClInclude Include="KARphin\WarpRelay\Lobby\LobbyProperties.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Packets\Packet_OnPlayerConnect.hpp" />
     <ClInclude Include="KARphin\WarpRelay\WarpRelayAccount.hpp" />
   </ItemGroup>

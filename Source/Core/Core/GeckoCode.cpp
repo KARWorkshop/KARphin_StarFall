@@ -195,7 +195,7 @@ static Installation InstallCodeHandlerLocked(const Core::CPUThreadGuard& guard)
       //if it's auto
       case 1:
         global.Load(KAR::IO::GetDirectory_Sys() + "FS/Port" +
-                    std::to_string(KAR::Lobby::Lobby::Instance().ourPort + 1) + ".ini");
+                    std::to_string(KARphin::WarpRelay::Netplay::Lobby::Instance().ourPort + 1) + ".ini");
         runtimeCodes.emplace_back(Gecko::LoadCodes(global, dummy)[0]);
       break;
 

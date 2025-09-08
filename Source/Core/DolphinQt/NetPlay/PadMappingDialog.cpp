@@ -142,8 +142,8 @@ void PadMappingDialog::OnMappingChanged()
     m_wii_mapping[i] = wii_id > 0 ? m_players[wii_id - 1]->pid : 0;
 
     //sets the lobby per-player data so we access to port and such
-    KAR::Lobby::Lobby::Instance().playerDisplayNames[i] = gc_id > 0 ? m_players[gc_id - 1]->name : "";
-    KAR::Lobby::Lobby::Instance().playerIDs[i] = gc_id > 0 ? m_players[gc_id - 1]->pid : 0;
+    KARphin::WarpRelay::Netplay::Lobby::Instance().playerDisplayNames[i] = gc_id > 0 ? m_players[gc_id - 1]->name : "";
+    KARphin::WarpRelay::Netplay::Lobby::Instance().playerIDs[i] = gc_id > 0 ? m_players[gc_id - 1]->pid : 0;
 
     //sets our own account
   }

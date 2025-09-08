@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace KAR::Lobby
+namespace KARphin::WarpRelay::Netplay
 {
   //defines a lobby type
   enum class LobbyType
@@ -24,6 +24,10 @@ namespace KAR::Lobby
         hostUsername = ""; //the user that was the host of the lobby
     std::string playerDisplayNames[4] = {"", "", "", ""}; //stores the player names
     std::string playerIconURLs[4] = {"", "", "", ""};  // stores the player urls
+
+    //the properties of the lobby, theses need to be updated for all players if changed
+    bool isTournyMode = false; //is tourny mode enabled or disabled
+    bool isRanked = false; //is this lobby ranked or not
 
     //the static instance of the lobby
     static inline Lobby& Instance()

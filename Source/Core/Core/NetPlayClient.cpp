@@ -329,7 +329,7 @@ bool NetPlayClient::Connect()
     // add self to player list
     m_players[m_pid] = player;
     m_local_player = &m_players[m_pid];
-    KAR::Lobby::Lobby::Instance().playerIDs[static_cast<uint8_t>(m_pid) - 1] = static_cast<uint8_t>(m_pid);
+    KARphin::WarpRelay::Netplay::Lobby::Lobby::Instance().playerIDs[static_cast<uint8_t>(m_pid) - 1] = static_cast<uint8_t>(m_pid);
 
     m_dialog->Update();
 
@@ -494,6 +494,9 @@ void NetPlayClient::OnData(sf::Packet& packet)
     OnGameDigestAbort();
     break;
 
+    case MessageID::ChangeLobbyProperty:
+    OnLobbyPropertyChanged(packet);
+
   default:
     PanicAlertFmtT("Unknown message received with id : {0}", static_cast<u8>(mid));
     break;
@@ -512,9 +515,9 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
   {
     std::lock_guard lkp(m_crit.players);
     m_players[player.pid] = player;
-    KAR::Lobby::Lobby::Instance().playerIDs[static_cast<uint8_t>(player.pid) - 1] =
+    KARphin::WarpRelay::Netplay::Lobby::Instance().playerIDs[static_cast<uint8_t>(player.pid) - 1] =
         static_cast<uint8_t>(player.pid);
-    KAR::Lobby::Lobby::Instance().playerCount++;
+    KARphin::WarpRelay::Netplay::Lobby::Instance().playerCount++;
   }
 
   m_dialog->OnPlayerConnect(player.name);
@@ -537,8 +540,8 @@ void NetPlayClient::OnPlayerLeave(sf::Packet& packet)
     INFO_LOG_FMT(NETPLAY, "Player {} ({}) left", player.name, pid);
     m_dialog->OnPlayerDisconnect(player.name);
     m_players.erase(m_players.find(pid));
-    KAR::Lobby::Lobby::Instance().playerIDs[static_cast<uint8_t>(player.pid) - 1] = 0;
-    KAR::Lobby::Lobby::Instance().playerCount--;
+    KARphin::WarpRelay::Netplay::Lobby::Instance().playerIDs[static_cast<uint8_t>(player.pid) - 1] = 0;
+    KARphin::WarpRelay::Netplay::Lobby::Instance().playerCount--;
   }
 
   m_dialog->Update();
@@ -1543,6 +1546,15 @@ void NetPlayClient::OnGameDigestAbort()
   m_dialog->AbortGameDigest();
 }
 
+void NetPlayClient::OnLobbyPropertyChanged(sf::Packet& packet)
+{
+  // Return if this is the host
+  if (m_local_player->IsHost())
+    return;
+
+  m_dialog->AppendChat(Common::GetStringT("Lobby Property Changed:"));
+}
+
 void NetPlayClient::Send(const sf::Packet& packet, const u8 channel_id)
 {
   Common::ENet::SendPacket(m_server, packet, channel_id);
@@ -1932,7 +1944,7 @@ void NetPlayClient::UpdateDevices()
       {
         si.ChangeDevice(SerialInterface::SIDEVICE_GC_CONTROLLER, pad);
       }
-      KAR::Lobby::Lobby::Instance().ourPort = pad;
+      KARphin::WarpRelay::Netplay::Lobby::Instance().ourPort = pad;
       local_pad++;
     }
     else if (player_id > 0)
