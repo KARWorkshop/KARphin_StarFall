@@ -17,13 +17,15 @@
 #include "DolphinQt/QtUtils/SetWindowDecorations.h"
 #include "UICommon/ResourcePack/Manager.h"
 
+#include <KARphin/IO/DirectoryStructure.hpp>
+
 ResourcePackManager::ResourcePackManager(QWidget* widget) : QDialog(widget)
 {
   CreateWidgets();
   ConnectWidgets();
   RepopulateTable();
 
-  setWindowTitle(tr("Resource Pack Manager"));
+  setWindowTitle(tr("KWQI Mod Manager"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   resize(QSize(900, 600));
@@ -80,7 +82,7 @@ void ResourcePackManager::ConnectWidgets()
 void ResourcePackManager::OpenResourcePackDir()
 {
   QDesktopServices::openUrl(
-      QUrl::fromLocalFile(QString::fromStdString(File::GetUserPath(D_RESOURCEPACK_IDX))));
+      QUrl::fromLocalFile(QString::fromStdString(KAR::IO::GetDirectory_KWQI())));// File::GetUserPath(D_RESOURCEPACK_IDX))));
 }
 
 void ResourcePackManager::RepopulateTable()
