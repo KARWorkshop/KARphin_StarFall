@@ -381,8 +381,8 @@ void NetPlayDialog::CreatePlayersLayout()
   m_assign_ports_button = new QPushButton(tr("Assign Controller Ports"));
 
   //only the host can sync music
-  //m_syncNetplayMusic_button = new QPushButton(tr("Sync Netplay Music"));
- // m_syncNetplayMusic_button->setVisible(false);
+ // m_syncNetplayMusic_button = new QPushButton(tr("Sync Netplay Music"));
+  //m_syncNetplayMusic_button->setVisible(false);
 
   m_players_list->setTabKeyNavigation(false);
   m_players_list->setColumnCount(5);
@@ -402,7 +402,7 @@ void NetPlayDialog::CreatePlayersLayout()
   layout->addWidget(m_players_list, 1, 0, 1, -1);
   layout->addWidget(m_kick_button, 2, 0, 1, -1);
   layout->addWidget(m_assign_ports_button, 3, 0, 1, -1);
- // layout->addWidget(m_syncNetplayMusic_button, 4, 0, 1, -1);
+  //layout->addWidget(m_syncNetplayMusic_button, 4, 0, 1, -1);
 
   m_players_box->setLayout(layout);
 }
@@ -436,17 +436,17 @@ void NetPlayDialog::ConnectWidgets()
   });
 
   //syncs netplay music
-  /*connect(m_syncNetplayMusic_button, &QPushButton::clicked, [this] {
-
-    //checks that it's a extracted filesystem
-
-    //checks if the folder "NetplayMusic" exists
-
-    //if not throw a error
-    DisplayMessage(tr("No \"NetplayMusic\" folder found, can not sync. Make sure %1 supports Music Syncing.")
-                       .arg(QString::fromStdString(m_current_game_name)),
-                   "red");
-  });*/
+ //connect(m_syncNetplayMusic_button, &QPushButton::clicked, [this] {
+ //
+ //  //checks that it's a extracted filesystem
+ //
+ //  //checks if the folder "NetplayMusic" exists
+ //
+ //  //if not throw a error
+ //  DisplayMessage(tr("No \"NetplayMusic\" folder found, can not sync. Make sure %1 supports Music Syncing.")
+ //                     .arg(QString::fromStdString(m_current_game_name)),
+ //                 "red");
+ //});
 
   // Chat
   connect(m_chat_send_button, &QPushButton::clicked, this, &NetPlayDialog::OnChat);

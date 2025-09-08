@@ -321,6 +321,7 @@ private:
   //----custom KAR ones-----
 
   void OnLobbyPropertyChanged(sf::Packet& packet);
+  void OnAdminCommand(sf::Packet& packet);
 
   bool m_is_connected = false;
   ConnectionState m_connection_state = ConnectionState::Failure;

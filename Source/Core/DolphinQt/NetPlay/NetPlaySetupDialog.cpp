@@ -194,7 +194,7 @@ void NetPlaySetupDialog::CreateMainLayout()
   host_layout->addWidget(m_host_force_port_box, 3, 1, Qt::AlignLeft);
   host_layout->addWidget(m_host_chunked_upload_limit_check, 4, 0);
   host_layout->addWidget(m_host_chunked_upload_limit_box, 4, 1, Qt::AlignLeft);
-  host_layout->addWidget(m_host_touryMode, 4, 2, Qt::AlignLeft);
+ // host_layout->addWidget(m_host_touryMode, 4, 2, Qt::AlignLeft);
   host_layout->addWidget(m_host_button, 4, 3, 2, 1, Qt::AlignRight);
 
   host_widget->setLayout(host_layout);

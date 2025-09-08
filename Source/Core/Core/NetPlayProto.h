@@ -190,6 +190,9 @@ enum class MessageID : u8
 
   //changes a property in the lobby
   ChangeLobbyProperty = 0xF3,
+
+  //marks a command
+  AdminCommand = 0xF4,
 };
 
 enum class ConnectionError : u8

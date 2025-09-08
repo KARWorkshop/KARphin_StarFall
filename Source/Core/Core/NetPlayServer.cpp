@@ -73,6 +73,7 @@
 #include "UICommon/GameFile.h"
 
 #include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
+#include <KARphin/WarpRelay/Packets/Packet_AdminCommand.hpp>
 
 #if !defined(_WIN32)
 #include <sys/socket.h>
@@ -772,13 +773,26 @@ unsigned int NetPlayServer::OnData(sf::Packet& packet, Client& player)
     std::string msg;
     packet >> msg;
 
-    // send msg to other clients
+    //check if it's a command
     sf::Packet spac;
-    spac << MessageID::ChatMessage;
-    spac << player.pid;
-    spac << msg;
-
-    SendToClients(spac, player.pid);
+    //if (msg.size() >= 2 && msg[0] == '/' && msg[1] == '/')
+    //{
+    //  msg = "Failed to parse command.";
+    //
+    //  // send command to other clients
+    //  spac << MessageID::AdminCommand;
+    //  spac << player.pid;
+    //  spac << msg;
+    //  SendToClients(spac);
+    //}
+    //else
+    //{
+      // send chat msg to other clients
+      spac << MessageID::ChatMessage;
+      spac << player.pid;
+      spac << msg;
+      SendToClients(spac, player.pid);
+    //}
   }
   break;
 
