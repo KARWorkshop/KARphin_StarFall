@@ -56,12 +56,17 @@ private:
   QAction* m_netplay_lobbyList_action;
   QAction* m_netplay_Account_action;
 
-  QAction* m_open_action;
+  QAction* m_KAR_Kofi_action;
+  QAction* m_KAR_Discord_action;
+  QAction* m_KAR_Website_action;
+  QAction* m_KAR_Mods_action;
+
+  //QAction* m_open_action;
   QAction* m_refresh_action;
-  QAction* m_pause_play_action;
-  QAction* m_stop_action;
+  //QAction* m_pause_play_action;
+  //QAction* m_stop_action;
   QAction* m_fullscreen_action;
-  QAction* m_screenshot_action;
+  //QAction* m_screenshot_action;
   QAction* m_config_action;
   QAction* m_controllers_action;
   QAction* m_graphics_action;

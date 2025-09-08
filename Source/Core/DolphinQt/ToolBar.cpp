@@ -8,6 +8,8 @@
 
 #include <QAction>
 #include <QIcon>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "Core/Core.h"
 #include "Core/NetPlayProto.h"
@@ -59,9 +61,9 @@ ToolBar::ToolBar(QWidget* parent) : QToolBar(parent)
 void ToolBar::OnEmulationStateChanged(Core::State state)
 {
   bool running = state != Core::State::Uninitialized;
-  m_stop_action->setEnabled(running);
+  //m_stop_action->setEnabled(running);
   m_fullscreen_action->setEnabled(running);
-  m_screenshot_action->setEnabled(running);
+  //m_screenshot_action->setEnabled(running);
 
   bool playing = running && state != Core::State::Paused;
   UpdatePausePlayButtonState(playing);
@@ -119,17 +121,26 @@ void ToolBar::MakeActions()
 
   addSeparator();
 
-  m_open_action = addAction(tr("Open"), this, &ToolBar::OpenPressed);
+  m_KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OpenPressed);
   m_refresh_action = addAction(tr("Refresh"), [this] { emit RefreshPressed(); });
   m_refresh_action->setEnabled(false);
 
   addSeparator();
 
-  m_pause_play_action = addAction(tr("Play"), this, &ToolBar::PlayPressed);
+  m_KAR_Kofi_action = addAction(tr("Kofi"), this, []() {
+    QDesktopServices::openUrl(QUrl(QStringLiteral("https://ko-fi.com/jas_kar_workshop")));
+  });
+  m_KAR_Discord_action = addAction(tr("Discord"), this, []() {
+    QDesktopServices::openUrl(QUrl(QStringLiteral("http://discord.gg/p3rGrcr")));
+  });
+  m_KAR_Website_action = addAction(tr("KAR Workshop"), this, []() {
+    QDesktopServices::openUrl(QUrl(QStringLiteral("http://discord.gg/p3rGrcr")));
+  });
 
-  m_stop_action = addAction(tr("Stop"), this, &ToolBar::StopPressed);
+  addSeparator();
+
   m_fullscreen_action = addAction(tr("FullScr"), this, &ToolBar::FullScreenPressed);
-  m_screenshot_action = addAction(tr("ScrShot"), this, &ToolBar::ScreenShotPressed);
+  //m_screenshot_action = addAction(tr("ScrShot"), this, &ToolBar::ScreenShotPressed);
 
   addSeparator();
 
@@ -140,8 +151,9 @@ void ToolBar::MakeActions()
   // Ensure every button has about the same width
   std::vector<QWidget*> items;
   for (const auto& action :
-       {m_netplay_connect_host_action, m_netplay_lobbyList_action, m_open_action, m_pause_play_action, m_stop_action, m_stop_action, m_fullscreen_action,
-        m_screenshot_action, m_config_action, m_graphics_action, m_controllers_action,
+       {m_netplay_connect_host_action, m_netplay_lobbyList_action, m_KAR_Mods_action,
+        m_KAR_Kofi_action, m_KAR_Discord_action, m_KAR_Discord_action, m_KAR_Website_action, m_fullscreen_action,
+        /*m_screenshot_action,*/ m_config_action, m_graphics_action, m_controllers_action,
         m_step_action, m_step_over_action, m_step_out_action, m_skip_action, m_show_pc_action,
         m_set_pc_action})
   {
@@ -159,7 +171,7 @@ void ToolBar::MakeActions()
 
 void ToolBar::UpdatePausePlayButtonState(const bool playing_state)
 {
-  if (playing_state)
+  /*if (playing_state)
   {
     disconnect(m_pause_play_action, nullptr, nullptr, nullptr);
     m_pause_play_action->setText(tr("Pause"));
@@ -172,7 +184,7 @@ void ToolBar::UpdatePausePlayButtonState(const bool playing_state)
     m_pause_play_action->setText(tr("Play"));
     m_pause_play_action->setIcon(Resources::GetThemeIcon("play"));
     connect(m_pause_play_action, &QAction::triggered, this, &ToolBar::PlayPressed);
-  }
+  }*/
 }
 
 void ToolBar::UpdateIcons()
@@ -184,19 +196,20 @@ void ToolBar::UpdateIcons()
   m_show_pc_action->setIcon(Resources::GetThemeIcon("debugger_show_pc"));
   m_set_pc_action->setIcon(Resources::GetThemeIcon("debugger_set_pc"));
 
-  m_open_action->setIcon(Resources::GetThemeIcon("open"));
+  m_KAR_Mods_action->setIcon(Resources::GetThemeIcon("open"));
   m_refresh_action->setIcon(Resources::GetThemeIcon("refresh"));
 
-  const Core::State state = Core::GetState(Core::System::GetInstance());
-  const bool playing = state != Core::State::Uninitialized && state != Core::State::Paused;
-  if (!playing)
-    m_pause_play_action->setIcon(Resources::GetThemeIcon("play"));
-  else
-    m_pause_play_action->setIcon(Resources::GetThemeIcon("pause"));
+ // const Core::State state = Core::GetState(Core::System::GetInstance());
+ // const bool playing = state != Core::State::Uninitialized && state != Core::State::Paused;
+ // if (!playing)
+    m_KAR_Kofi_action->setIcon(Resources::GetThemeIcon("Account"));
+    m_KAR_Website_action->setIcon(Resources::GetThemeIcon("Connect"));
+ // else
+   // m_pause_play_action->setIcon(Resources::GetThemeIcon("pause"));
 
-  m_stop_action->setIcon(Resources::GetThemeIcon("stop"));
+  m_KAR_Discord_action->setIcon(Resources::GetThemeIcon("gcpad"));
   m_fullscreen_action->setIcon(Resources::GetThemeIcon("fullscreen"));
-  m_screenshot_action->setIcon(Resources::GetThemeIcon("screenshot"));
+  //m_screenshot_action->setIcon(Resources::GetThemeIcon("screenshot"));
   m_config_action->setIcon(Resources::GetThemeIcon("config"));
   m_controllers_action->setIcon(Resources::GetThemeIcon("classic"));
   m_graphics_action->setIcon(Resources::GetThemeIcon("graphics"));

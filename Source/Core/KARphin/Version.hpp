@@ -10,7 +10,7 @@
 #include <string>
 
 #define KARPHIN_VERSION_MAJOR 4
-#define KARPHIN_VERSION_MINOR 3
+#define KARPHIN_VERSION_MINOR 4
 #define KARPHIN_VERSION_HOTFIX 0
 #define KARPHIN_BUILD_IS_DIST true
 

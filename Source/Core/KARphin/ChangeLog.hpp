@@ -41,7 +41,7 @@
 */
 
 //4.3.XXXXX
-#define KARPHIN_CHANGE_LOG_4_3_0 \
+/*#define KARPHIN_CHANGE_LOG_4_3_0 \
   "<h3> 4.3.0 - KWQI file integration</h3>" \
   "<p>KAR Workshop Quick Install (KWQI) are now fully integrated. Deluxe and Backside are baked into KARphin." \
   "<br>The spec and tooling are still being ironed out, so KARphin's internals might change for how KWQI works.<br>" \
@@ -52,6 +52,15 @@
   "<p>On Connection packets now are compressed and uncompressed into a custom Warp Relay spec-ed struct.</p>" \
   "<p>Tweaked the host warning message to be KARphin related</p>" \
   "<p>Cleaned up some left over code brought from K3 for icons.</p>" \
-  
+*/
 
-#define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_0
+#define KARPHIN_CHANGE_LOG_4_4_0                                                                   \
+  "<h3> 4.4.0 - Account Icons</h3>"                                                        \
+  "<p>Accounts now support rendering icon presets in the lobby. Set it in your Account menu.<br>This update will require to set your name again." \
+  "<br> Setting custom icons to whatever you want is a WIP. Everyone has presets</p>" \
+  "<h3> 4.4.0 - Minor Tweaks</h3>"                                                                \
+  "<p>Added direct link to Kofi and Discord on icon bar.</p>" \
+  "<p>Added Mods menu to icon bar but it is currently lacking implementation.</p>" \
+
+
+#define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_4_0

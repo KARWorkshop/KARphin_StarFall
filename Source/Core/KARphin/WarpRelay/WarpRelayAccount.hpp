@@ -11,6 +11,8 @@
 
 #include <Common/IniFile.h>
 
+#include <KARphin/Vender/json.hpp>
+
 namespace KAR::Account
 {
   //defines a account instanced
