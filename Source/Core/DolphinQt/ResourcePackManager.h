@@ -58,5 +58,6 @@ private:
 
   QTableWidget* m_table_widget;
 
+  bool GUIIsDirty = true;
   std::vector<KWQI::Game::KWQIData_Game> games;
 };

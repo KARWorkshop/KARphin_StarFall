@@ -88,13 +88,17 @@ void ResourcePackManager::OpenResourcePackDir()
 void ResourcePackManager::RepopulateTable()
 {
   //loads and caches the games
-  games = KWQI::Game::GetEveryGame();
+  if (GUIIsDirty)
+  {
+    games = KWQI::Game::GetEveryGame();
+    GUIIsDirty = false;
+  }
 
   m_table_widget->clear();
-  m_table_widget->setColumnCount(6);
+  m_table_widget->setColumnCount(4);
 
   m_table_widget->setHorizontalHeaderLabels(
-      {QString{}, tr("Name"), tr("Version"), tr("Description"), tr("Author"), tr("Game ID")});
+      {tr("Name"), tr("Game ID"), tr("Description"), tr("Author")});
 
   auto* header = m_table_widget->horizontalHeader();
 
@@ -116,33 +120,33 @@ void ResourcePackManager::RepopulateTable()
   {
     const auto& game = games[size - 1 - i];
 
-    auto* logo_item = new QTableWidgetItem;
+    //auto* logo_item = new QTableWidgetItem;
     auto* name_item = new QTableWidgetItem(QString::fromStdString(game.displayName));
-    auto* version_item = new QTableWidgetItem(QString::fromStdString("OwO"));
+    auto* version_item = new QTableWidgetItem(QString::fromStdString(game.gameID));
     auto* author_item =
         new QTableWidgetItem(QString::fromStdString(game.authors));
     auto* description_item =
         new QTableWidgetItem(QString::fromStdString(game.desc));
-    auto* website_item =
-        new QTableWidgetItem(QString::fromStdString(game.gameID));
+    //auto* website_item =
+      //  new QTableWidgetItem(QString::fromStdString(game.gameID));
 
-    QPixmap logo;
+    //QPixmap logo;
 
     //logo.loadFromData(reinterpret_cast<const uchar*>(pack.GetLogo().data()),
     //                  (int)pack.GetLogo().size());
 
-    logo_item->setIcon(QIcon(logo));
+    //logo_item->setIcon(QIcon(logo));
 
-    QFont link_font = website_item->font();
+    //QFont link_font = website_item->font();
 
-    link_font.setUnderline(true);
+   // link_font.setUnderline(true);
 
-    website_item->setFont(link_font);
-    website_item->setForeground(QBrush(Qt::blue));
-    website_item->setData(Qt::UserRole, website_item->text());
+   // website_item->setFont(link_font);
+   // website_item->setForeground(QBrush(Qt::blue));
+   // website_item->setData(Qt::UserRole, website_item->text());
 
     for (auto* item :
-         {logo_item, name_item, version_item, author_item, description_item, website_item})
+         {name_item, version_item, author_item, description_item})
     {
       item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
@@ -156,12 +160,12 @@ void ResourcePackManager::RepopulateTable()
       ///}
     }
 
-    m_table_widget->setItem(i, 0, logo_item);
-    m_table_widget->setItem(i, 1, name_item);
-    m_table_widget->setItem(i, 2, version_item);
-    m_table_widget->setItem(i, 3, description_item);
-    m_table_widget->setItem(i, 4, author_item);
-    m_table_widget->setItem(i, 5, website_item);
+    //m_table_widget->setItem(i, 0, logo_item);
+    m_table_widget->setItem(i, 0, name_item);
+    m_table_widget->setItem(i, 1, version_item);
+    m_table_widget->setItem(i, 2, description_item);
+    m_table_widget->setItem(i, 3, author_item);
+    //m_table_widget->setItem(i, 5, website_item);
   }
 
   SelectionChanged();
@@ -314,7 +318,7 @@ void ResourcePackManager::SelectionChanged()
 {
   auto items = m_table_widget->selectedItems();
 
-  const bool has_selection = !items.empty();
+  //const bool has_selection = !items.empty();
 
   //if (has_selection)
   //{
