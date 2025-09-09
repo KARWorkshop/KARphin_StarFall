@@ -121,7 +121,7 @@ void ToolBar::MakeActions()
 
   addSeparator();
 
-  m_KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OnModsMenuPressed);
+ // m_KAR_Mods_action = addAction(tr("Mods"), this, &ToolBar::OnModsMenuPressed);
   m_refresh_action = addAction(tr("Refresh"), [this] { emit RefreshPressed(); });
   m_refresh_action->setEnabled(false);
 
@@ -151,7 +151,7 @@ void ToolBar::MakeActions()
   // Ensure every button has about the same width
   std::vector<QWidget*> items;
   for (const auto& action :
-       {m_netplay_connect_host_action, m_netplay_lobbyList_action, m_KAR_Mods_action,
+       {m_netplay_connect_host_action, m_netplay_lobbyList_action/*, m_KAR_Mods_action*/,
         m_KAR_Kofi_action, m_KAR_Discord_action, m_KAR_Discord_action, m_KAR_Website_action, m_fullscreen_action,
         /*m_screenshot_action,*/ m_config_action, m_graphics_action, m_controllers_action,
         m_step_action, m_step_over_action, m_step_out_action, m_skip_action, m_show_pc_action,
@@ -196,13 +196,13 @@ void ToolBar::UpdateIcons()
   m_show_pc_action->setIcon(Resources::GetThemeIcon("debugger_show_pc"));
   m_set_pc_action->setIcon(Resources::GetThemeIcon("debugger_set_pc"));
 
-  m_KAR_Mods_action->setIcon(Resources::GetThemeIcon("open"));
+  //m_KAR_Mods_action->setIcon(Resources::GetThemeIcon("open"));
   m_refresh_action->setIcon(Resources::GetThemeIcon("refresh"));
 
  // const Core::State state = Core::GetState(Core::System::GetInstance());
  // const bool playing = state != Core::State::Uninitialized && state != Core::State::Paused;
  // if (!playing)
-    m_KAR_Kofi_action->setIcon(Resources::GetThemeIcon("Account"));
+    m_KAR_Kofi_action->setIcon(Resources::GetThemeIcon("open"));
     m_KAR_Website_action->setIcon(Resources::GetThemeIcon("Connect"));
  // else
    // m_pause_play_action->setIcon(Resources::GetThemeIcon("pause"));

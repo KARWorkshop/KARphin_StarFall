@@ -60,7 +60,7 @@ private:
   QAction* m_KAR_Kofi_action;
   QAction* m_KAR_Discord_action;
   QAction* m_KAR_Website_action;
-  QAction* m_KAR_Mods_action;
+  //QAction* m_KAR_Mods_action;
 
   //QAction* m_open_action;
   QAction* m_refresh_action;

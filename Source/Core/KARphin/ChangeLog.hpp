@@ -57,7 +57,7 @@
 #define KARPHIN_CHANGE_LOG_4_3_1                                                                   \
   "<h3> 4.3.1 - Minor Tweaks</h3>"                                                                \
   "<p>Added direct link to Kofi and Discord on icon bar.</p>" \
-  "<p>Mods menu added, but lacking full implementation</p>" \
+  "<p></p>" \
 
 
 #define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_1
