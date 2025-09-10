@@ -41,7 +41,7 @@ NetPlaySetupDialog::NetPlaySetupDialog(const GameListModel& game_list_model, QWi
   CreateMainLayout();
 
   // loads all accounts
-  KAR::Account::Account::Instance() = KAR::Account::LoadAccount_Default();
+  KAR::Account::Account::Instance() = KAR::Account::LoadDefaultWarpRelayAccount();
   KAR::Account::Account acc = KAR::Account::Account::Instance();
 
   bool use_index = Config::Get(Config::NETPLAY_USE_INDEX);

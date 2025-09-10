@@ -55,9 +55,15 @@
 */
 
 #define KARPHIN_CHANGE_LOG_4_3_1                                                                   \
+  "<h3> 4.3.1 - Lobby Icons....Kinda!</h3>"                                                                 \
+  "<p>Icons are offically-ish back! They've been rebranded as Banners. This feature is considered beta, but it's stable enough to roll out to the public." \
+  "<br>They can be selected from the Account menu. <br><br> A note on CUSTOM BANNERS, during K3 some people had custom icons. " \
+  "This was never made something everyone could do. " \
+  "<br>That is still going to be the case. But I want to roll it out to more people. This is purly a cosmetic thing and has zero affect on gameplay.<br>" \
+  " The exact method for how I am gonna do this is in the works, but I'll keep ya'll posted." \
+  "</p>" \
   "<h3> 4.3.1 - Minor Tweaks</h3>"                                                                \
-  "<p>Added direct link to Kofi and Discord on icon bar.</p>" \
-  "<p></p>" \
+  "<p>Added direct link to Kofi, Discord, and KAR Workshop on icon bar.</p>" \
 
 
 #define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_1

@@ -2,14 +2,14 @@
 
 //defines a warp relay account
 
+#include <KARphin/WarpRelay/Account/BannerURLMapper.hpp>
+
 #include <string>
 
 #include <KARphin/IO/DirectoryStructure.hpp>
 #include <Common/FileUtil.h>
 
 #include "Core/Config/NetplaySettings.h"
-
-#include <Common/IniFile.h>
 
 #include <KARphin/Vender/json.hpp>
 
@@ -19,6 +19,8 @@ namespace KAR::Account
   struct Account
   {
     uint8_t playerID = 0; //the player ID provided by Dolphin's network
+    uint8_t presetIndex = 0; //sets the preset Banner index, if they have a custom, it will just use that
+    KARphin::WarpRelay::Account::BannerKind bannerKind = KARphin::WarpRelay::Account::BannerKind::Preset; //if they sub they can use custom and discord
     std::string displayName = "", //the display name we are using
       iconURL = ""; //the URL to the icon for downloading and rendering in the Lobby
 
@@ -33,56 +35,93 @@ namespace KAR::Account
       return a;
     }
 
+    //gets a default settings
+    static inline Account DefaultSettings()
+    {
+      Account acc;
+      acc.displayName = "Kirby";
+      acc.iconURL = KARphin::WarpRelay::Account::WR_PRESET_BANNER_URLS[0];
+      acc.presetIndex = 0;
+      acc.bannerKind = KARphin::WarpRelay::Account::BannerKind::Preset;
+      return acc;
+    }
+
+    //gets default filepath
+    static inline std::string DefaultFilepath()
+    {
+      return KAR::IO::GetDirectory_Account() + "guest.wrv2";
+    }
+
     //loads a file from disc
     inline void Load(const std::string& filepath)
     {
-      Common::IniFile settings;
-      settings.Load(filepath);
-      Common::IniFile::Section* section = settings.GetOrCreateSection("Warp Relay");
-      section->Get("displayName", &displayName);
-      iconURL = section->Get("icon", &iconURL);
+      if (!std::filesystem::exists(filepath))
+      {
+        Account acc = DefaultSettings();
+        displayName = acc.displayName;
+        iconURL = acc.iconURL;
+        acc.Write(filepath);
+        return;
+      }
+
+      std::ifstream netInfoReader(filepath, std::ios::binary);
+      std::vector<std::uint8_t> data((std::istreambuf_iterator<char>(netInfoReader)),
+                                          std::istreambuf_iterator<char>());
+
+      //if there's no data, use the default
+      if (!data.size())
+      {
+        Account acc = DefaultSettings();
+        displayName = acc.displayName;
+        iconURL = acc.iconURL;
+      }
+      else // if it's the new format
+      {
+        nlohmann::json info = nlohmann::json::from_ubjson(data);
+        if (info.contains("name")) { displayName = info["name"].get<std::string>(); }
+        if (info.contains("URL")) {iconURL = info["URL"].get<std::string>();}
+        if (info.contains("bannerKind")){bannerKind = (KARphin::WarpRelay::Account::BannerKind)info["bannerKind"].get<int>();}
+        if (info.contains("presetIndex")){presetIndex = info["presetIndex"].get<uint8_t>();}
+      }
     }
 
     //writes data to a disc
     inline void Write(const std::string& filepath)
     {
-      if (File::Exists(filepath))
-        File::Delete(filepath, File::IfAbsentBehavior::NoConsoleWarning);
+      nlohmann::json info;
+      info["name"] = displayName;
+      info["URL"] = iconURL;
+      info["bannerKind"] = (int)bannerKind;
+      info["presetIndex"] = presetIndex;
+      std::vector<std::uint8_t> data = nlohmann::json::to_ubjson(info);
 
+      if (std::filesystem::exists(filepath))
+        std::filesystem::remove(filepath);
       File::CreateEmptyFile(filepath);
-
-      Common::IniFile data;
-      Common::IniFile::Section* section = data.GetOrCreateSection("Warp Relay");
-      section->Set("displayName", displayName);
-      section->Set("icon", iconURL);
-
-      data.Save(filepath);
+      std::ofstream outFile(filepath, std::ios::binary);
+      outFile.write(reinterpret_cast<const char*>(data.data()), data.size() * sizeof(uint8_t));
+      outFile.close();
     }
 
   };
 
-  //loads the default guest account
-  static inline Account LoadAccount_Default()
+  //loads the default Warp Relay Account
+  static inline Account LoadDefaultWarpRelayAccount()
   {
-    const std::string accountDir = KAR::IO::GetDirectory_Account();
-    const std::string guestFP = accountDir + "Guest.wr";
+    // deletes the "Accounts" folder since that was a error in the release to have alongside the
+    // Account folder
+    if (std::filesystem::exists(File::GetExeDirectory() + DIR_SEP + "Accounts"))
+      std::filesystem::remove(File::GetExeDirectory() + DIR_SEP + "Accounts");
+
+    //deletes the old format of warp relay data
+    if (std::filesystem::exists(KAR::IO::GetDirectory_Account() + "guest.wr"))
+      std::filesystem::remove(KAR::IO::GetDirectory_Account() + "guest.wr");
+    if (std::filesystem::exists(KAR::IO::GetDirectory_Account() + "Guest.wr"))
+      std::filesystem::remove(KAR::IO::GetDirectory_Account() + "Guest.wr");
 
     Account acc;
-
-    if (!File::Exists(guestFP))
-    {
-      acc.displayName = "Kirby";
-      acc.iconURL = "https://github.com/KARWorkshop/KARphin_StarFall/releases/download/"
-                    "data-account/kirb_0.png";
-      acc.Write(guestFP);
-    }
-    else
-    {
-      acc.Load(guestFP);
-    }
-
+    acc.Load(Account::DefaultFilepath());
     return acc;
-
   }
 
 }  // namespace KAR::Account

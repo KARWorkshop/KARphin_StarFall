@@ -85,6 +85,7 @@
     <ClInclude Include="KARphin\Vender\json.hpp" />
     <ClInclude Include="KARphin\Vender\json_fwd.hpp" />
     <ClInclude Include="KARphin\Version.hpp" />
+    <ClInclude Include="KARphin\WarpRelay\Account\BannerURLMapper.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Lobby.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Lobby\LobbyProperties.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Packets\Packet_AdminCommand.hpp" />

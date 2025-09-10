@@ -83,7 +83,7 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   //loads all accounts
-  KAR::Account::Account::Instance() = KAR::Account::LoadAccount_Default();
+  KAR::Account::Account::Instance() = KAR::Account::LoadDefaultWarpRelayAccount();
   KAR::Account::Account acc = KAR::Account::Account::Instance();
 
   //creates the layout
@@ -225,6 +225,8 @@ void KAR::WarpRelay::AccountInfoDialog::OnAccountChanged(int index)
   //     KAR::WarpRelay::WarpRelayAccountManager::currentlyLoggedInAccountIndex;
   // KAR::Boot::WriteKARSettingsToDisc(settings);
 
+    KAR::Account::Account::Instance().Write(KAR::Account::Account::DefaultFilepath());
+
   }
   else //if they refuse to change, revert to the previous index
   {
@@ -280,7 +282,7 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
     //saves the data to the file
     KAR::Account::Account::Instance().displayName =
         displayName_EditFeild->text().toStdString();
-    KAR::Account::Account::Instance().Write(KAR::IO::GetDirectory_Account() + "Guest.wr");
+    
 
     //saves the selected Warp Relay Account
    // bool d = false;
@@ -289,6 +291,8 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
    // settings.warpRelayAccountIndex =
    //     KAR::WarpRelay::WarpRelayAccountManager::currentlyLoggedInAccountIndex;
    // KAR::Boot::WriteKARSettingsToDisc(settings);
+
+    KAR::Account::Account::Instance().Write(KAR::Account::Account::DefaultFilepath());
 
     // Accept the close event
     event->accept();
