@@ -260,6 +260,7 @@ bool NetPlayClient::Connect()
   onPlayerConnect.clientVersion = Common::GetNetplayDolphinVer();
   onPlayerConnect.nickname = m_player_name;
   onPlayerConnect.kind = (KARphin::WarpRelay::Netplay::Packet::JoinKind)Config::Get(Config::NETPLAY_KAR_ACCOUNT_KIND);
+  onPlayerConnect.warpRelayIconURL = KAR::Account::Account::Instance().iconURL;
   sf::Packet packet = KARphin::WarpRelay::Netplay::Packet::PackageDataIntoSFMLPacket_OnPlayerConnect(onPlayerConnect);
   /*packet << Common::GetScmRevGitStr();
   packet << Common::GetNetplayDolphinVer();
@@ -516,6 +517,7 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
   packet >> player.pid;
   packet >> player.name;
   packet >> player.revision;
+  packet >> player.warpRelayIconURL;
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) using {} joined", player.name, player.pid, player.revision);
 

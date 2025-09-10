@@ -453,6 +453,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   Client new_player{};
   new_player.pid = GiveFirstAvailableIDTo(incoming_connection);
   new_player.socket = incoming_connection;
+  new_player.warpRelayIconURL = onPlayerConnect.warpRelayIconURL;
 
   //received_packet >> new_player.revision;
   //received_packet >> new_player.name;
@@ -476,7 +477,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
 
   // tell other players a new player joined
   SendResponseToAllPlayers(MessageID::PlayerJoin, new_player.pid, new_player.name,
-                           new_player.revision);
+                           new_player.revision, new_player.warpRelayIconURL);
 
   // tell new client they connected and their ID
   SendResponseToPlayer(new_player, MessageID::ConnectionSuccessful, new_player.pid);
@@ -499,7 +500,8 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   for (const auto& existing_player : m_players)
   {
     SendResponseToPlayer(new_player, MessageID::PlayerJoin, existing_player.second.pid,
-                         existing_player.second.name, existing_player.second.revision);
+                         existing_player.second.name, existing_player.second.revision,
+                         existing_player.second.warpRelayIconURL);
 
     SendResponseToPlayer(new_player, MessageID::GameStatus, existing_player.second.pid,
                          static_cast<u8>(existing_player.second.game_status));
