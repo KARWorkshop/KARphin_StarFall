@@ -190,4 +190,7 @@ private:
   StartGameCallback m_start_game_callback;
 
   bool hasSeenCTDesyncMsg = false; //have we seen the CT desync message
+
+  //stores the icons for all the players
+  std::map<std::string, QIcon> iconCache; //stores the icons based on URL
 };

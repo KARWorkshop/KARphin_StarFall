@@ -326,6 +326,7 @@ bool NetPlayClient::Connect()
 
     //stores the PID as our active account
     KAR::Account::Account::Instance().playerID = (uint8_t)m_pid;
+    player.warpRelayIconURL = KAR::Account::Account::Instance().iconURL;
 
     // add self to player list
     m_players[m_pid] = player;

@@ -97,6 +97,8 @@
 #include <KARphin/KWQI/KWQI_MemoryCard.hpp>
 #include <KARphin/KWQI/KWQI_Game.hpp>
 
+#include <KARphin/WarpRelay/Account/BannerLoader.hpp>
+
 namespace
 {
 QString InetAddressToString(const Common::TraversalInetAddress& addr)
@@ -742,6 +744,9 @@ void NetPlayDialog::UpdateGUI()
                           -1;
 
   m_players_list->clear();
+  m_players_list->setIconSize(QSize(
+      KARphin::WarpRelay::Account::BANNER_ICON_SIZE_WIDTH,
+      KARphin::WarpRelay::Account::BANNER_ICON_SIZE_HEIGHT));  // sets the icon size for rendering
   m_players_list->setHorizontalHeaderLabels(
       {tr("Player"), tr("Game Status"), tr("Ping"), tr("Mapping"), tr("Revision")});
   m_players_list->setRowCount(m_player_count);
@@ -765,9 +770,22 @@ void NetPlayDialog::UpdateGUI()
 
   for (int i = 0; i < m_player_count; i++)
   {
-    const auto* p = players[i];
+    auto p = players[i];
+
+    //checks if we have the player icon downloaded, if not download it and cache it
+    if (iconCache.find(players[i]->warpRelayIconURL) == iconCache.end())
+    {
+      QPixmap rawIcon;
+          KARphin::WarpRelay::Account::GetIcon(players[i]->warpRelayIconURL);
+      rawIcon.loadFromData(
+          reinterpret_cast<const uchar*>(
+              KARphin::WarpRelay::Account::GetIcon(players[i]->warpRelayIconURL).data()),
+          (int)KARphin::WarpRelay::Account::GetIcon(players[i]->warpRelayIconURL).size());
+      iconCache[players[i]->warpRelayIconURL] = QIcon(rawIcon);
+    }
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->name));
+    name_item->setIcon(iconCache.at(players[i]->warpRelayIconURL));
     name_item->setToolTip(name_item->text());
     const auto& status_info = player_status.count(p->game_status) ?
                                   player_status.at(p->game_status) :

@@ -24,6 +24,8 @@
 #include "Core/SyncIdentifier.h"
 #include "InputCommon/GCPadStatus.h"
 
+#include <KARphin/WarpRelay/Account/BannerURLMapper.hpp>
+
 class BootSessionData;
 
 namespace IOS::HLE::FS
@@ -104,6 +106,7 @@ public:
   std::string revision;
   u32 ping = 0;
   SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
+  std::string warpRelayIconURL = KARphin::WarpRelay::Account::WR_PRESET_BANNER_URLS[0];
 
   bool IsHost() const { return pid == 1; }
 };
