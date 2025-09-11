@@ -439,9 +439,7 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   KARphin::WarpRelay::Netplay::Packet::Packet_OnPlayerConnect onPlayerConnect =
       KARphin::WarpRelay::Netplay::Packet::UnpackSFMLPacket_OnPlayerConnect(received_packet);
 
-  //std::string netplay_version;
-  //received_packet >> netplay_version;
-  if (onPlayerConnect.SCMVersion /*netplay_version*/ != Common::GetScmRevGitStr())
+  if (onPlayerConnect.SCMVersion != Common::GetScmRevGitStr())
     return ConnectionError::VersionMismatch;
 
   if (m_is_running || m_start_pending)
@@ -455,8 +453,6 @@ ConnectionError NetPlayServer::OnConnect(ENetPeer* incoming_connection, sf::Pack
   new_player.socket = incoming_connection;
   new_player.warpRelayIconURL = onPlayerConnect.warpRelayIconURL;
 
-  //received_packet >> new_player.revision;
-  //received_packet >> new_player.name;
   new_player.revision = onPlayerConnect.clientVersion;
   new_player.name = onPlayerConnect.nickname;
 
