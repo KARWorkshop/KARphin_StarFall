@@ -192,5 +192,5 @@ private:
   bool hasSeenCTDesyncMsg = false; //have we seen the CT desync message
 
   //stores the icons for all the players
-  std::map<std::string, QIcon> iconCache; //stores the icons based on URL
+  std::map<std::string, QIcon> iconCache; //the packed Banner in a QT icon
 };

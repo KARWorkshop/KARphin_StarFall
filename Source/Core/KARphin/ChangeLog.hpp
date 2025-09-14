@@ -55,15 +55,24 @@
 */
 
 #define KARPHIN_CHANGE_LOG_4_3_1                                                                   \
-  "<h3> 4.3.1 - Lobby Icons....Kinda!</h3>"                                                                 \
-  "<p>Icons are offically-ish back! They've been rebranded as Banners. This feature is considered beta, but it's stable enough to roll out to the public." \
-  "<br>They can be selected from the Account menu. <br><br> A note on CUSTOM BANNERS, during K3 some people had custom icons. " \
-  "This was never made something everyone could do. " \
-  "<br>That is still going to be the case. But I want to roll it out to more people. This is purly a cosmetic thing and has zero affect on gameplay.<br>" \
-  " The exact method for how I am gonna do this is in the works, but I'll keep ya'll posted." \
-  "</p>" \
+  "<h3> 4.3.1 - Lobby Icons!</h3>"                                                                 \
+  "<p>Lobby Icons have been brought back and renamed to Banners. K3 had icons the players could choose and it would show in the lobby.<br>" \
+  "They are back and redone by Taco, they are now vectorized images, meaning we can scale them as much as want.<br>" \
+  "You will experiance a slight lag the first time you open the Account menu or Lobby. This should only happen once as it caches the logos. From then on it should be faster.<br>" \
+  "More icons will be added as time goes on and that's partly what donations at the Kofi will be going towards. <br>" \
+  "No way am I gonna let Taco (and maybe some other artists) make this sick art for free. I am paying theses skilled craftsmen the money they RIGHTFULLY DESERVE!</p>" \
+  "<h4> Uploading Our Own Banners?</h4>"                                                                 \
+  "<p>During K3, some users had custom icons. I do plan to bring theses back but the exact method is being worked on. <br>" \
+  "The main things right now is <br>1. speeding up how banners are loading and downloaded.<br>2. It's gonna be a reward for those who support the project. <br>" \
+  "If people are gonna give me money, I want to make it worth it for them. DO NOT DONATE EXPECTING CUSTOM BANNERS, AS OF RIGHT NOW IT'S NOT IMPLEMENTED!<br>" \
+  "The exact details are being ironed out, but even there are custom ones. New banners are gonna be coming out for everyone to use. So you don't have to pay to use basic features. <br>" \
+  "We're here to play a game, and that's always gonna be free.</p>" \
   "<h3> 4.3.1 - Minor Tweaks</h3>"                                                                \
   "<p>Added direct link to Kofi, Discord, and KAR Workshop on icon bar.</p>" \
+  "<p>Froze the git hash versioning for testing if Linux can properly connect to Windows machine.</p>" \
+  "<p>Revised the Warp Relay Net Settings spec.</p>" \
+  "<p>KARphin cleans up some errors in the folders in the KARphin install.</p>" \
+  "<p>Player Join packets wraps the Banner Info and Warp Relay spec.</p>" \
 
 
 #define KARPHIN_CHANGE_LOG KARPHIN_CHANGE_LOG_4_3_1

@@ -260,7 +260,7 @@ bool NetPlayClient::Connect()
   onPlayerConnect.clientVersion = Common::GetNetplayDolphinVer();
   onPlayerConnect.nickname = m_player_name;
   onPlayerConnect.kind = (KARphin::WarpRelay::Netplay::Packet::JoinKind)Config::Get(Config::NETPLAY_KAR_ACCOUNT_KIND);
-  onPlayerConnect.warpRelayIconURL = KAR::Account::Account::Instance().iconURL;
+  onPlayerConnect.bannerURL = KAR::Account::Account::Instance().bannerURL;
   sf::Packet packet = KARphin::WarpRelay::Netplay::Packet::PackageDataIntoSFMLPacket_OnPlayerConnect(onPlayerConnect);
   /*packet << Common::GetScmRevGitStr();
   packet << Common::GetNetplayDolphinVer();
@@ -327,7 +327,7 @@ bool NetPlayClient::Connect()
 
     //stores the PID as our active account
     KAR::Account::Account::Instance().playerID = (uint8_t)m_pid;
-    player.warpRelayIconURL = KAR::Account::Account::Instance().iconURL;
+    player.bannerURL = KAR::Account::Account::Instance().bannerURL;
 
     // add self to player list
     m_players[m_pid] = player;
@@ -517,7 +517,7 @@ void NetPlayClient::OnPlayerJoin(sf::Packet& packet)
   packet >> player.pid;
   packet >> player.name;
   packet >> player.revision;
-  packet >> player.warpRelayIconURL;
+  packet >> player.bannerURL;
 
   INFO_LOG_FMT(NETPLAY, "Player {} ({}) using {} joined", player.name, player.pid, player.revision);
 

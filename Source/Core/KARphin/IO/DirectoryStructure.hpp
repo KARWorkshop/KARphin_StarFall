@@ -98,4 +98,10 @@ namespace KAR::IO
     return CreateDirIfMissing(GetDirectory_Mods() + "MemoryCards" + DIR_SEP);
   }
 
+  // gets/creates the directory for all net caching
+  static inline std::string GetDirectory_NetCache()
+  {
+    return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR + DIR_SEP + "NetCache" + DIR_SEP);
+  }
+
   }

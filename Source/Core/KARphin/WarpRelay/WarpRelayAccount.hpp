@@ -2,7 +2,8 @@
 
 //defines a warp relay account
 
-#include <KARphin/WarpRelay/Account/BannerURLMapper.hpp>
+#include <KARphin/WarpRelay/Account/BannerLoader.hpp>
+#include <KARphin/WarpRelay/Account/BannerIDMapper.hpp>
 
 #include <string>
 
@@ -19,14 +20,11 @@ namespace KAR::Account
   struct Account
   {
     uint8_t playerID = 0; //the player ID provided by Dolphin's network
-    uint8_t presetIndex = 0; //sets the preset Banner index, if they have a custom, it will just use that
-    KARphin::WarpRelay::Account::BannerKind bannerKind = KARphin::WarpRelay::Account::BannerKind::Preset; //if they sub they can use custom and discord
-    std::string displayName = "", //the display name we are using
-      iconURL = ""; //the URL to the icon for downloading and rendering in the Lobby
+    std::string displayName = "";  // the display name we are using
+    std::string bannerURL = ""; //the URL for the banner we are using
 
     //is the account currently loaded
     inline bool IsValidAccount() { return (playerID != 0); }
-
 
     //returns the instance of the account
     static inline Account& Instance()
@@ -40,9 +38,7 @@ namespace KAR::Account
     {
       Account acc;
       acc.displayName = "Kirby";
-      acc.iconURL = KARphin::WarpRelay::Account::WR_PRESET_BANNER_URLS[0];
-      acc.presetIndex = 0;
-      acc.bannerKind = KARphin::WarpRelay::Account::BannerKind::Preset;
+      acc.bannerURL = KARphin::WarpRelay::Account::Banner::BANNER_URLS[0];
       return acc;
     }
 
@@ -59,7 +55,7 @@ namespace KAR::Account
       {
         Account acc = DefaultSettings();
         displayName = acc.displayName;
-        iconURL = acc.iconURL;
+        acc.bannerURL = KARphin::WarpRelay::Account::Banner::BANNER_URLS[0];
         acc.Write(filepath);
         return;
       }
@@ -73,15 +69,13 @@ namespace KAR::Account
       {
         Account acc = DefaultSettings();
         displayName = acc.displayName;
-        iconURL = acc.iconURL;
+        acc.bannerURL = KARphin::WarpRelay::Account::Banner::BANNER_URLS[0];
       }
       else // if it's the new format
       {
         nlohmann::json info = nlohmann::json::from_ubjson(data);
         if (info.contains("name")) { displayName = info["name"].get<std::string>(); }
-        if (info.contains("URL")) {iconURL = info["URL"].get<std::string>();}
-        if (info.contains("bannerKind")){bannerKind = (KARphin::WarpRelay::Account::BannerKind)info["bannerKind"].get<int>();}
-        if (info.contains("presetIndex")){presetIndex = info["presetIndex"].get<uint8_t>();}
+        if (info.contains("bannerURL")) { bannerURL = info["bannerURL"].get<std::string>(); }
       }
     }
 
@@ -90,9 +84,7 @@ namespace KAR::Account
     {
       nlohmann::json info;
       info["name"] = displayName;
-      info["URL"] = iconURL;
-      info["bannerKind"] = (int)bannerKind;
-      info["presetIndex"] = presetIndex;
+      info["bannerURL"] = bannerURL;
       std::vector<std::uint8_t> data = nlohmann::json::to_ubjson(info);
 
       if (std::filesystem::exists(filepath))

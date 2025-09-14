@@ -26,7 +26,7 @@ namespace KARphin::WarpRelay::Netplay::Packet
 		std::string SCMVersion = "";  // the version control string of their client, if they got a incompatable version, reject them
 		std::string clientVersion = ""; //the version of their client, if they got a incompatable version, reject them
     std::string nickname = ""; //the nickname they choose to show online
-    std::string warpRelayIconURL = ""; //the URL for their warp relay icon
+    std::string bannerURL = ""; //what banner are we using
 	};
 
 	//packs data into a packet we can send accros the network
@@ -37,7 +37,7 @@ namespace KARphin::WarpRelay::Netplay::Packet
 		packet << data.SCMVersion;
     packet << data.clientVersion;
     packet << data.nickname;
-    packet << data.warpRelayIconURL;
+    packet << data.bannerURL;
 
 		return packet;
 	}
@@ -46,14 +46,15 @@ namespace KARphin::WarpRelay::Netplay::Packet
   static inline Packet_OnPlayerConnect UnpackSFMLPacket_OnPlayerConnect(sf::Packet& packet)
   {
     Packet_OnPlayerConnect data;
-    uint8_t kind = 0;
+
+		uint8_t kind = 0;
     packet >> kind;
-    packet >> data.SCMVersion;
+    data.kind = (JoinKind)kind;
+
+		packet >> data.SCMVersion;
     packet >> data.clientVersion;
     packet >> data.nickname;
-    packet >> data.warpRelayIconURL;
-
-		data.kind = (JoinKind)kind;
+    packet >> data.bannerURL;
 
     return data;
   }

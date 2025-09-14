@@ -773,19 +773,20 @@ void NetPlayDialog::UpdateGUI()
     auto p = players[i];
 
     //checks if we have the player icon downloaded, if not download it and cache it
-    if (iconCache.find(players[i]->warpRelayIconURL) == iconCache.end())
+    if (iconCache.find(players[i]->bannerURL) == iconCache.end())
     {
+      const std::vector<uint8_t>& binaryData =
+          KARphin::WarpRelay::Account::BannerLoader::Instance().GetIcon(players[i]->bannerURL);
+
       QPixmap rawIcon;
-          KARphin::WarpRelay::Account::GetIcon(players[i]->warpRelayIconURL);
       rawIcon.loadFromData(
-          reinterpret_cast<const uchar*>(
-              KARphin::WarpRelay::Account::GetIcon(players[i]->warpRelayIconURL).data()),
-          (int)KARphin::WarpRelay::Account::GetIcon(players[i]->warpRelayIconURL).size());
-      iconCache[players[i]->warpRelayIconURL] = QIcon(rawIcon);
+          reinterpret_cast<const uchar*>(binaryData.data()),
+                           (int)binaryData.size());
+      iconCache[players[i]->bannerURL] = QIcon(rawIcon);
     }
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->name));
-    name_item->setIcon(iconCache.at(players[i]->warpRelayIconURL));
+    name_item->setIcon(iconCache.at(players[i]->bannerURL));
     name_item->setToolTip(name_item->text());
     const auto& status_info = player_status.count(p->game_status) ?
                                   player_status.at(p->game_status) :

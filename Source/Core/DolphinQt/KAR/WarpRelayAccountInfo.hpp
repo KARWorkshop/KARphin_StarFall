@@ -6,6 +6,8 @@
 
 //#include <Core/KAR/WarpRelay\WarpRelayAccountManager.hpp>
 
+#include <KARphin/WarpRelay/Account/BannerLoader.hpp>
+
 //class QCheckBox;
 class QComboBox;
 class QDialogButtonBox;
@@ -18,15 +20,16 @@ class QPushButton;
 //class QSpinBox;
 //class QTabWidget;
 class QLabel;
+class QScrollArea;
 class QVBoxLayout;
 
 namespace KAR::WarpRelay
 {
 class AccountInfoDialog : public QDialog
 {
- // Q_OBJECT
+  //Q_OBJECT
 public:
-  explicit AccountInfoDialog(QWidget* parent);
+  explicit AccountInfoDialog(QWidget* parent = nullptr);
 
   void closeEvent(QCloseEvent* event) override;
 
@@ -51,7 +54,22 @@ private:
   //updates the image we render
   void UpdateAccountIcon();
 
+  //updates the icons
+  void UpdateIcons();
+
   QVBoxLayout* m_main_layout;
+
+  //the scroll view for all the banners
+  QWidget* container;
+  QGridLayout* grid;
+  QScrollArea* scrollArea;
+
+  //all the icon data
+ // std::vector<KARphin::WarpRelay::Account::LoadedBanner> bannerData;
+ // std::vector<QWidget*> banners;
+  //std::vector<QLabel*> bannerLabels;
+
+ // std::thread loadingThread;
 
   //common
   QComboBox* accounts_Dropdown;

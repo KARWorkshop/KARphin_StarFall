@@ -26,6 +26,7 @@
 #include "InputCommon/GCPadStatus.h"
 #include "UICommon/NetPlayIndex.h"
 
+
 namespace NetPlay
 {
 class NetPlayUI;
@@ -82,10 +83,11 @@ private:
   class Client
   {
   public:
+
     PlayerId pid{};
     std::string name;
     std::string revision;
-    std::string warpRelayIconURL;
+    std::string warpRelayBannerURL = "";
     SyncIdentifierComparison game_status = SyncIdentifierComparison::Unknown;
     bool has_ipl_dump = false;
     bool has_hardware_fma = false;

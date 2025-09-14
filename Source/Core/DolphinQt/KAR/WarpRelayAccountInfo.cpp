@@ -28,6 +28,16 @@
 
 #include <KARphin/WarpRelay/WarpRelayAccount.hpp>
 
+#include <QScrollArea>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QLabel>
+#include <QPixmap>
+#include <QWidget>
+#include <qthread.h>
+
+
 //#include <Core/KAR/KARBootData.hpp>
 
 //#include <KAR/WarpRelayImageLoader.hpp>
@@ -76,6 +86,35 @@ void KAR::WarpRelay::AccountInfoDialog::OnGUIChange_WarpRelayAccount()
   //customURL_Label->setVisible(true);
 }
 
+////creates a icon item
+//QWidget* createIconItem(const KARphin::WarpRelay::Account::BannerInfo& info, QLabel* iconLabel)
+//{
+//  QWidget* item = new QWidget;
+//  QVBoxLayout* layout = new QVBoxLayout(item);
+//  layout->setSpacing(2);
+//  layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+//
+//  iconLabel = new QLabel;
+//  QPixmap pix;
+//  const std::vector<uint8_t> data =
+//      KARphin::WarpRelay::Account::BannerLoader::Instance().GetIcon("");
+//  pix.loadFromData(reinterpret_cast<const uchar*>(
+//                  data.data()),
+//              (int)data.size());
+//  iconLabel->setPixmap(
+//      QPixmap(pix).scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//  iconLabel->setAlignment(Qt::AlignCenter);
+//
+//  QLabel* textLabel = new QLabel(QString::fromStdString(info.displayName));
+//  textLabel->setAlignment(Qt::AlignCenter);
+//
+//  layout->addWidget(iconLabel);
+//  layout->addWidget(textLabel);
+//
+//  return item;
+//}
+
+
 KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
     : QDialog(parent)
 {
@@ -116,6 +155,124 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
    displayName_EditFeild->setValidator(
        new UTF8CodePointCountValidator(NetPlay::MAX_NAME_LENGTH, displayName_EditFeild));
    m_main_layout->addWidget(displayName_EditFeild);
+
+   //----icon row
+
+   //loads the default icons
+
+
+    //  Scroll area for horizontal scrolling
+  // scrollArea = new QScrollArea;
+  // // scrollArea->setWidgetResizable(true);
+  // scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  // scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+  //
+  // // Container for icons
+  // container = new QWidget;
+  // grid = new QGridLayout(container);
+  // scrollArea->setWidgetResizable(true);
+  // grid->setSpacing(5);
+  // scrollArea->setVisible(false);
+
+   // downloads the place holder icon if needed and get the total number of Banners that exist in
+   // the system
+   // get the number the user has unlocked
+  //const std::string placeholder = KARphin::WarpRelay::Account::GetPlaceHolderIcon();
+  //const uint8_t TOTAL_BANNER_COUNT = WR_PRESET_BANNER_COUNT;
+  //const std::vector<uint8_t> userHasUnlocked = {8, 2, 0, 4};
+  //
+  //// generates all the icons we need
+  //bannerData.resize(TOTAL_BANNER_COUNT);
+  //banners.resize(TOTAL_BANNER_COUNT);
+  //bannerLabels.resize(TOTAL_BANNER_COUNT);
+
+   //const uint8_t MAX_ICONS_PER_COL = 3;
+   //uint8_t iconIndex = 0;
+   //uint8_t rowIndex = 0;
+   //uint8_t colIndex = 0;
+   //for (size_t i = 0; i < TOTAL_BANNER_COUNT; ++i)
+   //{
+   //  banners[i] =
+   //      createIconItem("https://github.com/KARWorkshop/KARphin_StarFall/releases/download/data-account/"
+   //      "BannerLocked.png",
+   //                     KARphin::WarpRelay::Account::WR_PRESET_BANNER_NAMES[i], bannerLabels[i]);
+   //  grid->addWidget(banners[i], colIndex, rowIndex);
+   //
+   //  rowIndex++;
+   //  if (rowIndex == MAX_ICONS_PER_COL)
+   //  {
+   //    rowIndex = 0;
+   //    colIndex++;
+   //  }
+   //
+   //  iconIndex++;
+   //}
+
+   //scrollArea->setWidget(container);
+  // m_main_layout->addWidget(scrollArea);
+   
+   //mainLayout->addWidget(scrollArea);
+   //scrollArea->setLayout(grid);
+   
+
+   setLayout(m_main_layout);
+
+   //loads each icon and updates the data as needed
+   /* loadingThread = std::thread([&] {
+      const uint8_t MAX_ICONS_PER_COL = 3;
+      uint8_t iconIndex = 0;
+      uint8_t rowIndex = 0;
+      uint8_t colIndex = 0;
+      for (size_t i = 0; i < TOTAL_BANNER_COUNT; ++i)
+     {
+        banners[i] =
+           createIconItem(KARphin::WarpRelay::Account::WR_PRESET_BANNER_URLS[i],
+                           KARphin::WarpRelay::Account::WR_PRESET_BANNER_NAMES[i],
+                           bannerLabels[i]);
+        grid->addWidget(banners[i], colIndex, rowIndex);
+     
+        rowIndex++;
+        if (rowIndex == MAX_ICONS_PER_COL)
+        {
+          rowIndex = 0;
+          colIndex++;
+        }
+     
+        iconIndex++;
+      }
+
+    scrollArea->setVisible(true);
+
+   });*.
+
+  // //renders each icon, sorry Taco *Banner*
+  //const uint8_t MAX_ICONS_PER_COL = 3;
+  //uint8_t iconIndex = 0;
+  //uint8_t rowIndex = 0;
+  //uint8_t colIndex = 0;
+  //
+  //// std::thread loadIcons;
+  // //loadIcons = std::thread([&] {
+  //   while (iconIndex < MAX_ICONS)
+  //   {
+  //     QString name =
+  //         QString::fromStdString(KARphin::WarpRelay::Account::WR_PRESET_BANNER_NAMES[iconIndex]);
+  //     grid->addWidget(
+  //         createIconItem(KARphin::WarpRelay::Account::WR_PRESET_BANNER_URLS[iconIndex], name),
+  //         colIndex, rowIndex);
+
+  //     rowIndex++;
+  //     if (rowIndex == MAX_ICONS_PER_COL)
+  //     {
+  //       rowIndex = 0;
+  //       colIndex++;
+  //     }
+
+  //     iconIndex++;
+  //   }
+  // });*/
+
+  
 
    //the icon for this profile
   //icon_Label = new QLabel(tr("Account Icon"));
@@ -180,7 +337,11 @@ KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent)
   // connect(presetIcon_Dropdown, &QComboBox::currentIndexChanged, this,
         //   &AccountInfoDialog::OnPresetIconChanged); //when the preset dropdown changes
 
-   setLayout(m_main_layout);
+   
+
+   //waits for the thread to finish
+  // if (loadIcons.joinable())
+  //   loadIcons.join();
 
    // if we're no longer a guest account
   // if (!KAR::WarpRelay::WarpRelayAccountManager::GetLoggedInAccount()->isGuestAccount)
@@ -272,6 +433,11 @@ void KAR::WarpRelay::AccountInfoDialog::UpdateAccountIcon()
 
 void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
 {
+  //if (loadingThread.joinable())
+  //  loadingThread.join();
+
+  //dumps the icons
+
   // Add your callback or custom handling here
   QMessageBox::StandardButton res =
       QMessageBox::question(this, tr("Confirm Account Data"), tr("Are you content with these Account settings?"),
