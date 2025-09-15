@@ -85,19 +85,12 @@
     <ClInclude Include="KARphin\Vender\json.hpp" />
     <ClInclude Include="KARphin\Vender\json_fwd.hpp" />
     <ClInclude Include="KARphin\Version.hpp" />
-    <ClInclude Include="KARphin\WarpRelay\Account\BannerIDMapper.hpp" />
-    <ClInclude Include="KARphin\WarpRelay\Account\BannerLoader.hpp" />
-    <ClInclude Include="KARphin\WarpRelay\Account\WarpRelayConnection_Banners.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Lobby.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Lobby\LobbyProperties.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Packets\Packet_AdminCommand.hpp" />
     <ClInclude Include="KARphin\WarpRelay\Packets\Packet_OnPlayerConnect.hpp" />
-    <ClInclude Include="KARphin\WarpRelay\Packets\Packet_OnPlayerJoin.hpp" />
     <ClInclude Include="KARphin\WarpRelay\WarpRelayAccount.hpp" />
     <ClInclude Include="KARphin\WarpRelay\WarpRelayConnectInfo.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="KARphin\WarpRelay\Account\BannerLoader.cpp" />
   </ItemGroup>
   <UsingTask TaskName="GetProductVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>

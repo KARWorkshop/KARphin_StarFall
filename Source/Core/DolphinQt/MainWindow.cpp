@@ -145,8 +145,6 @@
 
 #include <KARphin/KWQI/KWQI_Game.hpp>
 
-#include <KARphin/WarpRelay/Account/BannerLoader.hpp>
-
 #ifdef HAVE_XRANDR
 #include "UICommon/X11Utils.h"
 // This #define within X11/X.h conflicts with our WiimoteSource enum.
@@ -334,11 +332,6 @@ MainWindow::MainWindow(std::unique_ptr<BootParameters> boot_parameters,
       return;
     }
   }
-
-  //make a request to the Warp Relay servers to get Icons
-
-  //if can't just load the defaults
- //KARphin::WarpRelay::Account::BannerLoader::Instance().LoadDefaultGuestBanners();
 
   Host::GetInstance()->SetMainWindowHandle(reinterpret_cast<void*>(winId()));
 
