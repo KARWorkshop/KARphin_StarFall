@@ -16,7 +16,7 @@
 #include "DolphinQt/Settings.h"
 
 #include <KARphin/WarpRelay/Lobby.hpp>
-#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
+#include <KARphin/WarpRelay/Accounts/WarpRelayAccount.hpp>
 
 PadMappingDialog::PadMappingDialog(QWidget* parent) : QDialog(parent)
 {

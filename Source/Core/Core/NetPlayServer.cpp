@@ -73,7 +73,6 @@
 #include "UICommon/GameFile.h"
 
 #include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
-#include <KARphin/WarpRelay/Packets/Packet_AdminCommand.hpp>
 
 #if !defined(_WIN32)
 #include <sys/socket.h>

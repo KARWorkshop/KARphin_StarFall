@@ -27,7 +27,7 @@
 #include "UICommon/GameFile.h"
 #include "UICommon/NetPlayIndex.h"
 
-#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
+#include <KARphin/WarpRelay/Accounts/WarpRelayAccount.hpp>
 
 static const char* GUEST_ACCOUNT_TEXT =
     "You can set your Display Name and set some preset Banners to show up in Lobbies.\n"

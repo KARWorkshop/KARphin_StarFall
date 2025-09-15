@@ -76,14 +76,12 @@
 #include "VideoCommon/OnScreenDisplay.h"
 #include "VideoCommon/VideoConfig.h"
 
-#include <KARphin/WarpRelay/WarpRelayAccount.hpp>
-#include <KARphin/WarpRelay/Lobby.hpp>
-
 #include <Common/Lazy.h>
 #include <Common/HttpRequest.h>
 
+#include <KARphin/WarpRelay/Accounts/WarpRelayAccount.hpp>
+#include <KARphin/WarpRelay/Lobby.hpp>
 #include <KARphin/WarpRelay/Packets/Packet_OnPlayerConnect.hpp>
-#include <KARphin/WarpRelay/Packets/Packet_AdminCommand.hpp>
 
 namespace NetPlay
 {
@@ -491,14 +489,6 @@ void NetPlayClient::OnData(sf::Packet& packet)
   case MessageID::GameDigestAbort:
     OnGameDigestAbort();
     break;
-
-    case MessageID::ChangeLobbyProperty:
-    OnLobbyPropertyChanged(packet);
-      break;
-
-      case MessageID::AdminCommand:
-      OnAdminCommand(packet);
-      break;
 
   default:
     PanicAlertFmtT("Unknown message received with id : {0}", static_cast<u8>(mid));
@@ -1548,36 +1538,6 @@ void NetPlayClient::OnGameDigestAbort()
 {
   m_should_compute_game_digest = false;
   m_dialog->AbortGameDigest();
-}
-
-void NetPlayClient::OnLobbyPropertyChanged(sf::Packet& packet)
-{
-  // Return if this is the host
-  if (m_local_player->IsHost())
-    return;
-
-  m_dialog->AppendChat(Common::GetStringT("Lobby Property Changed:"));
-}
-
-void NetPlayClient::OnAdminCommand(sf::Packet& packet)
-{
-  KARphin::WarpRelay::Netplay::Packet::Packet_AdminCommand cmd =
-      KARphin::WarpRelay::Netplay::Packet::UnpackSFMLPacket_AdminCommand(packet);
-
-  //PlayerId pid;
-  //packet >> pid;
-  //std::string msg;
-  //packet >> msg;
-
-  // don't need lock to read in this thread
-  //const Player& player = m_players[pid];
-
- // INFO_LOG_FMT(NETPLAY, "Player {} ({}) wrote: {}", player.name, player.pid, msg);
-
-  // add to gui
-  m_dialog->AppendChat(fmt::format("{}: {}", "Command Result:", cmd.resultString));
-
- // m_dialog->AppendChat(Common::GetStringT("Lobby Property Changed:"));
 }
 
 void NetPlayClient::Send(const sf::Packet& packet, const u8 channel_id)
