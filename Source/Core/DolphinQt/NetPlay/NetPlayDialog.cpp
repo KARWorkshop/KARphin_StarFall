@@ -771,17 +771,17 @@ void NetPlayDialog::UpdateGUI()
     auto p = players[i];
 
     //checks if we have the player icon downloaded, if not download it and cache it
-    if (iconCache.find(players[i]->bannerURL) == iconCache.end())
-    {
-     /* const std::vector<uint8_t>& binaryData =
-          KARphin::WarpRelay::Account::BannerLoader::Instance().GetIcon(players[i]->bannerURL);
-
-      QPixmap rawIcon;
-      rawIcon.loadFromData(
-          reinterpret_cast<const uchar*>(binaryData.data()),
-                           (int)binaryData.size());
-      iconCache[players[i]->bannerURL] = QIcon(rawIcon);*/
-    }
+   // if (iconCache.find(players[i]->bannerURL) == iconCache.end())
+   // {
+   //  /* const std::vector<uint8_t>& binaryData =
+   //       KARphin::WarpRelay::Account::BannerLoader::Instance().GetIcon(players[i]->bannerURL);
+   //
+   //   QPixmap rawIcon;
+   //   rawIcon.loadFromData(
+   //       reinterpret_cast<const uchar*>(binaryData.data()),
+   //                        (int)binaryData.size());
+   //   iconCache[players[i]->bannerURL] = QIcon(rawIcon);*/
+   // }
 
     auto* name_item = new QTableWidgetItem(QString::fromStdString(p->name));
    // name_item->setIcon(iconCache.at(players[i]->bannerURL));
