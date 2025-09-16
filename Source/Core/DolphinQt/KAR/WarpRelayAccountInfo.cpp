@@ -30,9 +30,7 @@
 #include <KARphin/WarpRelay/Accounts/WarpRelayAccount.hpp>
 
 static const char* GUEST_ACCOUNT_TEXT =
-    "You can set your Display Name and set some preset Banners to show up in Lobbies.\n"
-    "For setting your own Custom Banner, that is only given out to some beta testers and donaters.\n"
-    "For the finer details click the \"Custom Banner\" option in the dropdown.";
+    "You can set your display name.";
 
 static const char* WARP_RELAY_ACCOUNT_TEXT =
     "You can set a custom icon using the input field at the bottom.\nMake sure the image is "
