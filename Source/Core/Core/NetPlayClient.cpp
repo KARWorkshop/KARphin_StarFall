@@ -256,7 +256,7 @@ bool NetPlayClient::Connect()
   KARphin::WarpRelay::Netplay::Packet::Packet_OnPlayerConnect onPlayerConnect;
   onPlayerConnect.SCMVersion = Common::GetScmRevGitStr();
   onPlayerConnect.clientVersion = Common::GetNetplayDolphinVer();
-  onPlayerConnect.nickname = m_player_name;
+  onPlayerConnect.nickname = KAR::Account::Account::Instance().displayName;
   onPlayerConnect.kind = (KARphin::WarpRelay::Netplay::Packet::JoinKind)Config::Get(Config::NETPLAY_KAR_ACCOUNT_KIND);
   sf::Packet packet = KARphin::WarpRelay::Netplay::Packet::PackageDataIntoSFMLPacket_OnPlayerConnect(onPlayerConnect);
 
@@ -315,7 +315,7 @@ bool NetPlayClient::Connect()
     rpac >> m_pid;
 
     Player player;
-    player.name = m_player_name;
+    player.name = KAR::Account::Account::Instance().displayName;
     player.pid = m_pid;
     player.revision = Common::GetNetplayDolphinVer();
 

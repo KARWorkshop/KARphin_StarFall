@@ -32,9 +32,9 @@
 static const char* GUEST_ACCOUNT_TEXT =
     "You can set your display name.";
 
-static const char* WARP_RELAY_ACCOUNT_TEXT =
-    "You can set a custom icon using the input field at the bottom.\nMake sure the image is "
-         "40 by 40 px for best result. You can use others but it may not show up as well.";
+//static const char* WARP_RELAY_ACCOUNT_TEXT =
+//    "You can set a custom icon using the input field at the bottom.\nMake sure the image is "
+//         "40 by 40 px for best result. You can use others but it may not show up as well.";
 
 KAR::WarpRelay::AccountInfoDialog::AccountInfoDialog(QWidget* parent) : QDialog(parent)
 {
@@ -80,7 +80,9 @@ void KAR::WarpRelay::AccountInfoDialog::closeEvent(QCloseEvent* event)
     // saves the data to the file
     KAR::Account::Account::Instance().displayName = displayName_EditFeild->text().toStdString();
     KAR::Account::Account::Instance().Write(
-        KAR::IO::GetDirectory_Account() + KAR::Account::Account::Instance().displayName + ".wrv2");
+        // KAR::IO::GetDirectory_Account() + KAR::Account::Account::Instance().displayName +
+        // ".wrv2");
+        KAR::Account::Account::DefaultFilepath());
 
     // Accept the close event
     event->accept();

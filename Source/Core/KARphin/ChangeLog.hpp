@@ -55,6 +55,8 @@
 */
 
 #define KARPHIN_CHANGE_LOG_4_3_1                                                                   \
+  "<h3> 4.4.0 - Minor Tweaks</h3>"                                                                \
+  "<p>Fixed lobby name bug.</p>" \
   "<h3> 4.3.1 - Minor Tweaks</h3>"                                                                \
   "<p>Added direct link to Kofi, Discord, and KAR Workshop on icon bar.</p>" \
   "<p>Froze the git hash versioning for testing if Linux can properly connect to Windows machine.</p>" \
