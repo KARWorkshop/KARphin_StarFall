@@ -11,17 +11,26 @@ namespace KAR::Online
 	//defines the connection
 	struct KARConnection
 	{
-		//inits the connection || takes in the net info for ourself
-		inline bool Connect(const NetInfo& self)
-		{
-      SteamDatagramErrMsg errMsg;
-      if (!GameNetworkingSockets_Init(nullptr, errMsg))
-      {
-        return false;
-        // FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
-			}
+    HSteamListenSocket listenSocket = 0;
+    HSteamNetPollGroup pollGroup = 0;
 
-			INFO_LOG_FMT(SP1, "Game Networking Sockets inited!");
+		//inits the connection || takes in the net info for ourself
+    inline bool Connect(ISteamNetworkingSockets* steamNetworkingInterface, const NetInfo& self)
+		{
+			// Start listening
+      SteamNetworkingIPAddr serverLocalAddr;
+      serverLocalAddr.Clear();
+      serverLocalAddr.m_port = self.listeningPort;
+      SteamNetworkingConfigValue_t opt;
+      opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, nullptr);
+                 //(void*)SteamNetConnectionStatusChangedCallback);
+      listenSocket = steamNetworkingInterface->CreateListenSocketIP(serverLocalAddr, 1, &opt);
+      if (listenSocket == k_HSteamListenSocket_Invalid)
+        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.listeningPort);
+      pollGroup = steamNetworkingInterface->CreatePollGroup();
+      if (pollGroup == k_HSteamNetPollGroup_Invalid)
+        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.listeningPort);
+     INFO_LOG_FMT(SP1, "Server listening on port {}\n", self.listeningPort);
 
 			return true;
 		}

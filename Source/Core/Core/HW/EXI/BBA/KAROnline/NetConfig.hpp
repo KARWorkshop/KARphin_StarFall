@@ -14,6 +14,7 @@ namespace KAR::Online
 	struct NetInfo
 	{
     bool isHost = false; //is this instance a host or client
+    uint16_t listeningPort = 6969; //the port we listen on
 
 	};
 }

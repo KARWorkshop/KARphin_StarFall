@@ -441,6 +441,7 @@ private:
   private:
 
     //Steam Game Networking Sockets
+    ISteamNetworkingSockets* steamNetworkingInterface = nullptr;
     KAR::Online::KARConnection connection;
 
     //regular shit

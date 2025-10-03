@@ -78,7 +78,16 @@ bool CEXIETHERNET::BuiltInBBAInterface::Activate()
   KAR::Online::NetInfo netInfo;
 
   //Steam Networking connecting stuff
-  m_active = connection.Connect(netInfo);
+  SteamDatagramErrMsg errMsg;
+  if (!GameNetworkingSockets_Init(nullptr, errMsg))
+  {
+    return false;
+    // FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
+  }
+
+  INFO_LOG_FMT(SP1, "Game Networking Sockets inited!");
+  steamNetworkingInterface = SteamNetworkingSockets();
+  m_active = connection.Connect(steamNetworkingInterface, netInfo);
 
   //regular BBA stuff
   m_active = true;
