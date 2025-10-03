@@ -22,8 +22,6 @@
 #include "Core/HW/EXI/BBA/TAPServerConnection.h"
 #include "Core/HW/EXI/EXI_Device.h"
 
-#include <steam/isteamnetworkingsockets.h>
-
 class PointerWrap;
 
 namespace ExpansionInterface
@@ -443,7 +441,7 @@ private:
   private:
 
     //Steam Game Networking Sockets
-    HSteamNetConnection connectionToHost = 0;
+    KAR::Online::KARConnection connection;
 
     //regular shit
     std::string m_mac_id;

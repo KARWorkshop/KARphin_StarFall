@@ -14,6 +14,8 @@ using socklen_t = int;
 #include "Common/CommonTypes.h"
 #include "Common/Network.h"
 
+#include <Core/HW/EXI/BBA/KAROnline/KAROnlineConnection.hpp>
+
 constexpr u16 TCP_FLAG_SIN = 0x2;
 constexpr u16 TCP_FLAG_ACK = 0x10;
 constexpr u16 TCP_FLAG_PSH = 0x8;

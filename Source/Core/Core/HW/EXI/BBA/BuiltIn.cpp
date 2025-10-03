@@ -74,6 +74,13 @@ bool CEXIETHERNET::BuiltInBBAInterface::Activate()
   if (IsActivated())
     return true;
 
+  //check for net config data
+  KAR::Online::NetInfo netInfo;
+
+  //Steam Networking connecting stuff
+  m_active = connection.Connect(netInfo);
+
+  //regular BBA stuff
   m_active = true;
   for (auto& buf : m_queue_data)
     buf.reserve(2048);
