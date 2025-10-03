@@ -22,6 +22,8 @@
 #include "Core/HW/EXI/BBA/TAPServerConnection.h"
 #include "Core/HW/EXI/EXI_Device.h"
 
+#include <steam/isteamnetworkingsockets.h>
+
 class PointerWrap;
 
 namespace ExpansionInterface
@@ -439,6 +441,11 @@ private:
     void RecvStop() override;
 
   private:
+
+    //Steam Game Networking Sockets
+    HSteamNetConnection connectionToHost = 0;
+
+    //regular shit
     std::string m_mac_id;
     std::string m_dns_ip;
     bool m_active = false;
