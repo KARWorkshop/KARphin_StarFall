@@ -80,11 +80,16 @@
     <Text Include="$(BuildInfoTemplate)" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\HW\EXI\BBA\KAROnline\KAROnlineConnection.hpp" />
     <ClInclude Include="Core\HW\EXI\BBA\KAROnline\NetConfig.hpp" />
     <ClInclude Include="KARphin\Directories.hpp" />
     <ClInclude Include="KARphin\Vender\json.hpp" />
     <ClInclude Include="KARphin\Vender\json_fwd.hpp" />
+    <ClInclude Include="KARphin\WarpRelay\KAROnline_Client.hpp" />
+    <ClInclude Include="KARphin\WarpRelay\KAROnline_Host.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="KARphin\WarpRelay\KAROnline_Client.cpp" />
+    <ClCompile Include="KARphin\WarpRelay\KAROnline_Host.cpp" />
   </ItemGroup>
   <UsingTask TaskName="GetProductVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>

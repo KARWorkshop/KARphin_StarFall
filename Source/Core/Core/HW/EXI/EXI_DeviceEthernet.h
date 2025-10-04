@@ -23,7 +23,8 @@
 #include "Core/HW/EXI/BBA/TAPServerConnection.h"
 #include "Core/HW/EXI/EXI_Device.h"
 
-#include <Core/HW/EXI/BBA/KAROnline/KAROnlineConnection.hpp>
+#include <KARphin/WarpRelay/KAROnline_Client.hpp>
+#include <KARphin/WarpRelay/KAROnline_Host.hpp>
 
 namespace CoreTiming
 {
@@ -453,7 +454,8 @@ private:
 
     //Steam Game Networking Sockets
     ISteamNetworkingSockets* steamNetworkingInterface = nullptr;
-    KAR::Online::KARConnection connection;
+    KAR::Online::Netplay::HostServerInstance serverHostInstance; //if we're a host
+    KAR::Online::Netplay::ClientInstance clientInstance;          // if we're a client
 
      std::mutex m_buffer_mutex;
     std::condition_variable m_buffer_cv;

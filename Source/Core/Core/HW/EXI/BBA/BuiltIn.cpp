@@ -128,7 +128,10 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
     //FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
 
   steamNetworkingInterface = SteamNetworkingSockets();
-  connection.Host(steamNetworkingInterface, netInfo);
+  if (netInfo.isHost)
+    serverHostInstance.Host(steamNetworkingInterface, netInfo);
+  else
+    clientInstance.Connect(steamNetworkingInterface, netInfo);
 
   // Initialize packet buffer
   m_packet_buffer.clear();
@@ -177,7 +180,8 @@ void CEXIETHERNET::NetPlayBBAInterface::Deactivate()
     m_buffer_cv.notify_all();
   }
 
-  connection.Shutdown(steamNetworkingInterface);
+  serverHostInstance.Shutdown(steamNetworkingInterface);
+  clientInstance.Shutdown();
 
   GameNetworkingSockets_Kill();
 
