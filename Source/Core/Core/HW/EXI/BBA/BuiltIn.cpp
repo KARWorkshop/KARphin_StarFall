@@ -16,6 +16,8 @@
 #include "Core/NetPlayServer.h"
 #include "Core/System.h"
 
+#include <KARphin/Directories.hpp>
+
 namespace ExpansionInterface
 {
 
@@ -103,6 +105,21 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
   INFO_LOG_FMT(SP1, "NetPlay BBA Interface activated");
   m_active = true;
   m_shutdown = false;
+
+  //loads the net info struct
+  const std::string NET_INFO_FP = KAR::Online::NetInfo::GetFilepath();
+  KAR::Online::NetInfo netInfo = KAR::Online::NetInfo::GenerateDefault();
+  if (!std::filesystem::exists(NET_INFO_FP))
+  {
+    WARN_LOG_FMT(SP1, "No Net Info found on disc, generating default host info!");
+    netInfo.SaveToDisc();
+  }
+  else
+  {
+    netInfo.LoadFromDisc();
+  }
+  INFO_LOG_FMT(SP1, "Net Info loaded || {} {}.",
+               (netInfo.isHost == true ? "is hosting on" : "is connecting to"), netInfo.debugIPStr);
 
   // Initialize packet buffer
   m_packet_buffer.clear();

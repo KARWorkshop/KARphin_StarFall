@@ -18,19 +18,17 @@ namespace KAR::Online
     inline bool Connect(ISteamNetworkingSockets* steamNetworkingInterface, const NetInfo& self)
 		{
 			// Start listening
-      SteamNetworkingIPAddr serverLocalAddr;
-      serverLocalAddr.Clear();
-      serverLocalAddr.m_port = self.listeningPort;
+      SteamNetworkingIPAddr serverLocalAddr = self.IP_Port;
       SteamNetworkingConfigValue_t opt;
       opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, nullptr);
                  //(void*)SteamNetConnectionStatusChangedCallback);
       listenSocket = steamNetworkingInterface->CreateListenSocketIP(serverLocalAddr, 1, &opt);
       if (listenSocket == k_HSteamListenSocket_Invalid)
-        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.listeningPort);
+        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.IP_Port.GetIPv4());
       pollGroup = steamNetworkingInterface->CreatePollGroup();
       if (pollGroup == k_HSteamNetPollGroup_Invalid)
-        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.listeningPort);
-     INFO_LOG_FMT(SP1, "Server listening on port {}\n", self.listeningPort);
+        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.IP_Port.GetIPv4());
+      INFO_LOG_FMT(SP1, "Server listening on port {}\n", self.IP_Port.GetIPv4());
 
 			return true;
 		}
@@ -45,6 +43,8 @@ namespace KAR::Online
 
       steamNetworkingInterface->DestroyPollGroup(pollGroup);
       pollGroup = k_HSteamNetPollGroup_Invalid;
+
+      GameNetworkingSockets_Kill();
     }
 
   };
