@@ -180,7 +180,7 @@ void CEXIETHERNET::NetPlayBBAInterface::Deactivate()
     m_buffer_cv.notify_all();
   }
 
-  serverHostInstance.Shutdown(steamNetworkingInterface);
+  serverHostInstance.Shutdown();
   clientInstance.Shutdown();
 
   GameNetworkingSockets_Kill();
