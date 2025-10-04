@@ -121,6 +121,15 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
   INFO_LOG_FMT(SP1, "Net Info loaded || {} {}.",
                (netInfo.isHost == true ? "is hosting on" : "is connecting to"), netInfo.debugIPStr);
 
+  SteamDatagramErrMsg errMsg;
+  if (!GameNetworkingSockets_Init(nullptr, errMsg))
+  {
+  }
+    //FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
+
+  steamNetworkingInterface = SteamNetworkingSockets();
+  connection.Host(steamNetworkingInterface, netInfo);
+
   // Initialize packet buffer
   m_packet_buffer.clear();
 
@@ -167,6 +176,10 @@ void CEXIETHERNET::NetPlayBBAInterface::Deactivate()
     m_shutdown = true;
     m_buffer_cv.notify_all();
   }
+
+  connection.Shutdown(steamNetworkingInterface);
+
+  GameNetworkingSockets_Kill();
 
   m_active = false;
 }

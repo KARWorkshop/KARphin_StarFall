@@ -14,8 +14,8 @@ namespace KAR::Online
     HSteamListenSocket listenSocket = k_HSteamListenSocket_Invalid;
     HSteamNetPollGroup pollGroup = k_HSteamNetPollGroup_Invalid;
 
-		//inits the connection || takes in the net info for ourself
-    inline bool Connect(ISteamNetworkingSockets* steamNetworkingInterface, const NetInfo& self)
+		//starts hosting a instance
+    inline bool Host(ISteamNetworkingSockets* steamNetworkingInterface, const NetInfo& self)
 		{
 			// Start listening
       SteamNetworkingIPAddr serverLocalAddr = self.IP_Port;
@@ -24,11 +24,11 @@ namespace KAR::Online
                  //(void*)SteamNetConnectionStatusChangedCallback);
       listenSocket = steamNetworkingInterface->CreateListenSocketIP(serverLocalAddr, 1, &opt);
       if (listenSocket == k_HSteamListenSocket_Invalid)
-        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.IP_Port.GetIPv4());
+        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.IP_Port.m_port);
       pollGroup = steamNetworkingInterface->CreatePollGroup();
       if (pollGroup == k_HSteamNetPollGroup_Invalid)
-        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.IP_Port.GetIPv4());
-      INFO_LOG_FMT(SP1, "Server listening on port {}\n", self.IP_Port.GetIPv4());
+        ERROR_LOG_FMT(SP1, "Failed to listen on port {}", self.IP_Port.m_port);
+      INFO_LOG_FMT(SP1, "Server listening on port {}\n", self.IP_Port.m_port);
 
 			return true;
 		}
