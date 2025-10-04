@@ -56,9 +56,9 @@ CEXIETHERNET::CEXIETHERNET(Core::System& system, BBADeviceType type) : IEXIDevic
     INFO_LOG_FMT(SP1, "Created tapserver physical network interface.");
     break;
   case BBADeviceType::BuiltIn:
-    m_network_interface = std::make_unique<BuiltInBBAInterface>(
-        this, Config::Get(Config::MAIN_BBA_BUILTIN_DNS), Config::Get(Config::MAIN_BBA_BUILTIN_IP));
-    INFO_LOG_FMT(SP1, "Created Built in network interface.");
+    m_network_interface = std::make_unique<NetPlayBBAInterface>(
+        this);
+    INFO_LOG_FMT(SP1, "Created Warp Relay Netplay network interface.");
     break;
   case BBADeviceType::XLINK:
     // TODO start BBA with network link down, bring it up after "connected" response from XLink

@@ -8,6 +8,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <deque>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -21,6 +22,13 @@
 #include "Core/HW/EXI/BBA/BuiltIn.h"
 #include "Core/HW/EXI/BBA/TAPServerConnection.h"
 #include "Core/HW/EXI/EXI_Device.h"
+
+#include <Core/HW/EXI/BBA/KAROnline/KAROnlineConnection.hpp>
+
+namespace CoreTiming
+{
+struct EventType;
+}
 
 class PointerWrap;
 
@@ -423,13 +431,11 @@ private:
 #endif
   };
 
-  class BuiltInBBAInterface : public NetworkInterface
+  class NetPlayBBAInterface : public NetworkInterface
   {
   public:
-    BuiltInBBAInterface(CEXIETHERNET* eth_ref, std::string dns_ip, std::string local_ip)
-        : NetworkInterface(eth_ref), m_dns_ip(std::move(dns_ip)), m_local_ip(std::move(local_ip))
-    {
-    }
+    NetPlayBBAInterface(CEXIETHERNET* const eth_ref) : NetworkInterface(eth_ref) {}
+
     bool Activate() override;
     void Deactivate() override;
     bool IsActivated() override;
@@ -437,6 +443,11 @@ private:
     bool RecvInit() override;
     void RecvStart() override;
     void RecvStop() override;
+    void RecvRead(u8* dest, u32 size);
+    void RecvReadDone();
+
+    // Called from NetPlay to inject received BBA packets
+    void InjectPacket(const u8* data, u32 size);
 
   private:
 
@@ -444,42 +455,25 @@ private:
     ISteamNetworkingSockets* steamNetworkingInterface = nullptr;
     KAR::Online::KARConnection connection;
 
-    //regular shit
-    std::string m_mac_id;
-    std::string m_dns_ip;
-    bool m_active = false;
-    u16 m_ip_frame_id = 0;
-    u8 m_queue_read = 0;
-    u8 m_queue_write = 0;
-    std::array<std::vector<u8>, 16> m_queue_data;
-    std::mutex m_mtx;
-    std::string m_local_ip;
-    u32 m_current_ip = 0;
-    Common::MACAddress m_current_mac{};
-    u32 m_router_ip = 0;
-    Common::MACAddress m_router_mac{};
-    std::map<u32, Common::MACAddress> m_arp_table;
-    sf::TcpListener m_upnp_httpd;
-#if defined(WIN32) || defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) ||          \
-    defined(__OpenBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-    NetworkRef m_network_ref;
-    std::thread m_read_thread;
-    Common::Flag m_read_enabled;
-    Common::Flag m_read_thread_shutdown;
-    static void ReadThreadHandler(BuiltInBBAInterface* self);
-#endif
-    void WriteToQueue(const std::vector<u8>& data);
-    bool WillQueueOverrun() const;
-    void PollData(std::size_t* datasize);
-    std::optional<std::vector<u8>> TryGetDataFromSocket(StackRef* ref);
+     std::mutex m_buffer_mutex;
+    std::condition_variable m_buffer_cv;
+    std::deque<std::vector<u8>> m_packet_buffer;
+    std::atomic<bool> m_active{false};
+    std::atomic<bool> m_shutdown{false};
+    std::atomic<bool> m_receiving{false};
+    CoreTiming::EventType* m_event_inject = nullptr;
 
-    void HandleARP(const Common::ARPPacket& packet);
-    void HandleDHCP(const Common::UDPPacket& packet);
-    void HandleTCPFrame(const Common::TCPPacket& packet);
-    void InitUDPPort(u16 port);
-    void HandleUDPFrame(const Common::UDPPacket& packet);
-    void HandleUPnPClient();
-    const Common::MACAddress& ResolveAddress(u32 inet_ip);
+    // NetPlay integration
+    void ProcessNetPlayPackets();
+    void BufferPacket(const u8* frame, u32 size);
+    std::optional<std::vector<u8>> GetNextPacket();
+
+    // Store the injector callback for proper cleanup
+    std::function<void(const u8*, u32)> m_injector_callback;
+    u64 m_injector_id = 0;
+
+    static void InjectCallback(Core::System& system, u64 userdata, s64 cycles_late);
+    void ProcessPendingPacketsOnCPU();
   };
 
   std::unique_ptr<NetworkInterface> m_network_interface;

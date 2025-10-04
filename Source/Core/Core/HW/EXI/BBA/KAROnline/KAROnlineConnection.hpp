@@ -11,8 +11,8 @@ namespace KAR::Online
 	//defines the connection
 	struct KARConnection
 	{
-    HSteamListenSocket listenSocket = 0;
-    HSteamNetPollGroup pollGroup = 0;
+    HSteamListenSocket listenSocket = k_HSteamListenSocket_Invalid;
+    HSteamNetPollGroup pollGroup = k_HSteamNetPollGroup_Invalid;
 
 		//inits the connection || takes in the net info for ourself
     inline bool Connect(ISteamNetworkingSockets* steamNetworkingInterface, const NetInfo& self)
@@ -34,5 +34,18 @@ namespace KAR::Online
 
 			return true;
 		}
-	};
+
+    //shutsdown the connection
+    inline void Shutdown(ISteamNetworkingSockets* steamNetworkingInterface)
+    {
+      INFO_LOG_FMT(SP1, "Server Shutdown");
+
+      steamNetworkingInterface->CloseListenSocket(listenSocket);
+      listenSocket = k_HSteamListenSocket_Invalid;
+
+      steamNetworkingInterface->DestroyPollGroup(pollGroup);
+      pollGroup = k_HSteamNetPollGroup_Invalid;
+    }
+
+  };
 }
