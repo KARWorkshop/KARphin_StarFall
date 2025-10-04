@@ -1,0 +1,98 @@
+#pragma once
+
+//defines the various directories we enable
+
+#include <Common/FileUtil.h>
+#include <Common/CommonPaths.h>
+
+namespace KAR::IO
+{
+// gets/creates directories if they are missing
+static inline std::string CreateDirIfMissing(const std::string& dir)
+{
+  if (File::CreateFullPath(dir))
+    File::CreateDirs(dir);
+  return dir;
+}
+
+// gets/creates the directory for all core sys folder
+static inline std::string GetDirectory_Sys()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + "Sys" + DIR_SEP);
+}
+
+
+// gets/creates the directory for Tools
+static inline std::string GetDirectory_Tools()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Tools" + DIR_SEP);
+}
+
+// gets/creates the directory for all ROMs
+static inline std::string GetDirectory_ROMs()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "ROMs" + DIR_SEP);
+}
+
+// gets/creates the directory for all Accounts
+static inline std::string GetDirectory_Account()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Account" +
+                            DIR_SEP);
+}
+
+// gets/creates the sub-directory in Accounts for Controller Profiles
+static inline std::string GetDirectory_ControllerProfile()
+{
+  return CreateDirIfMissing(GetDirectory_Account() + "Controllers" + DIR_SEP);
+}
+
+// gets/creates the directory for all KAR Workshop Quick Install files
+static inline std::string GetDirectory_KWQI()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "KWQI" + DIR_SEP);
+}
+
+// gets/creates the directory for all Mods
+static inline std::string GetDirectory_Mods()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + ".." + DIR_SEP + "Mods" + DIR_SEP);
+}
+
+// gets/creates the sub-directory in Mods for Gecko Codes
+static inline std::string GetDirectory_GeckoCodes()
+{
+  return CreateDirIfMissing(GetDirectory_Mods() + "GeckoCodes" + DIR_SEP);
+}
+
+// gets/creates the sub-directory in Mods for Loading textures and such
+static inline std::string GetDirectory_CustomLoadAssets()
+{
+  return CreateDirIfMissing(GetDirectory_Mods() + "Load" + DIR_SEP);
+}
+
+// gets/creates the sub-directory in Mods for Loading Riivolution Patches
+static inline std::string GetDirectory_RiivolutionPatches()
+{
+  return CreateDirIfMissing(GetDirectory_Mods() + RIIVOLUTION_DIR + DIR_SEP);
+}
+
+// gets/creates the sub-directory in Mods for Loading Custom Textures
+static inline std::string GetDirectory_CustomTextures()
+{
+  return CreateDirIfMissing(GetDirectory_Mods() + HIRES_TEXTURES_DIR + DIR_SEP);
+}
+
+// gets the memory card folder
+static inline std::string GetDirectory_MemoryCards()
+{
+  return CreateDirIfMissing(GetDirectory_Mods() + "MemoryCards" + DIR_SEP);
+}
+
+// gets/creates the directory for all net caching
+static inline std::string GetDirectory_NetCache()
+{
+  return CreateDirIfMissing(File::GetExeDirectory() + DIR_SEP + PORTABLE_USER_DIR + DIR_SEP +
+                            "NetCache" + DIR_SEP);
+}
+  }

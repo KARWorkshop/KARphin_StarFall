@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="Core\HW\EXI\BBA\KAROnline\KAROnlineConnection.hpp" />
     <ClInclude Include="Core\HW\EXI\BBA\KAROnline\NetConfig.hpp" />
+    <ClInclude Include="KARphin\Directories.hpp" />
   </ItemGroup>
   <UsingTask TaskName="GetProductVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>

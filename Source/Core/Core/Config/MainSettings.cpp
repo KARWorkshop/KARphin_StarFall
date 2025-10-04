@@ -30,6 +30,8 @@
 #include "DiscIO/Enums.h"
 #include "VideoCommon/VideoBackendBase.h"
 
+#include <KARphin/Directories.hpp>
+
 namespace Config
 {
 // Main.Core
@@ -304,14 +306,14 @@ const Info<bool> MAIN_SHOW_FRAME_COUNT{{System::Main, "General", "ShowFrameCount
 const Info<std::string> MAIN_WIRELESS_MAC{{System::Main, "General", "WirelessMac"}, ""};
 const Info<std::string> MAIN_GDB_SOCKET{{System::Main, "General", "GDBSocket"}, ""};
 const Info<int> MAIN_GDB_PORT{{System::Main, "General", "GDBPort"}, -1};
-const Info<int> MAIN_ISO_PATH_COUNT{{System::Main, "General", "ISOPaths"}, 0};
+const Info<int> MAIN_ISO_PATH_COUNT{{System::Main, "General", "ISOPaths"}, 1};
 const Info<std::string> MAIN_SKYLANDERS_PATH{{System::Main, "General", "SkylandersCollectionPath"},
                                              ""};
 
 static Info<std::string> MakeISOPathConfigInfo(size_t idx)
 {
   return Config::Info<std::string>{{Config::System::Main, "General", fmt::format("ISOPath{}", idx)},
-                                   ""};
+                                   KAR::IO::GetDirectory_ROMs()};
 }
 
 std::vector<std::string> GetIsoPaths()
