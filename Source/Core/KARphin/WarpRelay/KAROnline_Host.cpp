@@ -55,7 +55,8 @@ void KAR::Online::Netplay::HostServerInstance::OnSteamNetConnectionStatusChanged
       // Spew something to our own log.  Note that because we put their nick
       // as the connection description, it will show up, along with their
       // transport-specific data (e.g. their IP address)
-      Printf("Connection %s %s, reason %d: %s\n", pInfo->m_info.m_szConnectionDescription,
+      INFO_LOG_FMT(SP1, "Connection {} {}, reason {}: {}\n",
+                   pInfo->m_info.m_szConnectionDescription,
              pszDebugLogAction, pInfo->m_info.m_eEndReason, pInfo->m_info.m_szEndDebug);
 
       m_mapClients.erase(itClient);
@@ -74,7 +75,7 @@ void KAR::Online::Netplay::HostServerInstance::OnSteamNetConnectionStatusChanged
     // to finish up.  The reason information do not matter in this case,
     // and we cannot linger because it's already closed on the other end,
     // so we just pass 0's.
-    m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
+    steamNetworkingInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
     break;
   }
 
@@ -83,25 +84,25 @@ void KAR::Online::Netplay::HostServerInstance::OnSteamNetConnectionStatusChanged
     // This must be a new connection
     assert(m_mapClients.find(pInfo->m_hConn) == m_mapClients.end());
 
-    Printf("Connection request from %s", pInfo->m_info.m_szConnectionDescription);
+    INFO_LOG_FMT(SP1, "Connection request from {}", pInfo->m_info.m_szConnectionDescription);
 
     // A client is attempting to connect
     // Try to accept the connection.
-    if (m_pInterface->AcceptConnection(pInfo->m_hConn) != k_EResultOK)
+    if (steamNetworkingInterface->AcceptConnection(pInfo->m_hConn) != k_EResultOK)
     {
       // This could fail.  If the remote host tried to connect, but then
       // disconnected, the connection may already be half closed.  Just
       // destroy whatever we have on our side.
-      m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
-      Printf("Can't accept connection.  (It was already closed?)");
+      steamNetworkingInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
+      INFO_LOG_FMT(SP1, "Can't accept connection.  (It was already closed?)");
       break;
     }
 
     // Assign the poll group
-    if (!m_pInterface->SetConnectionPollGroup(pInfo->m_hConn, m_hPollGroup))
+    if (!steamNetworkingInterface->SetConnectionPollGroup(pInfo->m_hConn, pollGroup))
     {
-      m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
-      Printf("Failed to set poll group?");
+      steamNetworkingInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
+      INFO_LOG_FMT(SP1, "Failed to set poll group?");
       break;
     }
 
@@ -164,7 +165,7 @@ bool KAR::Online::Netplay::HostServerInstance::Host(ISteamNetworkingSockets* _st
   // Start listening
   SteamNetworkingIPAddr serverLocalAddr = self.IP_Port;
   SteamNetworkingConfigValue_t opt;
-  opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, nullptr);
+  opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged,
   (void*)CallbackFunc_ServerConnectionStateChange);
   listenSocket = steamNetworkingInterface->CreateListenSocketIP(serverLocalAddr, 1, &opt);
   if (listenSocket == k_HSteamListenSocket_Invalid)

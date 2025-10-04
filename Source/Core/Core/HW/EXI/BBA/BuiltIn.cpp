@@ -106,7 +106,7 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
   m_active = true;
   m_shutdown = false;
 
-  //loads the net info struct
+  // loads the net info struct
   const std::string NET_INFO_FP = KAR::Online::NetInfo::GetFilepath();
   KAR::Online::NetInfo netInfo = KAR::Online::NetInfo::GenerateDefault();
   if (!std::filesystem::exists(NET_INFO_FP))
@@ -125,11 +125,13 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
   if (!GameNetworkingSockets_Init(nullptr, errMsg))
   {
   }
-    //FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
+  // FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
 
   steamNetworkingInterface = SteamNetworkingSockets();
   if (netInfo.isHost)
+  {
     serverHostInstance.Host(steamNetworkingInterface, netInfo);
+  }
   else
     clientInstance.Connect(steamNetworkingInterface, netInfo);
 
