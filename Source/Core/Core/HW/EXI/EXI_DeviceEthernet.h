@@ -354,6 +354,15 @@ private:
     void RecvStart() override;
     void RecvStop() override;
 
+    private:
+    // Steam Game Networking Sockets
+    KAR::Online::Netplay::HostServerInstance serverHostInstance;  // if we're a host
+    KAR::Online::Netplay::ClientInstance clientInstance;          // if we're a client
+
+    // the network thread we use for handling networking stuff
+    std::thread networkingMessageWorker;
+    std::thread serverNetworkThread;  // split it out to it's own thread for server stuff
+
   protected:
 #if defined(WIN32) || defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) ||          \
     defined(__OpenBSD__)
@@ -371,6 +380,9 @@ private:
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     int fd = -1;
 #endif
+
+    
+
   };
 
   class TAPServerNetworkInterface : public NetworkInterface
@@ -457,6 +469,12 @@ private:
     KAR::Online::Netplay::HostServerInstance serverHostInstance; //if we're a host
     KAR::Online::Netplay::ClientInstance clientInstance;          // if we're a client
 
+    //the network thread we use for handling networking stuff
+    std::thread networkingMessageWorker;
+    std::thread serverNetworkThread; //split it out to it's own thread for server stuff
+
+
+    //the other stuff
      std::mutex m_buffer_mutex;
     std::condition_variable m_buffer_cv;
     std::deque<std::vector<u8>> m_packet_buffer;

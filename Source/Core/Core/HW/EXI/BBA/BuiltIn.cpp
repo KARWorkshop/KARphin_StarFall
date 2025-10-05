@@ -106,35 +106,6 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
   m_active = true;
   m_shutdown = false;
 
-  // loads the net info struct
-  const std::string NET_INFO_FP = KAR::Online::NetInfo::GetFilepath();
-  KAR::Online::NetInfo netInfo = KAR::Online::NetInfo::GenerateDefault();
-  if (!std::filesystem::exists(NET_INFO_FP))
-  {
-    WARN_LOG_FMT(SP1, "No Net Info found on disc, generating default host info!");
-    netInfo.SaveToDisc();
-  }
-  else
-  {
-    netInfo.LoadFromDisc();
-  }
-  INFO_LOG_FMT(SP1, "Net Info loaded || {} {}.",
-               (netInfo.isHost == true ? "is hosting on" : "is connecting to"), netInfo.debugIPStr);
-
-  SteamDatagramErrMsg errMsg;
-  if (!GameNetworkingSockets_Init(nullptr, errMsg))
-  {
-  }
-  // FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
-
-  steamNetworkingInterface = SteamNetworkingSockets();
-  if (netInfo.isHost)
-  {
-    serverHostInstance.Host(steamNetworkingInterface, netInfo);
-  }
-  else
-    clientInstance.Connect(steamNetworkingInterface, netInfo);
-
   // Initialize packet buffer
   m_packet_buffer.clear();
 
@@ -148,15 +119,93 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
   m_injector_id = RegisterBBAPacketInjector(m_injector_callback);
 
   // Register CPU-thread event to process pending injected packets
-  if (!m_event_inject)
+  //if (!m_event_inject)
+  //{
+  //  m_event_inject = m_eth_ref->m_system.GetCoreTiming().RegisterEvent(
+  //      "NetPlayBBAInject", [](Core::System& system, u64 userdata, s64) {
+  //        auto* self = reinterpret_cast<CEXIETHERNET::NetPlayBBAInterface*>(userdata);
+  //        if (self)
+  //          self->ProcessPendingPacketsOnCPU();
+  //      });
+  //}
+
+  KAR::Online::NetInfo netInfo = KAR::Online::NetInfo::GenerateDefault();
+  if (!std::filesystem::exists(KAR::Online::NetInfo::GetFilepath()))
   {
-    m_event_inject = m_eth_ref->m_system.GetCoreTiming().RegisterEvent(
-        "NetPlayBBAInject", [](Core::System& system, u64 userdata, s64) {
-          auto* self = reinterpret_cast<CEXIETHERNET::NetPlayBBAInterface*>(userdata);
-          if (self)
-            self->ProcessPendingPacketsOnCPU();
-        });
+    netInfo.SaveToDisc();
   }
+  else
+    netInfo.LoadFromDisc();
+
+  //inits the netcode shit
+  SteamDatagramErrMsg errMsg;
+  if (!GameNetworkingSockets_Init(nullptr, errMsg))
+  {
+  }
+  // FatalError("GameNetworkingSockets_Init failed.  %s", errMsg);
+
+  if (netInfo.isHost)
+  {
+    serverHostInstance.Host(SteamNetworkingSockets(), netInfo);
+    g_is_first_user = true;
+  }
+  clientInstance.Connect(SteamNetworkingSockets(), netInfo);
+
+  //register the callback for sending frames
+  g_bba_packet_sender = [this](const u8* data, u32 size) {
+
+    // Anything else, just send it to the server and let them parse it
+    clientInstance.steamNetworkingInterface->SendMessageToConnection(clientInstance.m_hConnection, data, size,
+                                          k_nSteamNetworkingSend_Reliable, nullptr);
+  };
+
+  serverNetworkThread = std::thread([&]() {
+
+    while (clientInstance.isRunning)
+    {
+      if (serverHostInstance.isRunning)
+      {
+        ISteamNetworkingMessage* pIncomingMsg = nullptr;
+        int numMsgs = serverHostInstance.steamNetworkingInterface->ReceiveMessagesOnPollGroup(
+            serverHostInstance.pollGroup, &pIncomingMsg, 1);
+       // if (numMsgs == 0)
+          // break;
+          if (numMsgs < 0)
+          {
+            // FatalError("Error checking for messages");
+            //  assert(numMsgs == 1 && pIncomingMsg);
+            auto itClient = serverHostInstance.m_mapClients.find(pIncomingMsg->m_conn);
+            // assert(itClient != serverHostInstance.m_mapClients.end());
+
+            for (auto c : serverHostInstance.m_mapClients)
+              serverHostInstance.steamNetworkingInterface->SendMessageToConnection(
+                  c.first, pIncomingMsg->m_pData, pIncomingMsg->m_cbSize,
+                  k_nSteamNetworkingSend_Reliable, nullptr);
+
+            // We don't need this anymore.
+            pIncomingMsg->Release();
+          }
+      }
+
+      clientInstance.steamNetworkingInterface->RunCallbacks();
+
+      ISteamNetworkingMessage* pIncomingMsg = nullptr;
+      int numMsgs = clientInstance.steamNetworkingInterface->ReceiveMessagesOnConnection(
+          clientInstance.m_hConnection, &pIncomingMsg, 1);
+     // if (numMsgs == 0)
+        // return;
+        if (numMsgs < 0)
+        {
+          // FatalError("Error checking for messages");
+          InjectPacket((const u8*)pIncomingMsg->m_pData, pIncomingMsg->m_cbSize);
+
+          // We don't need this anymore.
+          pIncomingMsg->Release();
+        }
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+  });
 
   // Log that we're ready to handle BBA packets
   INFO_LOG_FMT(SP1, "NetPlay BBA Interface ready to handle packets");
@@ -167,6 +216,14 @@ bool CEXIETHERNET::NetPlayBBAInterface::Activate()
 void CEXIETHERNET::NetPlayBBAInterface::Deactivate()
 {
   INFO_LOG_FMT(SP1, "NetPlay BBA Interface deactivated");
+
+  clientInstance.isRunning = false;
+  if (serverNetworkThread.joinable())
+    serverNetworkThread.join();
+
+  clientInstance.Shutdown();
+  serverHostInstance.Shutdown();
+  GameNetworkingSockets_Kill();
 
   // Unregister the injector callback
   if (m_injector_id != 0)
@@ -181,11 +238,6 @@ void CEXIETHERNET::NetPlayBBAInterface::Deactivate()
     m_shutdown = true;
     m_buffer_cv.notify_all();
   }
-
-  serverHostInstance.Shutdown();
-  clientInstance.Shutdown();
-
-  GameNetworkingSockets_Kill();
 
   m_active = false;
 }
@@ -326,11 +378,12 @@ void CEXIETHERNET::NetPlayBBAInterface::InjectPacket(const u8* data, u32 size)
     std::lock_guard<std::mutex> lock(m_buffer_mutex);
     m_packet_buffer.emplace_back(data, data + size);
   }
-  if (m_event_inject)
-  {
-    m_eth_ref->m_system.GetCoreTiming().ScheduleEvent(
-        0, m_event_inject, reinterpret_cast<u64>(this), CoreTiming::FromThread::NON_CPU);
-  }
+  //if (m_event_inject)
+  //{
+  //  m_eth_ref->m_system.GetCoreTiming().ScheduleEvent(
+  //      0, m_event_inject, reinterpret_cast<u64>(this), CoreTiming::FromThread::NON_CPU);
+  //}
+  ProcessPendingPacketsOnCPU();
 }
 
 void CEXIETHERNET::NetPlayBBAInterface::ProcessPendingPacketsOnCPU()
@@ -338,7 +391,7 @@ void CEXIETHERNET::NetPlayBBAInterface::ProcessPendingPacketsOnCPU()
   if (!m_active || m_shutdown || !m_receiving)
     return;
 
-  std::deque<std::vector<u8>> pending;
+   std::deque<std::vector<u8>> pending;
   {
     std::lock_guard<std::mutex> lock(m_buffer_mutex);
     pending.swap(m_packet_buffer);
