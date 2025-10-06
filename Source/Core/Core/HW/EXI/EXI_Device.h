@@ -97,7 +97,7 @@ struct fmt::formatter<ExpansionInterface::EXIDeviceType>
       // i18n: A mysterious debugging/diagnostics peripheral for the GameCube.
       _trans("AD16"),
       _trans("Microphone"),
-      _trans("Broadband Adapter (TAP)"),
+      _trans("Warp Relay"),
       _trans("Triforce AM Baseboard"),
       _trans("USB Gecko"),
       _trans("GCI Folder"),

@@ -359,10 +359,6 @@ private:
     KAR::Online::Netplay::HostServerInstance serverHostInstance;  // if we're a host
     KAR::Online::Netplay::ClientInstance clientInstance;          // if we're a client
 
-    // the network thread we use for handling networking stuff
-    std::thread networkingMessageWorker;
-    std::thread serverNetworkThread;  // split it out to it's own thread for server stuff
-
   protected:
 #if defined(WIN32) || defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) ||          \
     defined(__OpenBSD__)
@@ -372,9 +368,6 @@ private:
     static void ReadThreadHandler(TAPNetworkInterface* self);
 #endif
 #if defined(_WIN32)
-    HANDLE mHAdapter = INVALID_HANDLE_VALUE;
-    OVERLAPPED mReadOverlapped = {};
-    OVERLAPPED mWriteOverlapped = {};
     std::vector<u8> mWriteBuffer;
     bool mWritePending = false;
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
